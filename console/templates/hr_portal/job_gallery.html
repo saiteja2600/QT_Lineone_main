@@ -1,0 +1,148 @@
+{% extends 'base/base.html' %}
+{% block breadCrum %}
+
+<!-- Breadcrumb -->
+<div class="hk-pg-header d-flex justify-content-between mb-0">
+  <nav aria-label="breadcrumb">
+    <ol class="breadcrumb bg-transparent mb-0">
+      <li class="breadcrumb-item"><a href="#">Dashboard</a></li>
+      <li class="breadcrumb-item"><a href="#">Job Gallery</a></li>
+      <li class="breadcrumb-item active" aria-current="page">Applied jobs</li>
+    </ol>
+  </nav>
+</div>
+<!-- /Breadcrumb -->
+{% endblock %} 
+{% block content %}
+<section class="hk-sec-wrapper">
+  <div class="">
+    
+    <a href='#' type="button" class="btn btn-success mr-2 mb-3"><i class="glyphicon glyphicon-export"></i> Export</a>
+    
+  </div>
+  <div class="row">
+    <div class="col-sm">
+      <div class="table-wrap">
+          <table id="datable_1" class="table table-hover w-100 display pb-30 table-bordered">
+              <thead class="bg-dark">
+                  <tr>
+                      <th class="text-white">ID</th>
+                      <th class="text-white">title</th>
+                      <th class="text-white">Company Name</th>
+                      <th class="text-white">Location</th>
+                      <th class="text-white">Category</th>
+                      <th class="text-white">Experience</th>
+                      <th class="text-white">Posted Date</th>
+                      <th class="text-white">Experired Date</th>
+                      <th class="text-white">Applied Date</th>
+                  </tr>
+              </thead>
+              <tbody>
+                  <tr>
+                      <td>602</td>
+                      <td class="text-primary " style="cursor: -webkit-grab; cursor: grab";
+                      data-toggle="modal"data-target="#jobdescription">Python Full Stack Developer</td>
+                      <td>Meslova System PVT Ltd</td>
+                      <td>Pan India</td>
+                      <td>Technical</td>
+                      <td>0-1</td>
+                      <td>Jan.2,2024</td>
+                      <td>2024-01-02</td>
+                      <td>
+
+                        <i class="glyphicon glyphicon-user text-primary fs-4">&nbsp;12
+                        </i>
+                      </td>                         
+                  </tr>
+              </tfoot>
+          </table>
+      </div>
+  </div>
+</div>
+</section>
+
+
+
+<!-- Job description model starts here -->
+
+        <div
+class="modal fade"
+id="jobdescription"
+tabindex="-1"
+role="dialog"
+aria-labelledby="jobdescription"
+aria-hidden="true"
+>
+<div class="modal-dialog modal-lg" role="document">
+  <div class="modal-content">
+    <div class="modal-header bg-dark">
+      <h5 class="modal-title text-white md-3">Job description</h5>
+      <button
+        type="button"
+        class="close"
+        data-dismiss="modal"
+        aria-label="Close"
+      >
+        <span aria-hidden="true" class="text-white">&times;</span>
+      </button>
+    </div>
+      <div class="bg-white ">
+        <h3 class="text-danger px-3 pt-2" ><i class="fa fa-globe"></i> QT Placements:</h3>
+        <div class="col-md-6 form-group" style="margin-bottom: 20px">
+          <span ><strong style="color: black">Job ID:</strong> 602</span>
+      </div>
+      <div class="col-md-6 form-group"  style="margin-bottom: 20px">
+          <span  ><strong style="color: black">Job Title:</strong> Python Full Stack Developer</span>
+
+      </div>
+      <div class="col-md-6 form-group"  style="margin-bottom: 20px">
+          <span><strong style="color: black">Company Name:</strong>Meslova System PVT Ltd</span>
+
+      </div>
+      <div class="col-md-6 form-group"  style="margin-bottom: 20px">
+          <span ><strong style="color: black;">Job Category:</strong>Technical</span>
+      </div>
+      
+      <div class="col-md-6 form-group"  style="margin-bottom: 20px">
+          <span ><strong style="color: black">Experience: </strong> 0-1 Yeras</span>
+
+      </div>
+      <div class="col-md-6 form-group"  style="margin-bottom: 20px">
+          <span ><strong style="color: black">Qualification: </strong>Full Stack Python Developer</span>
+
+      </div>
+      <div class="col-md-6 form-group"  style="margin-bottom: 20px">
+          <span ><strong style="color: black">Skills:</strong> Angular, Java script, Django % Python</span>
+
+      </div>
+      <div class="col-md-6 form-group"  style="margin-bottom: 20px">
+          <span ><strong style="color: black">Role: </strong> Python Developer</span>
+
+      </div>
+      <div class="col-md-6 form-group"  style="margin-bottom: 20px">
+          <span ><strong style="color: black">Salary:</strong> 2.5 LPA</span>
+      </div>
+      <div class="col-md-6 form-group"  style="margin-bottom: 20px">
+          <span ><strong style="color: black">Location:</strong> Pan India</span>
+      </div>
+      <div class="col-md-6 form-group"  style="margin-bottom: 20px">
+          <span ><strong style="color: black">Email:</strong> mohan@gamil.com</span>
+
+      </div>
+      <div class="col-md-12 form-group"  style="margin-bottom: 20px">
+          <span ><strong style="color: black">Contact Number:</strong>6301819743</span>
+      </div>
+
+      <div class="col-md-12 form-group"  style="margin-bottom: 20px">
+        <span ><strong style="color: black">Responsibilties:</strong>********</span>
+      </div>
+    </div>
+    </div>
+    
+  </div>
+</div>
+</div>
+
+        <!-- Job description model ends here -->
+        
+{% endblock %}

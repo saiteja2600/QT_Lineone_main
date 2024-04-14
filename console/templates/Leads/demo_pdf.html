@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Demo</title>
+    <style>
+         table,td,th
+        {
+            text-align: start;
+            font-size: 20px;
+            
+           
+        }
+        table{
+            border: 1px solid gray;
+            border-collapse: collapse;
+            width: 100%;
+        }
+        
+    </style>
+</head>
+<body>
+  <div
+  style="width: 100%;  "
+>
+<div align="center">
+  <img src="../static/images/logo/qt_instance.png" alt="" class="rounded-md" style="height: 150px; width: 150px;">
+
+</div>
+<table class="w-full">
+  
+  <tbody class="">
+      <tr>
+          <th style="padding: 5px" >Demo Title </th>
+          <td style="padding: 5px"  >{{recipt.demotitle}} </td>
+          
+        </tr>
+        <tr>
+            <th style="padding: 5px"  >Demo Trainining Type </th>
+            <td style="padding: 5px" >{{recipt.demosessiontype}} </td>
+            
+          </tr>
+          <tr>
+            <th style="padding: 5px"  >Course </th>
+            <td style="padding: 5px" >{{recipt.course}} </td>
+            
+          </tr>
+          <tr>
+            <th style="padding: 5px"  >Specialization </th>
+            <td style="padding: 5px"  >{{recipt.specialization}} </td>
+          </tr>
+          <tr>
+            <th style="padding: 5px" >Faculty</th>
+            <td style="padding: 5px" >{{recipt.faculty}} </td>
+          </tr>
+          <tr>
+            <th style="padding: 5px" >Course Plan</th>
+            <td style="padding: 5px" >{{recipt.courseplan}} </td>
+          </tr>
+          <tr>
+            <th style="padding: 5px" >Branch Location</th>
+            <td style="padding: 5px" >{{recipt.branchlocation}} </td>
+          </tr>
+          <tr>
+            <th style="padding: 5px" >Batch</th>
+            <td style="padding: 5px" >{{recipt.batchno}} </td>
+          </tr>
+          <tr>
+            <th style="padding: 5px" >Demo Meeting Link</th>
+            <td style="padding: 5px; ">
+              {{recipt.meetinglink }}
+            </td>
+
+          </tr>
+          <tr>
+            <th style="padding: 5px" >Demo Meeting Id</th>
+            <td style="padding: 5px" >{{recipt.meetingid}} </td>
+          </tr>
+          <tr>
+            <th style="padding: 5px" >Demo Passcode</th>
+            <td style="padding: 5px" >{{recipt.passcode}} </td>
+          </tr>
+          <tr>
+            <th style="padding: 5px" >Demo Start Date</th>
+            <td style="padding: 5px" >{{recipt.datestartat}} </td>
+          </tr>
+          <tr>
+            <th style="padding: 5px" >Demo End Date</th>
+            <td style="padding: 5px" >{{recipt.dateendat}} </td>
+          </tr>
+          <tr>
+            <th style="padding: 5px" >Demo Description</th>
+            <td style="padding: 5px" >{{recipt.demodescription}} </td>
+          </tr> 
+  </tbody>
+</table>
+</div>
+</body>
+</html>

@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Course Manage</title>
+    <style>
+        table,
+        td,
+        th {
+            text-align: start;
+            font-size: 20px;
+        }
+        table {
+            border: 1px solid gray;
+            border-collapse: collapse;
+            width: 100%;
+        }
+    </style>
+</head>
+
+<body>
+    <div style="width: 100%;  ">
+        <div align="center">
+            <img src="../static/images/logo/qt_instance.png" alt="" class="rounded-md"
+                style="height: 150px; width: 150px;">
+
+        </div>
+        <table class="w-full">
+            <tbody class="">
+                <tr>
+                    <th style="padding: 5px">Course Title</th>
+                    <td style="padding: 5px">{{recipt.course_title}} </td>
+
+                </tr>
+                <tr>
+                    <th style="padding: 5px">Course Plan</th>
+                    <td style="padding: 5px">{{recipt.course_plan}}</td>
+
+                </tr>
+                <tr>
+                    <th style="padding: 5px">Course Name </th>
+                    <td style="padding: 5px">{{recipt.course_name}} </td>
+
+                </tr>
+                <tr>
+                    <th style="padding: 5px">Specialization </th>
+                    <td style="padding: 5px">{{recipt.specialization}} </td>
+                </tr>
+                <tr>
+                    <th style="padding: 5px">Branch</th>
+                    <td style="padding: 5px">{{recipt.branch}} </td>
+                </tr>
+                <tr>
+                    <th style="padding: 5px">Batch Type</th>
+                    <td style="padding: 5px">{{recipt.batch_type}}</td>
+                </tr>
+                <tr>
+                    <th style="padding: 5px">Teaching Faculty</th>
+                    <td style="padding: 5px">{{recipt.teaching_faculty}}</td>
+                </tr>
+                <tr>
+                    <th style="padding: 5px">Course Duration</th>
+                    <td style="padding: 5px">{{recipt.duration}} Days </td>
+                </tr>
+                <tr>
+                    <th style="padding: 5px">Course Fees</th>
+                    <td style="padding: 5px">Rs.{{recipt.course_fee}} </td>
+                </tr>
+                <tr>
+                    <th style="padding: 5px">Discount</th>
+                    <td style="padding: 5px">{{recipt.discount}} %</td>
+                </tr>
+                <tr>
+                    <th style="padding: 5px">Selling Price</th>
+                    <td style="padding: 5px">Rs.{{recipt.final_price}}</td>
+                </tr>
+                
+                <tr>
+                    <th style="padding: 5px">Course Image</th>
+                    <td style="padding: 5px">
+                        {% if recipt.course_image %}
+                        <img src="{{recipt.course_image.path}}" width="100" class="rounded-circle" height="100px">
+                        {% endif %}
+                    </td>
+                </tr>
+                <tr>
+                    <th style="padding: 5px">Course Banner</th>
+                    <td style="padding: 5px">
+                        {% if recipt.course_banner %}
+                        <img src="{{recipt.course_banner.path}}" width="100" class="rounded-circle" height="100px">
+                        {% endif %}
+                    </td>
+                </tr>
+                <tr>
+                    <th style="padding: 5px">Prerequisite (Software Required)</th>
+                    <td style="padding: 5px">{{recipt.software}} </td>
+                </tr>
+                <tr>
+                    <th style="padding: 5px">Prerequisite (Hardware Required)</th>
+                    <td style="padding: 5px">{{recipt.hardware}} </td>
+                </tr>
+                <tr>
+                    <th style="padding: 5px">Course Short Description</th>
+                    <td style="padding: 5px">{{recipt.short_description}} </td>
+                </tr>
+                <tr>
+                    <th style="padding: 5px">Course Long Description</th>
+                    <td style="padding: 5px">{{recipt.long_description}} </td>
+                </tr>
+            </tbody>
+        </table>
+
+
+    </div>
+</body>
+
+</html>

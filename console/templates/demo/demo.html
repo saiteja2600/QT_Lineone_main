@@ -1,0 +1,1297 @@
+{% extends 'base/base.html' %}
+{% block title %}QTLineone | Demo{% endblock %}
+
+{% block breadCrum %}
+
+<!-- Breadcrumb -->
+<div class="hk-pg-header d-flex justify-content-between mb-0">
+    <h4 class="hk-pg-title m-3"> Demo Management</h4>
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb bg-transparent mb-0">
+            <li class="breadcrumb-item"><a href="{% url 'dashboard' %}">Dashboard</a></li>
+            <li class="breadcrumb-item active" aria-current="page"> Demo Management </li>
+        </ol>
+    </nav>
+</div>
+<!-- /Breadcrumb -->
+{% endblock %} {% block content %}
+<!-- message here -->
+
+{% if messages %}
+{% for message in messages %}
+{% if message.tags == "error" %}
+<div class="h-25 alert alert-danger alert-dismissible fade show mt-2 h-25 text-center" role="alert">{{ message }}</div>
+{% elif message.tags == "success" %}
+<div class="h-25 alert alert-success alert-dismissible fade show mt-2 h-25 text-center" role="alert">{{ message }}</div>
+{% else %}
+<div class="h-25 alert alert-info alert-dismissible fade show mt-2 h-25 text-center" role="alert">{{ message }}</div>
+{% endif %}
+{% endfor %}
+{% endif %}
+
+<!-- message end here -->
+<section class="hk-sec-wrapper">
+    <div class="d-flex justify-content-between">
+
+
+    <div class="">
+        <button type="button" class="btn btn-primary mr-2 mb-3" data-toggle="modal" data-target="#CreateDemo">
+            <i class="glyphicon glyphicon-plus"></i> Create Demo
+        </button>
+        <a href="{% url 'demo_export' %}" class="btn btn-success mr-2 mb-3"><i class="glyphicon glyphicon-export"></i>
+            Export</a>
+        <button type="button" class="btn btn-secondary mr-2 mb-3" data-toggle="modal" data-target="#UploadDemo">
+            <i class="glyphicon glyphicon-import"></i> Import
+        </button>
+    </div>
+    <div>
+        <button type="button" class="btn btn-danger mr-2 mb-3" id="deleteButton" data-toggle="modal"
+      data-target="#deleteModal" style="display: none; position: relative; top: 0px; ">
+      <i class="glyphicon glyphicon-trash"></i> Delete
+  </button>
+
+
+
+    </div>
+</div>
+
+
+    <div class="row">
+        <div class="col-sm">
+            <div class="table-wrap">
+                <table id="datable_1" class="table table-hover w-100 display pb-30 table-bordered">
+                    <thead class="bg-dark">
+                        <tr>
+                            <th class="text-white text-center"><input type="checkbox" id="selectAll"> All</th>
+
+                            <th class="text-white">S.No</th>
+                            <th class="text-white">Demo Title</th>
+                            <th class="text-white">Course</th>
+                            <th class="text-white">Faculty</th>
+                            <th class="text-white">Branch</th>
+                            <th class="text-white">Batch No</th>
+                            <th class="text-white text-center">Status</th>
+                            <th class="text-white text-center">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for i in demo %}
+                        <tr>
+                            <td class="text-center"><input type="checkbox" class="row-checkbox"  data-course-id="{{i.id}}"
+                                data-course-name="{{i.demotitle}}"></td>
+                            </td>
+                            <td>{{forloop.counter}}</td>
+                            <td>{{i.demotitle}}</td>
+                            <td class="">{{i.course}}</td>
+                            <td class="">{{i.faculty}}</td>
+                            <td class="">{{i.branchlocation}}</td>
+                            <td class="">{{i.batchno}}</td>
+                            <td class="text-center">
+                                {% if i.status == 'Active' %}
+                                <a href="{% url 'demo_status' i.id %}"
+                                    class="btn btn-success badge text-bg-light rounded-pill">Active</a>
+                                {% else %}
+                                <a href="{% url 'demo_status' i.id %}"
+                                    class="btn btn-danger badge text-bg-light rounded-pill">Deactive</a>
+                                {% endif %}
+                            </td>
+                            <td class="text-center">
+                                <button class="btn btn-secondary m-1" data-toggle="modal"
+                                    data-target="#ViewDemo{{forloop.counter}}">
+                                    <i class="fa fa-eye"></i>
+                                </button>
+                                <button class="btn btn-primary m-1" data-toggle="modal"
+                                    data-target="#EditDemo{{forloop.counter}}">
+                                    <i class="fa fa-pencil"></i>
+                                </button>
+                                <button class="btn btn-danger m-1" data-toggle="modal"
+                                    data-target="#DeleteDemo{{forloop.counter}}">
+                                    <i class="fa fa-trash"></i>
+                                </button>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- create model start here -->
+
+<div class="modal fade" id="CreateDemo" tabindex="-1" role="dialog" aria-labelledby="CreateDemo" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header bg-dark">
+                <h5 class="modal-title text-white">Create Demo</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true" class="text-white">&times;</span>
+                </button>
+            </div>
+
+            <div class="modal-body">
+                <form action="{% url 'demo' %}" method="post" id="Createdemo" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    <div class="row">
+                        <div class="col-sm-12 col-md-6 col-lg-4  mb-3">
+                            <label for="" class="form-label">Demo Title <span class="text-danger">*</span></label>
+                            <input type="text" class="form-control" id="Demotitle" name="demotitle"
+                                placeholder="Ex: Python Demo">
+                        </div>
+                        <div class="col-sm-12 col-md-6 col-lg-4  mb-3">
+                            <label for="" class="form-label">Demo Session Type <span
+                                    class="text-danger">*</span></label>
+                            <select class="form-control custom-select" name="demosessiontype">
+                                <option selected value="">Select</option>
+                                {% for i in demosession %}
+                                {% if i.status == 'Active' %}
+                                <option value="{{i.id}}">{{i.TrainingTypeName}}</option>
+                                {% endif %}
+                                {% endfor %}
+                            </select>
+                        </div>
+                        <div class="col-sm-12 col-md-6 col-lg-4  mb-3">
+                            <label for="" class="form-label">Course <span class="text-danger">*</span></label>
+                            <select class="form-control custom-select id_course" name="course">
+                                <option selected value="">Select Name</option>
+                                {% for i in coursename %}
+                                {% if i.status == 'Active' %}
+                                <option value="{{i.id}}">{{ i.course_name }}</option>
+                                {% endif %}
+                                {% endfor %}
+                            </select>
+                        </div>
+                        <div class="col-sm-12 col-md-6 col-lg-4  mb-3">
+                            <label for="" class="form-label">Specialization <span class="text-danger">*</span></label>
+                            <select class="form-control custom-select id_specialization" name="specialization">
+                            </select>
+                        </div>
+                        <div class="col-sm-12 col-md-6 col-lg-4  mb-3">
+                            <label for="" class="form-label">Faculty <span class="text-danger">*</span></label>
+                            <select class="form-control custom-select" name="faculty">
+                                <option selected value="">Select</option>
+                                {% for i in faculty %}
+                                {% if i.status == 'Active' %}
+                                <option value="{{i.id}}">{{i.first_name}}</option>
+                                {% endif %}
+                                {% endfor %}
+                            </select>
+                        </div>
+                        <div class="col-sm-12 col-md-6 col-lg-4  mb-3">
+                            <label for="" class="form-label">Course Plan <span class="text-danger">*</span></label>
+                            <select class="form-control custom-select" name="courseplan">
+                                <option selected value="">Select</option>
+                                {% for i in courseplan %}
+                                {% if i.status == 'Active' %}
+                                <option value="{{i.id}}">{{i.plan_name}}</option>
+                                {% endif %}
+                                {% endfor %}
+                            </select>
+                        </div>
+                        <div class="col-sm-12 col-md-6 col-lg-4  mb-3">
+                            <label for="" class="form-label">Branch Location<span class="text-danger"> *</span></label>
+                            <select class="form-control custom-select" name="branchlocation">
+                                <option selected value="">Select Branch</option>
+                                {% for i in branchlocation %}
+                                {% if i.status == 'Active' %}
+                                <option value="{{i.id}}">{{i.branch_name}}</option>
+                                {% endif %}
+                                {% endfor %}
+                            </select>
+                        </div>
+                        <div class="col-sm-12 col-md-6 col-lg-4  mb-3">
+                            <label for="" class="form-label">Batch No <span class="text-danger">*</span></label>
+                            <select class="form-control custom-select id_batchno" name="batchno">
+                            </select>
+                        </div>
+                        <div class="col-sm-12 col-md-6 col-lg-4  mb-3">
+                            <label for="" class="form-label">Meeting Link <span class="text-danger">*</span></label>
+                            <input type="text" class="form-control" name="meetinglink"
+                                placeholder="https://meet.google.com/kgw-cchh-rjs" />
+                        </div>
+                        <div class="col-sm-12 col-md-6 col-lg-4  mb-3">
+                            <label for="" class="form-label">Meeting Id <span class="text-danger">*</span></label>
+                            <input type="text" class="form-control" name="meetingid" placeholder="Ex:qt@123" />
+                        </div>
+                        <div class="col-sm-12 col-md-6 col-lg-4  mb-3">
+                            <label for="" class="form-label">Passcode <span class="text-danger">*</span></label>
+                            <input type="text" class="form-control" name="passcode" placeholder="Ex:996655" />
+                        </div>
+                        <div class="col-sm-12 col-md-6 col-lg-4  mb-3">
+                            <label for="" class="form-label">Demo Start Time <span class="text-danger">*</span></label>
+                            <input type="datetime-local" id="start-date-input" class="form-control" name="demostartat"
+                                placeholder="demostarttime">
+                        </div>
+                        <div class="col-sm-12 col-md-6 col-lg-4 mb-3">
+                            <label for="" class="form-label">Demo End Time <span class="text-danger">*</span></label>
+                            <input type="datetime-local" id="end-date-input" class="form-control" name="demoendat"
+                                placeholder="demoendtime">
+                        </div>
+                        <div class="col-sm-12 col-md-6 col-lg-4 mb-3">
+                            <label for="" class="form-label">Demo Image(JPEG/PNG)<span
+                                    class="text-danger">*</span></label>
+                            <div class="fileinput fileinput-new input-group" data-provides="fileinput">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text">Upload</span>
+                                </div>
+                                <div class="form-control text-truncate" data-trigger="fileinput"><i
+                                        class="glyphicon glyphicon-file fileinput-exists"></i> <span
+                                        class="fileinput-filename"></span>
+                                </div>
+                                <span class="input-group-append">
+                                    <span class=" btn btn-primary btn-file"><span class="fileinput-new">Select
+                                            file</span><span class="fileinput-exists">Change</span>
+                                        <input type="file" name="demoimage">
+                                    </span>
+                                    <a href="#" class="btn btn-secondary fileinput-exists"
+                                        data-dismiss="fileinput">Remove</a>
+                                </span>
+                            </div>
+                            <div id="file_image"></div>
+                        </div>
+                        <div class="col-sm-12 col-md-6 col-lg-4 mb-3">
+                            <label for="" class="form-label">Demo Banner (JPEG/PNG) <span
+                                    class="text-danger">*</span></label>
+                            <div class="fileinput fileinput-new input-group" data-provides="fileinput">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text">Upload</span>
+                                </div>
+                                <div class="form-control text-truncate" data-trigger="fileinput"><i
+                                        class="glyphicon glyphicon-file fileinput-exists"></i> <span
+                                        class="fileinput-filename"></span>
+                                </div>
+                                <span class="input-group-append">
+                                    <span class=" btn btn-primary btn-file"><span class="fileinput-new">Select
+                                            file</span><span class="fileinput-exists">Change</span>
+                                        <input type="file" name="demobannerimage" id="input-file">
+                                    </span>
+                                    <a href="#" class="btn btn-secondary fileinput-exists"
+                                        data-dismiss="fileinput">Remove</a>
+                                </span>
+                            </div>
+                            <div id="file_banner"></div>
+                        </div>
+                        <div class="col-sm-12 mb-3">
+                            <label for="" class="form-label">Demo Description <span class="text-danger">*</span></label>
+                            <textarea type="text" class="form-control" name="demodescription"
+                                placeholder="Message"></textarea>
+                        </div>
+                    </div>
+            </div>
+            <div class="mb-3 d-flex justify-content-center">
+                <button type="submit" class="btn btn-primary m-1">Submit</button>
+                <button type="reset" class="btn btn-secondary m-1">Reset</button>
+            </div>
+            </form>
+        </div>
+    </div>
+</div>
+</div>
+
+
+<!-- Create model end here -->
+
+<!-- Edit model here -->
+
+{% for i in demo %}
+<div class="modal fade" id="EditDemo{{forloop.counter}}" tabindex="-1" role="dialog" aria-labelledby="EditDemo"
+    aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header bg-dark">
+                <h5 class="modal-title text-white">Edit Demo</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true" class="text-white">&times;</span>
+                </button>
+            </div>
+            <form action="{% url 'demo_edit' i.id %}" method="post" class="Editdemo" enctype="multipart/form-data">
+                {% csrf_token %}
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-sm-12 col-md-6 col-lg-4 mb-3">
+                            <label for="" class="form-label">Demo Title <span class="text-danger">*</span></label>
+                            <input type="text" value="{{i.demotitle}}" class="form-control" name="Demotitle"
+                                placeholder="Ex:Demo1">
+                        </div>
+                        <div class="col-sm-12 col-md-6 col-lg-4 mb-3">
+                            <label for="" class="form-label">Demo Session Type<span class="text-danger">
+                                    *</span></label>
+                            <select class="form-control custom-select" name="Demosessiontype">
+                                <option selected value="">Select</option>
+                                {% for session in demosession %}
+                                {% if i.status == 'Active' %}
+                                <option value="{{ session.id }}" {% if session.id == i.demosessiontype %}selected{% endif%}>
+                                    {{ session.TrainingTypeName }}
+                                </option>
+                                {% endif %}
+                                {% endfor %}
+                            </select>
+
+                        </div>
+                        <div class="col-sm-12 col-md-6 col-lg-4 mb-3">
+                            <label for="" class="form-label">Course <span class="text-danger">*</span></label>
+                            <select class="form-control custom-select id_course" name="Course">
+                                <option selected value="">Select Name</option>
+                                {% for course in coursename %}
+                                {% if i.status == 'Active' %}
+                                <option value="{{course.id}}">{{ course.course_name }}</option>
+                                {% endif %}
+                                {% endfor %}
+                            </select>
+                        </div>
+                        <div class="col-sm-12 col-md-6 col-lg-4 mb-3">
+                            <label for="" class="form-label">Specialization <span class="text-danger">*</span></label>
+                            <select class="form-control custom-select id_specialization" name="Specialization"
+                                id="id_specialization_{{forloop.counter}}">
+                            </select>
+                        </div>
+                        <div class="col-sm-12 col-md-6 col-lg-4  mb-3">
+                            <label for="" class="form-label">Faculty <span class="text-danger">*</span></label>
+                            <select class="form-control custom-select" name="Faculty">
+                                <option selected value="">Select</option>
+                                {% for i in faculty %}
+                                {% if i.status == 'Active' %}
+                                <option value="{{i.id}}">{{i.first_name}}</option>
+                                {% endif %}
+                                {% endfor %}
+                            </select>
+                        </div>
+                        <div class="col-sm-12 col-md-6 col-lg-4 mb-3">
+                            <label for="" class="form-label">Course Plan <span class="text-danger">*</span></label>
+                            <select class="form-control custom-select" name="Courseplan">
+                                <option selected value="">Select</option>
+                                {% for plan in courseplan %}
+                                {% if i.status == 'Active' %}
+                                <option value="{{plan.id}}" {% if plan.id == i.courseplan.id %}selected{% endif %}>
+                                    {{plan.plan_name}}
+                                </option>
+                                {% endif %}
+                                {% endfor %}
+                            </select>
+                        </div>
+                        <div class="col-sm-12 col-md-6 col-lg-4  mb-3">
+                            <label for="" class="form-label">Branch Location<span class="text-danger"> *</span></label>
+                            <select class="form-control custom-select" name="Branchlocation">
+                                <option selected value="">Select Branch</option>
+                                {% for i in branchlocation %}
+                                {% if i.status == 'Active' %}
+                                <option value="{{i.id}}">{{i.branch_name}}</option>
+                                {% endif %}
+                                {% endfor %}
+                            </select>
+                        </div>
+                        <div class="col-sm-12 col-md-6 col-lg-4 mb-3">
+                            <label for="" class="form-label">Batch No <span class="text-danger">*</span></label>
+                            <select class="form-control custom-select id_batchno" name="Batchno">
+                            </select>
+                        </div>
+                        <div class="col-sm-12 col-md-6 col-lg-4  mb-3">
+                            <label for="" class="form-label">Meeting Link <span class="text-danger">*</span></label>
+                            <input type="text" class="form-control" name="Meetinglink" value="{{i.meetinglink}}"
+                                placeholder="https://meet.google.com/kgw-cchh-rjs" />
+                        </div>
+                        <div class="col-sm-12 col-md-6 col-lg-4 mb-3">
+                            <label for="" class="form-label">Meeting Id <span class="text-danger">*</span></label>
+                            <input type="text" class="form-control" name="Meetingid" value="{{i.meetingid}}"
+                                placeholder="Ex:qt@123" />
+                        </div>
+                        <div class="col-sm-12 col-md-6 col-lg-4 mb-3">
+                            <label for="" class="form-label">Passcode <span class="text-danger">*</span></label>
+                            <input type="text" class="form-control" name="Passcode" value="{{i.passcode}}"
+                                placeholder="EX:996655" />
+                        </div>
+                        <div class="col-sm-12 col-md-6 col-lg-4 mb-3">
+                            <label for="" class="form-label">Demo Start Time <span class="text-danger">*</span></label>
+                            <input type="datetime-local" id="start-date-edit-{{forloop.counter}}" class="form-control"
+                                name="Demostartat" value="{{ i.demostartat|date:'Y-m-d\TH:i' }}">
+                        </div>
+                        <div class="col-sm-12 col-md-6 col-lg-4 mb-3">
+                            <label for="" class="form-label">Demo End Time <span class="text-danger">*</span></label>
+                            <input type="datetime-local" id="end-date-edit-{{forloop.counter}}" class="form-control"
+                                name="Demoendat" value="{{ i.demoendat|date:'Y-m-d\TH:i' }}">
+                        </div>
+                        <div class="col-sm-12 col-md-6 col-lg-4 mb-3">
+                            <label for="" class="form-label">Demo Image(JPEG/PNG)<span
+                                    class="text-danger">*</span></label>
+                            <div class="fileinput fileinput-new input-group" data-provides="fileinput">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text">Upload</span>
+                                </div>
+                                <div class="form-control text-truncate" data-trigger="fileinput"><i
+                                        class="glyphicon glyphicon-file fileinput-exists"></i> <span
+                                        class="fileinput-filename"></span>
+                                </div>
+                                <span class="input-group-append">
+                                    <span class=" btn btn-primary btn-file"><span class="fileinput-new">Select
+                                            file</span><span class="fileinput-exists">Change</span>
+                                        <input type="file" class="edit-file" name="Demoimage">
+                                    </span>
+                                    <a href="#" class="btn btn-secondary fileinput-exists"
+                                        data-dismiss="fileinput">Remove</a>
+                                </span>
+                            </div>
+                            <div id="edit_image"></div>
+                        </div>
+                        <div class="col-sm-12 col-md-6 col-lg-4 mb-3">
+                            <label for="" class="form-label">Demo Banner (JPEG/PNG)<span
+                                    class="text-danger">*</span></label>
+                            <div class="fileinput fileinput-new input-group" data-provides="fileinput">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text">Upload</span>
+                                </div>
+                                <div class="form-control text-truncate" data-trigger="fileinput"><i
+                                        class="glyphicon glyphicon-file fileinput-exists"></i> <span
+                                        class="fileinput-filename"></span>
+                                </div>
+                                <span class="input-group-append">
+                                    <span class=" btn btn-primary btn-file"><span class="fileinput-new">Select
+                                            file</span><span class="fileinput-exists">Change</span>
+                                        <input type="file" class="edit-file" name="Demobannerimage">
+                                    </span>
+                                    <a href="#" class="btn btn-secondary fileinput-exists"
+                                        data-dismiss="fileinput">Remove</a>
+                                </span>
+                            </div>
+                            <div id="edit_banner"></div>
+                        </div>
+                        <div class="col-sm-12 mb-3">
+                            <label for="" class="form-label">Demo Description<span class="text-danger">*</span></label>
+                            <textarea type="text" class="form-control" name="Demodescription"
+                                placeholder="">{{i.demodescription}}</textarea>
+                        </div>
+                    </div>
+                    <div class="mb-3  d-flex justify-content-center">
+                        <button type="submit" class="btn btn-primary m-1">Submit</button>
+                        <button type="button" class="btn btn-secondary m-1" data-dismiss="modal" aria-label="Close">
+                            Close
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+{% endfor %}
+
+
+<!-- Edit model here -->
+<!-- Views Model here-->
+{% for i in demo %}
+<div class="modal fade" id="ViewDemo{{forloop.counter}}" tabindex="-1" role="dialog" aria-labelledby="ViewDemo"
+    aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header bg-dark">
+                <h5 class="modal-title text-white">Demo Details</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true" class="text-white">&times;</span>
+                </button>
+            </div>
+            <form action="{% url 'demo_views' i.id %}" method="post" id="">
+                {% csrf_token %}
+                <div class="modal-body">
+                    <table class="table-bordered" style="width: 100%;">
+                        <tbody class="text-16 ">
+                            <tr>
+                                <th class="p-2"><strong>Demo Title</strong></th>
+                                <td class="p-2">{{i.demotitle}}</td>
+                            </tr>
+                            <tr>
+                                <th class="p-2"><strong>Demo Session Type</strong></th>
+                                <td class="p-2">{{i.demosessiontype}}</td>
+                            </tr>
+                            <tr>
+                                <th class="p-2"><strong>Course</strong></th>
+                                <td class="p-2">{{i.course}}</td>
+                            </tr>
+                            <tr>
+                                <th class="p-2"><strong>Specialization</strong></th>
+                                <td class="p-2">{{i.specialization}}</td>
+                            </tr>
+                            <tr>
+                                <th class="p-2"><strong>Faculty</strong></th>
+                                <td class="p-2">{{i.faculty}}</td>
+                            </tr>
+                            <tr>
+                                <th class="p-2"><strong>Course Plan</strong></th>
+                                <td class="p-2">{{i.courseplan}}</td>
+                            </tr>
+                            <tr>
+                                <th class="p-2"><strong>Branch Location</strong></th>
+                                <td class="p-2">{{i.branchlocation}}</td>
+                            </tr>
+                            <tr>
+                                <th class="p-2"><strong>Batch No</strong></th>
+                                <td class="p-2">{{i.batchno}}</td>
+                            </tr>
+                            <tr>
+                                <th class="p-2"><strong>Meeting Link</strong></th>
+                                <td class="p-2">{{i.meetinglink}}</td>
+                            </tr>
+                            <tr>
+                                <th class="p-2"><strong>Meeting Id</strong></th>
+                                <td class="p-2">{{i.meetingid}}</td>
+                            </tr>
+                            <tr>
+                                <th class="p-2"><strong>Passcode</strong></th>
+                                <td class="p-2">{{i.passcode}}</td>
+                            </tr>
+                            <tr>
+                                <th class="p-2"><strong>Demo Start Time</strong></th>
+                                <td class="p-2">{{i.datestartat}}</td>
+                            </tr>
+                            <tr>
+                                <th class="p-2"><strong>Demo End Time</strong></th>
+                                <td class="p-2">{{i.dateendat}}</td>
+                            </tr>
+                            <tr>
+                                <th class="p-2"><strong>Demo Image</strong></th>
+                                <td class="p-2">
+                                    {% if i.demoimage %}
+                                    <img src="{{i.demoimage.url}}" width="100" height ="100">
+                                    {% endif %}                             
+                                </td>
+                            </tr>
+                            <tr>
+                                <th class="p-2"><strong>Demo Banner</strong></th>
+                                <td class="p-2">
+                                    {% if i.demobannerimage %}
+                                    <img src="{{i.demobannerimage.url}}" width="100" height ="100">
+                                    {% endif %}                             
+                                </td>
+                            </tr>
+                            <tr>
+                                <th class="p-2"><strong>Demo Description</strong></th>
+                                <td class="p-2">{{i.demodescription}}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="mb-3 d-flex justify-content-center">
+                    <button type="submit" class="btn btn-secondary"><i class="fa fa-print"></i> Print</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+{% endfor %}
+<!-- Views model end here -->
+
+
+<!-- multi delete model start here -->
+
+
+
+
+
+<div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="deleteModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header bg-danger">
+                <h5 class="modal-title text-white " id="deleteModalLabel">Delete Demo</h5>
+                <button type="button" class="close text-white" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="mb-3 text-center">
+                    <div class="d-flex justify-content-center mb-3">
+                        <img src="../../static/triangle-exclamation-solid.svg" width="120" height="70" alt="">
+                    </div>
+                    <form action="{% url 'demo_delete_all'  %}" method="post">
+                        {% csrf_token %}
+                        <p id="deleteMessage">Are you sure you want to delete <strong><span id="selectedCount"></span></strong> recordss?</p>
+                        <input type="hidden" id="selected_ids_input" name="selected_ids">
+                </div>
+                <div class="d-flex justify-content-center">
+                    <button type="submit" class="btn btn-danger m-1" id="confirmDelete">Yes</button>
+                    <button type="button" class="btn btn-secondary m-1" data-dismiss="modal">No</button>
+                </div>
+                </form>
+            </div>
+  
+        </div>
+    </div>
+  </div>
+
+
+
+<!-- multi delete model end here -->
+
+
+
+
+
+
+<!-- Delete model start here -->
+<div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="deleteModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header bg-danger">
+                <h5 class="modal-title text-white " id="deleteModalLabel">Delete Calender</h5>
+                <button type="button" class="close text-white" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="mb-3 text-center">
+                    <div class="d-flex justify-content-center mb-3">
+                        <img src="../../static/triangle-exclamation-solid.svg" width="120" height="70" alt="">
+                    </div>
+                    <form action="{% url 'demo_delete_all'  %}" method="post">
+                        {% csrf_token %}
+                        <p id="deleteMessage">Are you sure you want to delete <strong><span
+                                    id="selectedCount"></span></strong> records?</p>
+                        <input type="hidden" id="selected_ids_input" name="selected_ids">
+                </div>
+                <div class="d-flex justify-content-center">
+                    <button type="submit" class="btn btn-danger m-1" id="confirmDelete">Yes</button>
+                    <button type="button" class="btn btn-secondary m-1" data-dismiss="modal">No</button>
+                </div>
+                </form>
+            </div>
+
+        </div>
+    </div>
+</div>
+{% for i in demo %}
+<div class="modal fade" id="DeleteDemo{{forloop.counter}}" tabindex="-1" role="dialog"
+    aria-labelledby="DeleteDemo{{forloop.counter}}" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header bg-danger">
+                <h5 class="modal-title text-white">Delete Demo</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true" class="text-white">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form action="{% url 'demo_delete' i.id %}" method="post">
+                    {% csrf_token %}
+                    <div class="mb-3 text-center">
+                        <div class="d-flex justify-content-center mb-3">
+
+                            <img src="../../static/triangle-exclamation-solid.svg" width="120" height="70" alt="">
+                        </div>
+                        Are you sure you want to delete {{i.demotitle}} Demo ?
+                    </div>
+                    <div class="mb-3 d-flex justify-content-center">
+                        <button type="submit" class="btn btn-danger m-1">Yes</button>
+                        <button type="button" class="btn btn-secondary m-1" data-dismiss="modal" aria-label="Close">
+                            No
+                        </button>
+                    </div>
+                </form>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+{% endfor %}
+<!-- Upload model  -->
+<div class="modal fade" id="UploadDemo" tabindex="-1" role="dialog" aria-labelledby="#UploadDemo" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header bg-dark">
+                <h5 class="modal-title text-white">Upload File</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true" class="text-white">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form action="{% url 'demo_import' %}" method="post" enctype="multipart/form-data">
+                  {% csrf_token %}
+                    <input type="file" name="demo_file" id="input-file-now" class="dropify" />
+                    <div id="csvPreview"></div>
+                    <div class="mb-3 d-flex justify-content-center">
+                        <button type="submit" class="btn btn-primary m-1">Submit</button>
+                        <button type="button" class="btn btn-secondary m-1" data-dismiss="modal" aria-label="Close">
+                            Close
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>  
+    </div>
+</div>
+<!-- Upload model end here -->
+
+{% endblock %}
+
+{% block scripts %}
+<script>
+    $(document).ready(function () {
+        var now = new Date().toISOString().slice(0, 16);
+        $("#start-date-input").attr("min", now);
+        $("#start-date-edit").attr("min", now);
+
+        $('#start-date-input').on('change', function () {
+            var startDate = $(this).val();
+            if (startDate) {
+                $('#end-date-input').prop('disabled', false);
+                $('#end-date-input').attr('min', startDate);
+            }
+            else {
+                $('#end-date-input').prop('disabled', true)
+            }
+        });
+        $.validator.addMethod("dateTimeValidFormat", function (value, element) {
+        
+        const pattern = /^(Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec)\.\s\d{1,2},\s\d{4},\s\d{1,2}\s(a\.m\.|p\.m\.)$/i;
+        return this.optional(element) || pattern.test(value);
+        }, "Please enter a valid date and time in the format 'Dec. 31, 9909, 9 p.m.'");
+
+        $('#start-date-edit').on('change', function () {
+            var startDate = $(this).val();
+            if (startDate) {
+                $('#end-date-edit').prop('disabled', false);
+                $('#end-date-edit').attr('min', startDate);
+            }
+            else {
+                $('#end-date-edit').prop('disabled', true)
+            }
+        });
+        $.validator.addMethod("dateTimeValidFormat", function (value, element) {
+
+        const pattern = /^(Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec)\.\s\d{1,2},\s\d{4},\s\d{1,2}\s(a\.m\.|p\.m\.)$/i;
+        return this.optional(element) || pattern.test(value);
+        }, "Please enter a valid date and time in the format 'Dec. 31, 9909, 9 p.m.'");
+    })
+</script>
+
+
+
+<script>
+    $(document).ready(function () {
+        //validationf for special charector 
+        $.validator.addMethod("noSpecialChars", function (value, element) {
+            return /^[a-zA-Z0-9\s]*$/.test(value);
+        }, "Special characters are not allowed.");
+        //no numbers
+        $.validator.addMethod("noNumbers", function (value, element) {
+            return !/\d/.test(value);
+        }, "Numbers are not allowed.");
+        $.validator.addMethod("Selectrequired", function (value, element) {
+            return value !== "" && value !== null && value !== "0";
+        },);
+        $.validator.addMethod("pdfOnly", function (value, element) {
+            // Check if the file extension is pdf
+            return this.optional(element) || /\.(pdf)$/i.test(value);
+        }, "Please select a PDF file.");
+        $.validator.addMethod("noSpace", function (value, element) {
+            return !(/^\s|\s$|\s{2,}/.test(value));
+        }, "No excessive or leading/trailing spaces");
+
+        $.validator.addMethod("imageFileType", function (value, element) {
+            return this.optional(element) || /^.*\.(jpg|jpeg|png)$/i.test(value);
+        }, "Please select a valid JPG or PNG or JPEG image file.");
+        $.validator.setDefaults({
+            errorPlacement: function (error, element) {
+                if (element.attr("name") === "demoimage") {
+                    error.appendTo('#file_image');
+                } else if (element.attr("name") === "demobannerimage") {
+                    error.appendTo('#file_banner');
+                }
+                else { error.insertAfter(element); }
+            }
+        });
+
+        $("#Createdemo").validate({
+            rules: {
+                demotitle: {
+                    required: true,
+                    noNumbers: true,
+                    minlength: 3,
+                    noSpace: true
+                },
+                demosessiontype: {
+                    Selectrequired: true,
+                },
+                course: {
+                    Selectrequired: true,
+                },
+                specialization: {
+                    Selectrequired: true,
+                },
+                faculty: {
+                    Selectrequired: true,
+                },
+                courseplan: {
+                    Selectrequired: true,
+                },
+                branchlocation: {
+                    Selectrequired: true,
+                },
+                batchno: {
+                    Selectrequired: true,
+                },
+                meetinglink: {
+                    required: true,
+                },
+                meetingid: {
+                    required: true,
+                },
+                passcode: {
+                    required: true,
+                    noSpace: true
+                },
+                demostartat: {
+                    required: true,
+                },
+                demoendat: {
+                    required: true,
+                },
+                demoimage: {
+                    required: true,
+                    accept: 'image/png, image/jpeg',
+                },
+                demobannerimage: {
+                    required: true,
+                    accept: 'image/png, image/jpeg',
+                },
+                demodescription: {
+                    required: true,
+                    minlength: 10,
+                },
+            },
+            messages: {
+                demotitle: {
+                    required: "Please Enter Demo Title",
+                    minlength: "Minimum of 3 characters",
+                },
+                demosessiontype: {
+                    Selectrequired: "Please Select Demo Training Type",
+                },
+                course: {
+                    Selectrequired: "Please Select Course",
+                },
+                specialization: {
+                    Selectrequired: "Please Select Specialization",
+                },
+                faculty: {
+                    Selectrequired: "Please Select Faculty",
+                },
+                courseplan: {
+                    Selectrequired: "Please Select Course Plan",
+                },
+                branchlocation: {
+                    Selectrequired: "Please select Branch Location",
+                },
+                batchno: {
+                    Selectrequired: "Please Select Batch No",
+                },
+                meetinglink: {
+                    required: "Please Enter Meeting Link",
+                },
+                meetingid: {
+                    required: "Please Enter Meeting Id",
+                },
+                passcode: {
+                    required: "Please Enter Passcode",
+                },
+                demostartat: {
+                    required: "Please Enter Demo Start Time",
+                },
+                demoendat: {
+                    required: "Please Enter Demo End Time",
+                },
+                demoimage: {
+                    required: "Please Select JPEG/PNG File",
+                    accept: 'only PNG, JPEG files are allowed',
+
+                },
+                demobannerimage: {
+                    required: "Please Select JPEG/PNG File",
+                    accept: 'only PNG, JPEG files are allowed',
+                },
+                demodescription: {
+                    required: "Please Enter Demo Description",
+                },
+            },
+            submitHandler: function (form) {
+                form.submit();
+            },
+        });
+    });
+</script>
+
+<script>
+    $(document).ready(function () {
+        //validationf for special charector 
+        $.validator.addMethod("noSpecialChars", function (value, element) {
+            return /^[a-zA-Z0-9\s]*$/.test(value);
+        }, "Special characters are not allowed.");
+        //no numbers
+        $.validator.addMethod("noNumbers", function (value, element) {
+            return !/\d/.test(value);
+        }, "Numbers are not allowed.");
+        $.validator.addMethod("Selectrequired", function (value, element) {
+            return value !== "" && value !== null && value !== "0";
+        },);
+        $.validator.addMethod("pdfOnly", function (value, element) {
+            // Check if the file extension is pdf
+            return this.optional(element) || /\.(pdf)$/i.test(value);
+        }, "Please select a PDF file.");
+        $.validator.addMethod("noSpace", function (value, element) {
+            return !(/^\s|\s$|\s{2,}/.test(value));
+        }, "No excessive or leading/trailing spaces")
+
+        $.validator.addMethod("imageFileType", function (value, element) {
+            return this.optional(element) || /^.*\.(jpg|jpeg|png)$/i.test(value);
+        }, "Please select a valid JPG or PNG or JPEG image file.");
+        $.validator.setDefaults({
+            errorPlacement: function (error, element) {
+                if (element.attr("name") === "Demoimage") {
+                    error.appendTo('#edit_image');
+                } else if (element.attr("name") === "Demobannerimage") {
+                    error.appendTo('#edit_banner');
+                }
+                else { error.insertAfter(element); }
+            }
+        });
+
+        $(".Editdemo").each(function () {
+            $(this).validate({
+                rules: {
+                    Demotitle: {
+                        required: true,
+                        noNumbers: true,
+                        noSpace: true
+                    },
+                    Demosessiontype: {
+                        Selectrequired: true,
+                    },
+                    Course: {
+                        Selectrequired: true,
+                    },
+                    Specialization: {
+                        Selectrequired: true,
+                    },
+                    Faculty: {
+                        Selectrequired: true,
+                    },
+                    Courseplan: {
+                        Selectrequired: true,
+                    },
+                    Branchlocation: {
+                        Selectrequired: true,
+                    },
+                    Batchno: {
+                        Selectrequired: true,
+                    },
+                    Meetinglink: {
+                        required: true,
+                    },
+                    Meetingid: {
+                        required: true,
+                    },
+                    Passcode: {
+                        required: true,
+                        noSpace: true
+                    },
+                    Demostartat: {
+                        required: true,
+                    },
+                    Demoendat: {
+                        required: true,
+                    },
+                    Demoimage: {
+                        required: true,
+                        accept: 'image/png, image/jpeg',
+                    },
+                    Demobannerimage: {
+                        required: true,
+                        accept: 'image/png, image/jpeg',
+                    },
+                    Demodescription: {
+                        required: true,
+                        minlength: 10,
+                    },
+                },
+                messages: {
+                    Demotitle: {
+                        required: "Please Enter Demo Title",
+                        minlength: "Minimum of 3 characters",
+                    },
+                    Demosessiontype: {
+                        Selectrequired: "Please Select Demo Training Type",
+                    },
+                    Course: {
+                        Selectrequired: "Please Select Course",
+                    },
+                    Specialization: {
+                        Selectrequired: "Please Select Specialization",
+                    },
+                    Faculty: {
+                        Selectrequired: "Please Select Faculty",
+                    },
+                    Courseplan: {
+                        Selectrequired: "Please Select Course Plan",
+                    },
+                    Branchlocation: {
+                        Selectrequired: "Please Select Branch Location",
+                    },
+                    Batchno: {
+                        Selectrequired: "Please Select Batch No",
+                    },
+                    Meetinglink: {
+                        required: "Please Enter Meeting Link",
+                    },
+                    Meetingid: {
+                        required: "Please Enter Meeting Id",
+                    },
+                    Passcode: {
+                        required: "Please Enter Passcode",
+                    },
+                    Demostartat: {
+                        required: "Please Enter Demo Start Time",
+                    },
+                    Demoendat: {
+                        required: "Please Enter Demo End Time",
+                    },
+                    Demoimage: {
+                        required: "Please Select JPEG/PNG File",
+                        accept: 'only PNG, JPEG files are allowed',
+                    },
+                    Demobannerimage: {
+                        required: "Please Select JPEG/PNG File",
+                        accept: 'only PNG, JPEG files are allowed',
+                    },
+                    Demodescription: {
+                        required: "Please Enter Demo Description",
+                    },
+                },
+                submitHandler: function (form) {
+                    form.submit();
+                },
+
+            });
+        });
+    });
+</script>
+
+
+<script>
+    $(document).ready(function () {
+        // Initial state
+        $('.id_specialization').prop('disabled', true);
+        $('.id_batchno').prop('disabled', true);
+
+        // Course change event
+        $('.id_course').change(function () {
+            var course_id = $(this).val();
+            loadSpecializations(course_id);
+            $('.id_specialization').val('');
+            $('.id_batchno').prop('disabled', true).val('');
+        });
+
+        // Specialization change event
+        $('.id_specialization').change(function () {
+            var course_id = $('.id_course').val();
+            var spec_id = $(this).val();
+            loadBatchNumbers(course_id, spec_id);
+        });
+
+        function loadSpecializations(course_id) {
+            $.ajax({
+                url: "{% url 'load_dependencies' %}",
+                data: {
+                    'course_id': course_id
+                },
+                success: function (data) {
+                    var options = '<option value="">Select Specialization</option>';
+                    $.each(data.specializations, function (key, value) {
+                        options += '<option value="' + value.id + '">' + value.specilalization_name + '</option>';
+                    });
+                    $('.id_specialization').html(options);
+                    $('.id_specialization').prop('disabled', false);
+                }
+            });
+        }
+
+        function loadBatchNumbers(course_id, spec_id) {
+            $.ajax({
+                url: "{% url 'load_dependencies' %}",
+                data: {
+                    'course_id': course_id,
+                    'spec_id': spec_id
+                },
+                success: function (data) {
+                    var options = '<option value="">Select Batch No</option>';
+                    $.each(data.batch_numbers, function (key, value) {
+                        options += '<option value="' + value.id + '">' + value.batch_number + '</option>';
+                    });
+                    $('.id_batchno').html(options);
+                    $('.id_batchno').prop('disabled', false);
+                }
+            });
+        }
+    });
+</script>
+<script>
+    function loadSpecializations(course_id, modal) {
+        $.ajax({
+            url: "{% url 'load_specializations_and_batches' %}",
+            data: {
+                'course_id': course_id
+            },
+            success: function (data) {
+                var options = '<option value="">Select Specialization</option>';
+                $.each(data.specializations, function (key, value) {
+                    options += '<option value="' + value.id + '">' + value.specilalization_name + '</option>';
+                });
+                modal.find('.id_specialization').html(options);
+                modal.find('.id_specialization').prop('disabled', false);
+
+                // Clear the batch dropdown
+                modal.find('.id_batchno').html('<option value="">Select Batch No</option>');
+                modal.find('.id_batchno').prop('disabled', true);
+            }
+        });
+    }
+
+    function loadBatches(course_id, specialization_id, modal) {
+        $.ajax({
+            url: "{% url 'load_specializations_and_batches' %}",
+            data: {
+                'course_id': course_id,
+                'spec_id': specialization_id
+            },
+            success: function (data) {
+                var batchOptions = '<option value="">Select Batch No</option>';
+                $.each(data.batch_numbers, function (key, value) {
+                    batchOptions += '<option value="' + value.id + '">' + value.batch_number + '</option>';
+                });
+                modal.find('.id_batchno').html(batchOptions);
+                modal.find('.id_batchno').prop('disabled', false);
+            }
+        });
+    }
+
+    $(document).ready(function () {
+        $('.id_course').change(function () {
+            var course_id = $(this).val();
+            var modal = $(this).closest('.modal');
+            loadSpecializations(course_id, modal);
+            modal.find('.id_specialization').val('');
+            modal.find('.id_batchno').val('');
+        });
+
+        $('.id_specialization').change(function () {
+            var course_id = $(this).closest('.modal').find('.id_course').val();
+            var spec_id = $(this).val();
+            var modal = $(this).closest('.modal');
+            loadBatches(course_id, spec_id, modal);
+        });
+    });
+</script>
+<script>
+    $(document).ready(function() {
+      function validateUploadForm(form) {
+        $(form).find('#input-file-now').on('change', function () {
+          var file = this.files[0];
+          var fileExt = file.name.split('.').pop().toLowerCase();
+  
+          if (fileExt === 'csv') {
+            $(form).find('button[type="submit"]').prop('disabled', false);
+            $(form).find('#csvPreview').html('');
+          } else {
+            $(form).find('button[type="submit"]').prop('disabled', true);
+            $(form).find('#csvPreview').html('<span style="color: red;">Only CSV files are allowed.</span>');
+          }
+        });
+  
+        $(form).on('submit', function (e) {
+          var file = $(form).find('#input-file-now')[0].files[0];
+  
+          if (!file) {
+            e.preventDefault();
+            $(form).find('#csvPreview').html('<span style="color: red;">Please select a CSV file.</span>');
+          }
+        });
+      }
+  
+      $('#UploadDemo').on('shown.bs.modal', function () {
+        validateUploadForm($(this).find('form'));
+      });
+    });
+  </script>
+  
+
+<script>
+    // Function to update the "Select All" checkbox status
+    function updateSelectAllCheckbox() {
+        var selectAllCheckbox = document.getElementById('selectAll');
+        var rowCheckboxes = document.querySelectorAll('.row-checkbox');
+        var allChecked = true;
+
+        rowCheckboxes.forEach(function (checkbox) {
+            if (!checkbox.checked) {
+                allChecked = false;
+            }
+        });
+
+        selectAllCheckbox.checked = allChecked;
+        updateSelectedRowsList(); // Update selected rows list when "Select All" checkbox is clicked
+    }
+
+    // Function to update the selected rows list and toggle delete button visibility
+    function updateSelectedRowsList() {
+        var selectedRowsList = document.getElementById('selectedRowsList');
+        var selectedIdsInput = document.getElementById('selected_ids_input');
+        var deleteButton = document.getElementById('deleteButton');
+
+        var selectedRows = document.querySelectorAll('.row-checkbox:checked');
+        var selectedCount = selectedRows.length;
+
+        if (selectedCount > 1) {
+            deleteButton.style.display = 'block'; // Show delete button if more than one row is selected
+        } else {
+            deleteButton.style.display = 'none'; // Hide delete button if only one row or none is selected
+        }
+
+        var selectedIds = [];
+        selectedRows.forEach(function (row) {
+            var courseId = row.dataset.courseId;
+            selectedIds.push(courseId);
+        });
+
+        // Set the value of the hidden input field to the selected IDs
+        selectedIdsInput.value = selectedIds.join(',');
+
+        // Update the delete modal message with the selected count
+        document.getElementById('deleteMessage').textContent = "Are you sure you want to delete " + selectedCount + " records?";
+    }
+
+    // Event listener for checkbox change
+    document.querySelectorAll('.row-checkbox').forEach(function (checkbox) {
+        checkbox.addEventListener('change', function () {
+            updateSelectedRowsList();
+            updateSelectAllCheckbox();
+        });
+    });
+
+    // Event listener for select all checkbox change
+    document.getElementById('selectAll').addEventListener('change', function () {
+        var isChecked = this.checked;
+        document.querySelectorAll('.row-checkbox').forEach(function (checkbox) {
+            checkbox.checked = isChecked;
+        });
+        updateSelectedRowsList();
+    });
+
+    // Initially update delete button visibility
+    updateSelectedRowsList();
+
+    // Event listener for delete button click
+    document.getElementById('confirmDelete').addEventListener('click', function () {
+        // Perform delete action here
+        // For now, let's just close the modal
+        $('#deleteModal').modal('hide');
+    });
+</script>
+
+
+{% endblock %}

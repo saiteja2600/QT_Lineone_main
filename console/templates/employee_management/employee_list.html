@@ -1,0 +1,2184 @@
+{% extends 'base/base.html' %}
+
+{% block title %} QTLineone | Employees {% endblock %}
+
+
+
+{% block breadCrum %}
+<!-- Breadcrumb -->
+<div class="hk-pg-header d-flex justify-content-between mb-0">
+    <h4 class="hk-pg-title m-3">Employees</h4>
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb bg-transparent mb-0">
+            <li class="breadcrumb-item"><a href="{% url 'dashboard' %}">Dashboard</a></li>
+            <li class="breadcrumb-item active" aria-current="page">Employees</li>
+        </ol>
+    </nav>
+</div>
+<!-- /Breadcrumb -->
+{% endblock %}
+
+
+{% block content %}
+{% if messages %}
+{% for message in messages %}
+{% if message.tags == "error" %}
+<div class="h-25 alert alert-danger alert-dismissible fade show mt-2 h-25 text-center" role="alert">{{ message }}</div>
+{% elif message.tags == "success" %}
+<div class="h-25 alert alert-success alert-dismissible fade show mt-2 h-25 text-center" role="alert">{{ message }}</div>
+{% else %}
+<div class="h-25 alert alert-info alert-dismissible fade show mt-2 h-25 text-center" role="alert">{{ message }}</div>
+{% endif %}
+{% endfor %}
+{% endif %}
+
+<section class="hk-sec-wrapper">
+    <div class="d-flex justify-content-between">
+
+        <div class="">
+            <button type="button" class="btn btn-primary mr-2 mb-3" data-toggle="modal" data-target="#CreateEmployee">
+                <i class="glyphicon glyphicon-plus"></i> Create Employee
+            </button>
+            <a href="{% url 'employee_export' %}" type="button" class="btn btn-success mr-2 mb-3">
+                <i class="glyphicon glyphicon-export"></i> Export
+            </a>
+            <button type="button" class="btn btn-secondary mr-2 mb-3" data-toggle="modal" data-target="#UploadEmployee">
+                <i class="glyphicon glyphicon-import"></i> Import
+            </button>
+        </div>
+        <div>
+            <button type="button" class="btn btn-danger mr-2 mb-3" id="deleteButton" data-toggle="modal"
+          data-target="#deleteModal" style="display: none; ">
+          <i class="glyphicon glyphicon-trash"></i> Delete
+      </button>
+          </div>
+    </div>
+    
+    <div class="row">
+        <div class="col-sm">
+            <div class="table-wrap">
+                <table id="datable_1" class="table table-hover w-100 display pb-30 table-bordered">
+                    <thead class="bg-dark">
+                        <tr>
+                            <th class="text-white text-center"><input type="checkbox" id="selectAll"> All</th>
+
+                            <th class="text-white"> EMP ID</th>
+                            <th class="text-white">Profile Image</th>
+                            <th class="text-white">Full Name</th>
+                            <th class="text-white">Email</th>
+                            <th class="text-white">Mobile Number</th>
+                            <th class="text-white">Department (Designation)</th>
+                            <th class="text-white">Branch</th>
+                            <th class="text-white">Employee Type</th>
+                            <th class="text-white">Status</th>
+                            <th class="text-white">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for i in employee %}
+                        <tr>
+                            <td class="text-center"><input type="checkbox" class="row-checkbox" data-course-id="{{i.id}}"
+                                data-course-name="{{i.Employee_id}}"></td>
+                          
+                            <td>{{i.Employee_id}}</td>
+
+                            <td class="text-center">
+                                {% if i.profile_image %}
+                                <img src="{{i.profile_image.url}}" alt="" width="80px" class="rounded-circle"
+                                    height="80px">
+                                    {% endif %}
+
+                            </td>
+
+                            <td> {{i.first_name}} {{i.last_name}} </td>
+                            <td> {{i.personal_email}} </td>
+
+                            <td> {{i.personal_number}} </td>
+                            <td> {{i.department_name}} ({{i.designation_name}}) </td>
+                            <td> {{i.branch}} </td>
+                            <td> {{i.employee_type}} </td>
+                            <td class="text-center">
+                                {% if i.status == 'Active' %}
+                                <a href="{% url 'employee_status' i.id %}"
+                                    class="btn btn-success badge text-bg-light rounded-pill">Active</a>
+                                {% else %}
+                                <a href="{% url 'employee_status' i.id %}"
+                                    class="btn btn-danger badge text-bg-light rounded-pill">Deactive</a>
+                                {% endif %}
+
+                            </td>
+                            <td class="text-center">
+                                <button type="button" class="btn btn-secondary m-1" data-toggle="modal"
+                                    data-target="#ViewEmployee{{forloop.counter}}">
+                                    <i class="fa fa-eye"></i>
+                                </button>
+                                <button type="button" class="btn btn-primary m-1" data-toggle="modal"
+                                    data-target="#CreateEmployee1{{forloop.counter}}">
+                                    <i class="fa fa-pencil"></i>
+                                </button>
+                                <button type="button" class="btn btn-danger m-1" data-toggle="modal"
+                                    data-target="#DeleteEvent{{forloop.counter}}"><i class="fa fa-trash"></i></button>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!--Create Employee-->
+<div class="modal fade" id="CreateEmployee" tabindex="-1" role="dialog" aria-labelledby="CreateEmployee"
+    aria-hidden="true">
+    <div class="modal-dialog modal-xl" role="document">
+        <div class="modal-content">
+            <div class="modal-header bg-dark">
+                <h5 class="modal-title text-white">Create Employee</h5>
+                <button type="button" class="close text-white" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form action="" enctype="multipart/form-data" method="post" id="EmployeeForm">
+                    {% csrf_token %}
+                    <div class="row">
+                        <div class="col-sm-12 col-lg-3 col-md-6">
+                            <div class="mb-3">
+                                <label for="" class="form-label"><b>First Name</b> <span class="text-red">*</span>
+                                </label>
+                                <input type="text" name="first_name" class="form-control"
+                                    placeholder="Enter First Name">
+                            </div>
+
+                        </div>
+                        <div class="col-sm-12 col-lg-3 col-md-6">
+                            <div class="mb-3">
+                                <label for="" class="form-label"><b>Last Name</b> <span class="text-red">*</span>
+                                </label>
+                                <input type="text" name="last_name" class="form-control" placeholder="Enter Last Name">
+                            </div>
+
+                        </div>
+                        <div class="col-sm-12 col-lg-3 col-md-6">
+                            <div class="mb-3">
+                                <label for="" class="form-label"><b>Personal Number</b> <span class="text-red">*</span>
+                                </label>
+                                <input type="text" name="personal_number" id="" class="form-control"
+                                    placeholder="Enter Personal Number">
+                            </div>
+                        </div>
+                        <div class="col-sm-12 col-lg-3 col-md-6">
+                            <div class="mb-3">
+                                <label for="" class="form-label"><b>Alternate Number</b></label>
+                                <input type="text" name="alternative_number" id="" class="form-control"
+                                    placeholder="Enter Alt Number">
+                            </div>
+                        </div>
+
+                        <div class="col-sm-12 col-lg-3 col-md-6">
+                            <div class="mb-3">
+                                <label for="" class="form-label"><b>Personal Email </b><span class="text-red">*</span>
+                                </label>
+                                <input type="email" name="personal_email" id="" class="form-control"
+                                    placeholder="example@gmail.com">
+                            </div>
+                        </div>
+                        <div class="col-sm-12 col-lg-3 col-md-6">
+                            <div class="mb-3">
+                                <label for="" class="form-label"><b>Professional Email</b> </label>
+                                <input type="email" name="professional_email" id="" class="form-control"
+                                    placeholder="example@gmail.com">
+                            </div>
+                        </div>
+                        <div class="col-sm-12 col-lg-3 col-md-6">
+                            <div class="mb-3">
+                                <label for="" class="form-label"><b>Blood Group</b></label>
+                                <select class="form-control custom-select" name="blood_group">
+                                    <option selected value="">Select Your Blood Group</option>
+                                    <option value="A+">A+</option>
+                                    <option value="A-">A-</option>
+                                    <option value="B+">B+</option>
+                                    <option value="B-">B-</option>
+                                    <option value="AB+">AB+</option>
+                                    <option value="AB-">AB-</option>
+                                    <option value="O+">O+</option>
+                                    <option value="O-">O-</option>
+
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-sm-12 col-lg-3 col-md-6">
+                            <div class="mb-3">
+                                <label for="" class="form-label"><b>Gender</b> <span class="text-red">*</span> </label>
+                                <select class="form-control custom-select" name="gender">
+                                    <option selected value="">Select Your Gender</option>
+                                    <option value="Male">Male</option>
+                                    <option value="Female">Female</option>
+                                    <option value="Other">Other</option>
+                                </select>
+
+                            </div>
+                        </div>
+                        <div class="col-sm-12 col-lg-3 col-md-6">
+                            <div class="mb-3">
+                                <label for="" class="form-label"><b>Date of Birth</b> <span class="text-red">*</span>
+                                </label>
+                                <input type="date" class="form-control" name="date_of_birth"
+                                    placeholder="Enter Date of Birth" id="">
+                            </div>
+                        </div>
+
+                        <div class="col-sm-12 col-lg-3 col-md-6">
+                            <div class="mb-3">
+                                <label for="" class="form-label"><b>Nationality </b></label>
+                                <select class="form-control custom-select" name="nationality">
+                                    <option selected value="">Select Your Nationality</option>
+                                    <option value="India">India</option>
+
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="col-sm-12 col-lg-3 col-md-6">
+                            <div class="mb-3">
+                                <label for="" class="form-label">Religion </label>
+                                <select class="form-control custom-select" name="religion">
+                                    <option selected value="">Select Your Religion</option>
+                                    <option value="Hindu">Hindu</option>
+                                    <option value="Muslim">Muslim</option>
+                                    <option value="Christian">Christian</option>
+                                    <option value="Other">Other</option>
+
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-sm-12 col-lg-3 col-md-6">
+                            <div class="mb-3">
+                                <label for="" class="form-label">Caste </label>
+                                <select class="form-control custom-select" name="caste">
+                                    <option selected value="">Select Your Caste</option>
+                                    <option value="ST">ST</option>
+                                    <option value="SC">SC</option>
+                                    <option value="OBC">OBC</option>
+                                    <option value="General">General</option>
+                                    <option value="Other">Other</option>
+
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-sm-12 col-md-6 col-lg-3">
+                            <div class="mb-3">
+                                <label for="" class="form-label">Country </label>
+                                <select class="form-control custom-select" name="country" id="country">
+                                    <option selected value="">Select Your Country</option>
+                                    <option value="India">India</option>
+                                    <option value="USA">USA</option>
+                                    <option value="UK">UK</option>
+                                    <option value="England">England</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-sm-12 col-md-6 col-lg-3 ">
+                            <div class="mb-3">
+                                <label for="" class="form-label">State </label>
+                                <select class="form-control custom-select" name="state" id="state">
+                                    <option selected value="">Select Your State</option>
+
+                                </select>
+
+
+                            </div>
+                        </div>
+                        <div class="col-sm-12 col-md-6 col-lg-3">
+                            <div class="mb-3">
+                                <label for="" class="form-label">City </label>
+                                <select class="form-control custom-select" name="city" id="city">
+                                    <option selected value="">Select Your City</option>
+
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-sm-12 col-md-6 col-lg-3">
+                            <div class="mb-3">
+                                <label for="" class="form-label">Pincode </label>
+                                <input type="text" name="pincode" id="" class="form-control"
+                                    placeholder="Enter Pincode">
+                            </div>
+                        </div>
+
+                    </div>
+                    <div class="row">
+                        <!--<div class="col-sm-12 col-md-6">
+                            <div class="mb-3">
+                                <label for="" class="form-label">Employee ID <span class="text-red">*</span></label>
+                                <input type="text" name="Employee_id" id="" class="form-control" disabled>
+                        
+                            </div>
+                        </div>-->
+                        <div class="col-sm-12 col-md-6 col-lg-3">
+                            <div class="mb-3">
+                                <label for="" class="form-label">Employee Type <span class="text-red">*</span> </label>
+                                <select class="form-control custom-select" name="employee_type">
+                                    <option selected value="">Select Employee Type</option>
+                                    {% for type in employee_type %}
+                                    {% if type.status == 'Active' %}
+                                    <option value="{{type.id}}">{{type.employee_type}} </option>
+                                    {% endif %}
+                                    {% endfor %}
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-sm-12 col-md-6 col-lg-3">
+                            <div class="mb-3">
+                                <label for="" class="form-label">Department <span class="text-red">*</span> </label>
+                                <select class="form-control custom-select" name="department_name"
+                                    id="departmentSelects">
+                                    <option selected value="">Select Your Department</option>
+                                    {% for departments in department %}
+                                    {% if departments.status == 'Active' %}
+                                    <option value="{{departments.id}}">{{departments.department_name}}</option>
+                                    {% endif %}
+                                    {% endfor %}
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-sm-12 col-md-6 col-lg-3">
+                            <div class="mb-3">
+                                <label for="" class="form-label">Designation <span class="text-red">*</span> </label>
+                                <select class="form-control custom-select" id="designation_select"
+                                    name="designation_name">
+                                    <option selected value="">Select Your Designation</option>
+
+                                </select>
+
+                            </div>
+                        </div>
+                        <div class="col-sm-12 col-md-6 col-lg-3">
+                            <div class="mb-3">
+                                <label for="" class="form-label">Branch <span class="text-red">*</span></label>
+                                <select class="form-control custom-select" name="branch">
+                                    <option selected value="">Select Branch</option>
+                                    {% for branches in branch %}
+                                    {% if branches.status == 'Active' %}
+                                    <option value="{{branches.id}}">{{branches.branch_name}}</option>
+                                    {% endif %}
+                                    {% endfor %}
+
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="col-sm-12 ">
+                            <div class="mb-3">
+                                <label for="" class="form-label">Profile Img(PNG/JPG/JPEG) <span
+                                        class="text-red">*</span></label>
+                                <div class="fileinput fileinput-new input-group" data-provides="fileinput">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text"> <a id="cameraButton" type="button"><i
+                                                    class="glyphicon glyphicon-camera"></i> </a>
+                                        </span>
+                                    </div>
+                                    <div class="form-control text-truncate" data-trigger="fileinput"><i
+                                            class="glyphicon glyphicon-file fileinput-exists"></i> <span
+                                            class="fileinput-filename"></span></div>
+                                    <span class="input-group-append">
+                                        <span class=" btn btn-primary btn-file"><span class="fileinput-new">Select
+                                                file</span><span class="fileinput-exists">Change</span>
+                                            <input type="file" name="profile_image" id="profileImage"
+                                                class="input_image" >
+                                                
+
+                                        </span>
+                                        <a href="#" class="btn btn-secondary fileinput-exists" onclick="removeImage()"
+                                            data-dismiss="fileinput">Remove</a>
+
+                                    </span>
+                                    
+
+                                </div>
+                                <div id="profile_error"></div>
+                                <canvas id="camera-canvas" style='width:200px; display: none'></canvas>
+                                <img src="../../static/mdeia/profile_image/{{employees.profile_image}}"
+                                    id="capturedImage" style="display: none; width: 200px;margin-top: 10px"
+                                    alt="Capture Image">
+
+                                <a id="shutterButton" class="btn btn-primary text-white mt-1"
+                                    style="display: none; width: 18%">Take
+                                    Picture</a>
+
+
+                                <!--<video id="camera-stream" ></video>
+                                <canvas id="canvas-stram" ></canvas>
+                                <a id="takePhoto" style="display: none;" class="btn btn-primary">Take Photo</a>-->
+                            </div>
+                        </div>
+
+
+
+                    </div>
+
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <div class="mb-3">
+                                <label for="" class="form-label">Address </label>
+                                <textarea class="form-control" name="address" rows="3"
+                                    placeholder="Enter Address"></textarea>
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <div class="row">
+                        <div class="col-sm-12  col-md-6">
+                            <div class="mb-3">
+                                <label for="" class="form-label">Aadhar Card Number <span class="text-red">*</span>
+                                </label>
+                                <input type="text" name="aadhar_card" id="" class="form-control"
+                                    placeholder="1234/12345/12345">
+                            </div>
+                        </div>
+                        <div class="col-sm-12 col-md-6">
+                            <div class="mb-3">
+                                <label for="" class="form-label">Pan Card Number </label>
+                                <input type="text" name="pan_card" id="" oninput="this.value = this.value.toUpperCase()"
+                                    class="form-control" placeholder="ABCDE1234F">
+                            </div>
+                        </div>
+                        <div class="col-sm-12 col-md-6">
+                            <div class="mb-3">
+                                <label for="" class="form-label">Aadhar Card (PDF) <span class="text-red">*</span>
+                                </label>
+                                <div class="fileinput fileinput-new input-group" data-provides="fileinput">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text">Upload</span>
+                                    </div>
+                                    <div class="form-control text-truncate" data-trigger="fileinput"><i
+                                            class="glyphicon glyphicon-file fileinput-exists"></i> <span
+                                            class="fileinput-filename"></span></div>
+                                    <span class="input-group-append">
+                                        <span class=" btn btn-primary btn-file"><span class="fileinput-new">Select
+                                                file</span><span class="fileinput-exists">Change</span>
+                                            <input type="file" name="aadhar_card_pdf" id="aadharcardpdf">
+
+                                        </span>
+                                        <a href="#" class="btn btn-secondary fileinput-exists"
+                                            data-dismiss="fileinput">Remove</a>
+                                    </span>
+                                </div>
+                                <div class="aadhar_pdf_error"></div>
+                            </div>
+                        </div>
+                        <div class="col-sm-12 col-md-6">
+                            <div class="mb-3">
+                                <label for="" class="form-label">Pan Card (PDF) </label>
+                                <div class="fileinput fileinput-new input-group" data-provides="fileinput">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text">Upload</span>
+                                    </div>
+                                    <div class="form-control text-truncate" data-trigger="fileinput"><i
+                                            class="glyphicon glyphicon-file fileinput-exists"></i> <span
+                                            class="fileinput-filename"></span></div>
+                                    <span class="input-group-append">
+                                        <span class=" btn btn-primary btn-file"><span class="fileinput-new">Select
+                                                file</span><span class="fileinput-exists">Change</span>
+                                            <input type="file" name="pan_card_pdf" id="pancardpdf">
+
+
+                                        </span>
+                                        <a href="#" class="btn btn-secondary fileinput-exists"
+                                            data-dismiss="fileinput">Remove</a>
+                                    </span>
+                                </div>
+                                <div id="pan-pdf"></div>
+                            </div>
+
+                        </div>
+                    </div>
+
+                    <div class="mb-3 d-flex justify-content-center">
+                        <button type="submit" class="btn btn-primary m-1">Submit</button>
+
+                        <button type="reset" class="btn btn-secondary m-1">reset</button>
+                    </div>
+
+
+                </form>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+
+<!--Edit model-->
+{% for employees in employee %}
+<div class="modal fade" id="CreateEmployee1{{forloop.counter}}" tabindex="-1" role="dialog"
+    aria-labelledby="CreateEmployee1{{forloop.counter}}" aria-hidden="true">
+    <div class="modal-dialog modal-xl" role="document">
+        <div class="modal-content">
+            <div class="modal-header bg-dark">
+                <h5 class="modal-title text-white">Edit Employees</h5>
+                <button type="button" class="close text-white" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form action="{% url 'employee_update' employees.id %}" enctype="multipart/form-data" method="post"
+                    class="EmployeeEdit">
+                    {% csrf_token %}
+                    <div class="row">
+                        <div class="col-sm-12 col-lg-3 col-md-6">
+                            <div class="mb-3">
+                                <label for="" class="form-label"><b>First Name</b> <span class="text-red">*</span>
+                                </label>
+                                <input type="text" name="first_name_edit" class="form-control"
+                                    placeholder="Enter First Name" value="{{employees.first_name}}">
+                            </div>
+
+                        </div>
+                        <div class="col-sm-12 col-lg-3 col-md-6">
+                            <div class="mb-3">
+                                <label for="" class="form-label"><b>Last Name</b> <span class="text-red">*</span>
+                                </label>
+                                <input type="text" name="last_name_edit" class="form-control"
+                                    value="{{employees.last_name}}" placeholder="Enter Last Name">
+                            </div>
+
+                        </div>
+                        <div class="col-sm-12 col-lg-3 col-md-6">
+                            <div class="mb-3">
+                                <label for="" class="form-label"><b>Personal Number</b> <span class="text-red">*</span>
+                                </label>
+                                <input type="text" name="personal_number_edit" value="{{employees.personal_number}}"
+                                    id="" class="form-control" placeholder="Enter Personal Number">
+                            </div>
+                        </div>
+                        <div class="col-sm-12 col-lg-3 col-md-6">
+                            <div class="mb-3">
+                                <label for="" class="form-label"><b>Alternate Number</b></label>
+                                <input type="text" name="alternative_number_edit"
+                                    value="{{employees.alternative_number}}" id="" class="form-control"
+                                    placeholder="Enter Alt Number">
+                            </div>
+                        </div>
+
+                        <div class="col-sm-12 col-lg-3 col-md-6">
+                            <div class="mb-3">
+                                <label for="" class="form-label"><b>Personal Email </b><span class="text-red">*</span>
+                                </label>
+                                <input type="email" name="personal_email_edit" value="{{employees.personal_email}}"
+                                    id="" class="form-control" placeholder="example@gmail.com">
+                            </div>
+                        </div>
+                        <div class="col-sm-12 col-lg-3 col-md-6">
+                            <div class="mb-3">
+                                <label for="" class="form-label"><b>Professional Email</b> </label>
+                                <input type="email" name="professional_email_edit"
+                                    value="{{employees.professional_email}}" id="" class="form-control"
+                                    placeholder="example@gmail.com">
+                            </div>
+                        </div>
+                        <div class="col-sm-12 col-lg-3 col-md-6">
+                            <div class="mb-3">
+                                <label for="" class="form-label"><b>Blood Group</b></label>
+                                <select class="form-control custom-select" name="blood_group_edit">
+                                    <option selected value="">Select Your Blood Group</option>
+                                    <option value="A+">A+</option>
+                                    <option value="A-">A-</option>
+                                    <option value="B+">B+</option>
+                                    <option value="B-">B-</option>
+                                    <option value="AB+">AB+</option>
+                                    <option value="AB-">AB-</option>
+                                    <option value="O+">O+</option>
+                                    <option value="O-">O-</option>
+
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-sm-12 col-lg-3 col-md-6">
+                            <div class="mb-3">
+                                <label for="" class="form-label"><b>Gender</b> <span class="text-red">*</span> </label>
+                                <select class="form-control custom-select" name="gender_edit">
+                                    <option selected value="">Select Your Gender</option>
+                                    <option value="Male">Male</option>
+                                    <option value="Female">Female</option>
+                                    <option value="Other">Other</option>
+                                </select>
+
+                            </div>
+                        </div>
+                        <div class="col-sm-12 col-lg-3 col-md-6">
+                            <div class="mb-3">
+                                <label for="" class="form-label"><b>Date of Birth</b> <span class="text-red">*</span>
+                                </label>
+                                <input type="date" class="form-control" name="date_of_birth_edit"
+                                    placeholder="Enter Date of Birth" value="{{ employees.date_of_birth|date:'Y-m-d' }}"
+                                    id="">
+                            </div>
+                        </div>
+
+                        <div class="col-sm-12 col-lg-3 col-md-6">
+                            <div class="mb-3">
+                                <label for="" class="form-label"><b>Nationality </b></label>
+                                <select class="form-control custom-select" name="nationality_edit">
+                                    <option selected value="">Select Your Nationality</option>
+                                    <option value="India">India</option>
+
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="col-sm-12 col-lg-3 col-md-6">
+                            <div class="mb-3">
+                                <label for="" class="form-label">Religion </label>
+                                <select class="form-control custom-select" name="religion_edit">
+                                    <option selected value="">Select Your Religion</option>
+                                    <option value="Hindu">Hindu</option>
+                                    <option value="Muslim">Muslim</option>
+                                    <option value="Christian">Christian</option>
+                                    <option value="Other">Other</option>
+
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-sm-12 col-lg-3 col-md-6">
+                            <div class="mb-3">
+                                <label for="" class="form-label">Caste </label>
+                                <select class="form-control custom-select" name="caste_edit">
+                                    <option selected value="">Select Your Caste</option>
+                                    <option value="ST">ST</option>
+                                    <option value="SC">SC</option>
+                                    <option value="OBC">OBC</option>
+                                    <option value="General">General</option>
+                                    <option value="Other">Other</option>
+
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-sm-12 col-md-6 col-lg-3">
+                            <div class="mb-3">
+                                <label for="country_edit_{{ employees.id }}" class="form-label">Country</label>
+                                <select class="form-control custom-select" name="country_edit"
+                                    id="country_edit_{{ employees.id }}"
+                                    onchange="fetchStates(this.value, '{{ employees.id }}')">
+                                    <option selected value="">Select Your Country</option>
+                                    <option value="India">India</option>
+                                    <option value="USA">USA</option>
+                                    <option value="UK">UK</option>
+                                    <option value="England">England</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-sm-12 col-md-6 col-lg-3">
+                            <div class="mb-3">
+                                <label for="state_edit_{{ employees.id }}" class="form-label">State</label>
+                                <select class="form-control custom-select" name="state_edit"
+                                    id="state_edit_{{ employees.id }}"
+                                    onchange="fetchCities(this.value, '{{ employees.id }}')">
+                                    <option selected value="">Select Your State</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-sm-12 col-md-6 col-lg-3">
+                            <div class="mb-3">
+                                <label for="city_edit_{{ employees.id }}" class="form-label">City</label>
+                                <select class="form-control custom-select" name="city_edit"
+                                    id="city_edit_{{ employees.id }}">
+                                    <option selected value="">Select Your City</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="col-sm-12 col-md-6 col-lg-3">
+                            <div class="mb-3">
+                                <label for="" class="form-label">Pincode </label>
+                                <input type="text" name="pincode_edit" value="{{employees.pincode}}" id=""
+                                    class="form-control" placeholder="Enter Pincode">
+                            </div>
+                        </div>
+
+                    </div>
+                    <div class="row">
+                        <!--<div class="col-sm-12 col-md-6">
+                            <div class="mb-3">
+                                <label for="" class="form-label">Employee ID <span class="text-red">*</span></label>
+                                <input type="text" name="Employee_id" id="" class="form-control" disabled>
+                        
+                            </div>
+                        </div>-->
+                        <div class="col-sm-12 col-md-6 col-lg-3">
+                            <div class="mb-3">
+                                <label for="" class="form-label">Employee Type <span class="text-red">*</span> </label>
+                                <select class="form-control custom-select" name="employee_type_edit">
+                                    <option selected value="">Select Employee Type</option>
+                                    {% for type in employee_type %}
+                                    {% if type.status == 'Active' %}
+                                    <option value="{{type.id}}">{{type.employee_type}} </option>
+                                    {% endif %}
+                                    {% endfor %}
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-sm-12 col-md-6 col-lg-3">
+                            <div class="mb-3">
+                                <label for="" class="form-label">Department <span class="text-red">*</span> </label>
+                                <select class="form-control custom-select edit_department_select"
+                                    name="department_name_edit">
+                                    <option selected value="">Select Your Department</option>
+                                    {% for departments in department %}
+                                    {% if departments.status == 'Active' %}
+                                    <option value="{{departments.id}}">{{departments.department_name}}</option>
+                                    {% endif %}
+                                    {% endfor %}
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-sm-12 col-md-6 col-lg-3">
+                            <div class="mb-3">
+                                <label for="" class="form-label">Designation <span class="text-red">*</span> </label>
+                                <select class="form-control custom-select edit_designation_select"
+                                    name="designation_name_edit">
+                                    <option value="">Select Your Designation</option>
+                                    {% for designations in designation %}
+                                    {% if designations.status == 'Active' %}
+                                    <option value="{{designations.id}}">{{designations.designation_name}}</option>
+                                    {% endif %}
+                                    {% endfor %}
+                                </select>
+
+                            </div>
+                        </div>
+                        <div class="col-sm-12 col-md-6 col-lg-3">
+                            <div class="mb-3">
+                                <label for="" class="form-label">Branch <span class="text-red">*</span></label>
+                                <select class="form-control custom-select" name="branch_edit">
+                                    <option selected value="">Select Branch</option>
+                                    {% for branches in branch %}
+                                    {% if branches.status == 'Active' %}
+                                    <option value="{{branches.id}}">{{branches.branch_name}}</option>
+                                    {% endif %}
+                                    {% endfor %}
+
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="col-sm-12" data-employee-id="{{ employees.id }}">
+                            <div class="mb-3">
+                                <label for="" class="form-label">Profile Img(PNG/JPG/JPEG) <span
+                                        class="text-red">*</span></label>
+                                <div class="fileinput fileinput-new input-group" data-provides="fileinput">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text"> <a class="cameraButton" type="button"><i
+                                                    class="glyphicon glyphicon-camera"></i> </a></span>
+                                    </div>
+                                    <div class="form-control text-truncate" data-trigger="fileinput"><i
+                                            class="glyphicon glyphicon-file fileinput-exists"></i> <span
+                                            class="fileinput-filename"></span></div>
+                                    <span class="input-group-append">
+                                        <span class=" btn btn-primary btn-file"><span class="fileinput-new">Select
+                                                file</span><span class="fileinput-exists">Change</span>
+                                            <input type="file" name="profile_image_edit"
+                                                class="profileImageEdit input_image" id="profileImageEdit">
+                                        </span>
+                                        <a href="#" class="btn btn-secondary fileinput-exists"
+                                            onclick="removeImageEdit(event.target)" data-dismiss="fileinput">Remove</a>
+                                    </span>
+                                </div>
+                                <div class="profile_error_edit"></div>
+                                <canvas class="editCameraCanvas" style='width:200px; display: none'></canvas>
+                                <img src="../../static/media/profile_image/{{employees.profile_image}}"
+                                    class="capturedImageEdit" style="display: none; width: 200px;margin-top: 10px"
+                                    alt="Capture Image">
+                                <a class="editShutterButton btn btn-primary text-white mt-1"
+                                    style="display: none; width: 200px">Take Picture</a>
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <div class="mb-3">
+                                <label for="" class="form-label">Address </label>
+                                <textarea class="form-control" rows="3" placeholder="Enter Address" name="adddress_edit" >{{employees.address|safe}}</textarea>
+
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <div class="row">
+                        <div class="col-sm-12  col-md-6">
+                            <div class="mb-3">
+                                <label for="" class="form-label">Aadhar Card Number <span class="text-red">*</span>
+                                </label>
+                                <input type="text" name="aadhar_card_edit" value="{{employees.aadhar_card}}" id=""
+                                    class="form-control" placeholder="1234/12345/12345">
+                            </div>
+                        </div>
+                        <div class="col-sm-12 col-md-6">
+                            <div class="mb-3">
+                                <label for="" class="form-label">Pan Card Number </label>
+                                <input type="text" name="pan_card" value="{{employees.pan_card}}" id=""
+                                    oninput="this.value = this.value.toUpperCase()" class="form-control"
+                                    placeholder="ABCDE1234F">
+                            </div>
+                        </div>
+                        <div class="col-sm-12 col-md-6">
+                            <div class="mb-3">
+                                <label for="" class="form-label">Aadhar Card (PDF) <span class="text-red">*</span>
+                                </label>
+                                <div class="fileinput fileinput-new input-group" data-provides="fileinput">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text">Upload</span>
+                                    </div>
+                                    <div class="form-control text-truncate" data-trigger="fileinput"><i
+                                            class="glyphicon glyphicon-file fileinput-exists"></i> <span
+                                            class="fileinput-filename"></span></div>
+                                    <span class="input-group-append">
+                                        <span class=" btn btn-primary btn-file"><span class="fileinput-new">Select
+                                                file</span><span class="fileinput-exists">Change</span>
+                                            <input type="file" name="aadhar_card_pdf_edit" id='aadhar_card_pdf_edit' onchange="displaySelectedFile()" value={{employees.aadhar_card_pdf}}  >
+                                        </span>
+                                        <a href="#" class="btn btn-secondary fileinput-exists"
+                                            data-dismiss="fileinput">Remove</a>
+                                    </span>
+                                </div>
+                                <div class="aadhar_pdf_error_edit"></div>
+                            </div>
+                        </div>
+                        <div class="col-sm-12 col-md-6">
+                            <div class="mb-3">
+                                <label for="" class="form-label">Pan Card (PDF) </label>
+                                <div class="fileinput fileinput-new input-group" data-provides="fileinput">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text">Upload</span>
+                                    </div>
+                                    <div class="form-control text-truncate" data-trigger="fileinput"><i
+                                            class="glyphicon glyphicon-file fileinput-exists"></i> <span
+                                            class="fileinput-filename"></span></div>
+                                    <span class="input-group-append">
+                                        <span class=" btn btn-primary btn-file"><span class="fileinput-new">Select
+                                                file</span><span class="fileinput-exists">Change</span>
+                                            <input type="file" name="pan_card_pdf_edit" value={{employees.pan_card_pdf}}>
+                                        </span>
+                                        <a href="#" class="btn btn-secondary fileinput-exists"
+                                            data-dismiss="fileinput">Remove</a>
+                                    </span>
+                                </div>
+                                <div class="pan_pdf_error_edit"></div>
+                            </div>
+
+                        </div>
+                    </div>
+
+                    <div class="mb-3 d-flex justify-content-center">
+                        <button type="submit" class="btn btn-primary m-1">Submit</button>
+
+                        <button type="Edit" class="btn btn-secondary m-1" data-dismiss="modal">Close</button>
+                    </div>
+
+
+                </form>
+            </div>
+
+        </div>
+    </div>
+</div>
+{% endfor %}
+<!--Delete Employee-->
+
+
+<div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="deleteModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header bg-danger">
+                <h5 class="modal-title text-white " id="deleteModalLabel">Delete Calender</h5>
+                <button type="button" class="close text-white" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="mb-3 text-center">
+                    <div class="d-flex justify-content-center mb-3">
+                        <img src="../../static/triangle-exclamation-solid.svg" width="120" height="70" alt="">
+                    </div>
+                    <form action="{% url 'employee_delete_all'  %}" method="post">
+                        {% csrf_token %}
+                        <p id="deleteMessage">Are you sure you want to delete <strong><span id="selectedCount"></span></strong> records?</p>
+                        <input type="hidden" id="selected_ids_input" name="selected_ids">
+                </div>
+                <div class="d-flex justify-content-center mb-3">
+                    <button type="button" class="btn btn-secondary m-1" data-dismiss="modal">No</button>
+                    <button type="submit" class="btn btn-danger m-1" id="confirmDelete">Yes</button>
+                </div>
+                </form>
+            </div>
+  
+        </div>
+    </div>
+  </div>
+
+{% for employees in employee %}
+<div class="modal fade" id="DeleteEvent{{forloop.counter}}" tabindex="-1" role="dialog"
+    aria-labelledby="DeleteEvent{{forloop.counter}}" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header bg-danger">
+                <h5 class="modal-title text-white">Delete Employee</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true" class="text-white">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form action="{% url 'employee_delete' employees.id %}" method="post">
+                    {% csrf_token %}
+                    <div class="mb-3 text-center">
+                        <div class="d-flex justify-content-center mb-3">
+
+                            <img src="../../static/triangle-exclamation-solid.svg" width="120" height="70" alt="">
+                        </div>
+                        Are Your sure You want to delete {{employees.Employee_id}} Employee ?
+                    </div>
+                    <div class="mb-3 d-flex justify-content-center">
+                        <button type="button" class="btn btn-secondary m-1" data-dismiss="modal" aria-label="Close">
+                            No
+                        </button>
+                        <button type="submit" class="btn btn-danger m-1">Yes</button>
+                    </div>
+                </form>
+            </div>
+
+        </div>
+    </div>
+</div>
+{% endfor %}
+
+
+
+
+<!--View Employee-->
+{% for employees in employee %}
+<div class="modal fade" id="ViewEmployee{{forloop.counter}}" tabindex="-1" role="dialog"
+    aria-labelledby="ViewEmployee{{forloop.counter}}" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header bg-dark">
+                <h5 class="modal-title text-white">View Employee</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true" class="text-white">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+
+                
+
+
+                <table class="table table-bordered" style="width: 100%;">
+                    <tbody class="center">
+                        <tr class="">
+                            <th class="p-2 w-50"><b> Employee ID </b></th>
+                            <td class="p-2 w-50">{{employees.Employee_id}}</td>
+                        </tr>
+                        <tr>
+                            <th class="p-2"> <b> Profile Image </b></th>
+                            <td class="p-2">
+                                {% if employees.profile_image %}
+                                <img src="{{employees.profile_image.url}}" width="100" height="100">
+                                {% endif %}
+                            </td>
+                        </tr>
+                        <tr>
+                            <th class="p-2"> <b>Full Name</b> </th>
+                            <td class="p-2">{{employees.first_name}} {{employees.last_name}}</td>
+                        </tr>
+                        <tr>
+                            <th class="p-2">Personal Number</th>
+                            <td class="p-2">{{employees.personal_number}}</td>
+                        </tr>
+                        {% if employees.alternative_number %}
+                        <tr>
+                            <th class="p-2">Alternate Number</th>
+                            <td class="p-2">{{employees.alternative_number}}</td>
+                        </tr>
+                        {% endif %}
+                        <tr>
+                            <th class="p-2">Personal Email</th>
+                            <td class="p-2">{{employees.personal_email}}</td>
+                        </tr>
+                        {% if employees.professional_email %}
+                        <tr>
+                            <th class="p-2">Professional Email</th>
+                            <td class="p-2">{{employees.professional_email}}</td>
+                        </tr>
+                        {% endif %}
+                        {% if employee.blood_group %}
+                        <tr>
+                            <th class="p-2">Blood Group</th>
+                            <td class="p-2">{{employees.blood_group}}</td>
+                        </tr>
+                        {% endif %}
+                        <tr>
+                            <th class="p-2">Gender</th>
+                            <td class="p-2">{{employees.gender}}</td>
+                        </tr>
+                        <tr>
+                            <th class="p-2">Date of Birth</th>
+                            <td class="p-2">{{employees.date_of_birth}}</td>
+                        </tr>
+                        {% if employees.nationality %}
+                        <tr>
+                            <th class="p-2">Nationality</th>
+                            <td class="p-2">{{employees.nationality}}</td>
+                        </tr>
+                        {% endif %}
+                        {% if employees.religion %}
+                        <tr>
+                            <th class="p-2">Religion</th>
+                            <td class="p-2">{{employees.religion}}</td>
+                        </tr>
+                        {% endif %}
+                        {% if employees.caste %}
+                        <tr>
+                            <th class="p-2">Caste</th>
+                            <td class="p-2">{{employees.caste}}</td>
+                        </tr>
+                        {% endif %}
+                        
+                        <tr>
+                            <th class="p-2">Employee Type</th>
+                            <td class="p-2">{{employees.employee_type}}</td>
+
+                        </tr>
+                        <tr>
+                            <th class="p-2">Department </th>
+                            <td class="p-2">{{employees.department_name}}</td>
+                        </tr>
+                        <tr>
+                            <th class="p-2">Designation</th>
+                            <td class="p-2">{{employees.designation_name}}</td>
+                        </tr>
+                        <tr>
+                            <th class="p-2">Branch</th>
+                            <td class="p-2">{{employees.branch}}</td>
+                        </tr>
+                        {% if employees.country %}
+                        <tr>
+                            <th class="p-2">Country</th>
+                            <td class="p-2">{{employees.country}}</td>
+                        </tr>
+                        {% endif %}
+                        {% if employees.state %}
+                        <tr>
+                            <th class="p-2">State</th>
+                            <td class="p-2">{{employees.state}}</td>
+                        </tr>
+                        {% endif %}
+                        {% if employees.city %}
+                        <tr>
+                            <th class="p-2">City</th>
+                            <td class="p-2">{{employees.city}}</td>
+                        </tr>
+                        {% endif %}
+                        {% if employees.address %}
+                        <tr>
+                            <th class="p-2">Address</th>
+                            <td class="p-2">{{employees.address}}</td>
+                        </tr>
+                        {% endif %}
+                        <tr>
+                            <th class="p-2">Aadhar Card</th>
+                            <td class="p-2">{{employees.aadhar_card}}</td>
+                        </tr>
+                        {% if employees.pan_card  %}
+                        <tr>
+                            <th class="p-2">Pan Card</th>
+                            <td class="p-2">{{employees.pan_card}}</td>
+                        </tr>
+                        {% endif %}
+                        
+
+
+
+
+                    </tbody>
+
+                </table>
+
+
+
+
+                <div class="d-flex justify-content-center">
+                    <a href="{% url 'employee_detail' employees.id %}" class="btn btn-success"> <i
+                            class="fa fa-print"></i> Print</a>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+{% endfor %}
+
+
+<!--upload form-->
+<div class="modal fade" id="UploadEmployee" tabindex="-1" role="dialog" aria-labelledby="UploadEmployee"
+    aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header bg-dark">
+                <h5 class="modal-title text-white">Upload File</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true" class="text-white">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form action="{% url 'employee_import'  %}" method="post" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    <input type="file" id="input-file-now" class="dropify" name="employee_file" accept=".csv">
+
+                    <div id="csvPreview"></div>
+                    <div class="mb-3 d-flex justify-content-center">
+                        <button type="submit" class="btn btn-primary m-1">Submit</button>
+                        <button type="button" class="btn btn-secondary m-1" data-dismiss="modal" aria-label="Close">
+                            Close
+                        </button>
+                    </div>
+                </form>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+
+
+
+
+
+
+
+
+{% endblock %}
+
+
+{% block scripts %}
+<script>
+    $(document).ready(function () {
+        $.validator.addMethod("noSpecialChars", function (value, element) {
+            return /^[a-zA-Z\s]*$/.test(value);
+        }, 'No Special Charectors and numbers are not allowed');
+        //phone number
+        $.validator.addMethod(
+            "customphone",
+            function (value, element) {
+                return this.optional(element) || /^(\+91-|0)?[6-9]\d{9}$/.test(value);
+            },
+            "Please enter a valid phone number"
+        );
+        $.validator.addMethod("noSpace", function (value, element) {
+            return !(/^\s|\s$|\s{2,}/.test(value));
+          }, "No excessive or leading/trailing spaces");
+      
+
+        $.validator.addMethod("customEmail", function(value, element) {
+            // Regular expression pattern for custom email validation
+            var emailRegex = /^[^\.][a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+            // Check if the value matches the custom email pattern
+            return this.optional(element) || emailRegex.test(value);
+          }, "Please enter a valid email address.");
+        
+        
+
+        $.validator.setDefaults({
+            errorPlacement: function (error, element) {
+                if (element.attr("name") === "profile_image") {
+                    error.appendTo("#profile_error");
+                } else if (element.attr("name") === "aadhar_card_pdf") {
+                    // If the element is aadhar_card_pdf, display the error message after the input file field
+                    error.appendTo(".aadhar_pdf_error"); // Adjust the selector as per your HTML structure
+                }else if(element.attr("name") === "pan_card_pdf"){
+                    error.appendTo("#pan-pdf");
+
+                } else {
+                    error.insertAfter(element);
+                }
+            }
+        });
+        
+        $.validator.addMethod("validDateOfBirth", function(value, element) {
+            // Get today's date
+            var today = new Date();
+            // Get the date of birth entered by the user
+            var dateOfBirth = new Date(value);
+            // Compare the date of birth with today's date
+            return dateOfBirth <= today;
+        }, 'Please enter a valid date of birth.');
+        
+        $.validator.addMethod("validPANCard", function(value, element) {
+            // Regular expression for PAN card format
+            var panCardRegex = /[A-Z]{5}[0-9]{4}[A-Z]{1}/;
+            // Check if the value matches the PAN card format
+            return this.optional(element) || panCardRegex.test(value.toUpperCase());
+        }, "Please enter a valid PAN card number.");
+        
+
+
+        $('#EmployeeForm').validate({
+            rules: {
+                first_name: {
+                    required: true,
+                    noSpecialChars: true,
+                    maxlength: 50,
+                    minlength: 3,
+                    noSpace:true,
+                },
+                last_name: {
+                    required: true,
+                    noSpecialChars: true,
+                    maxlength: 50,
+                    minlength: 3,
+                    noSpace:true,
+                },
+                personal_number: {
+                    required: true,
+                    customphone: true
+                },
+                alternative_number: {
+                    customphone: true
+                },
+                personal_email: {
+                    required: true,
+                    customEmail: true,
+                    noSpace:true
+                },
+                professional_email: {
+                    customEmail: true,
+                    noSpace:true
+                },
+                
+                gender: {
+                    required: true
+                },
+                date_of_birth: {
+                    required: true,
+                    validDateOfBirth: true
+                    
+                    
+
+                },
+                employee_type: {
+                    required: true
+                },
+                department_name: {
+                    required: true
+                },
+                designation_name: {
+                    required: true
+                },
+                branch: {
+                    required: true
+                },
+                pincode: {
+                    digits: true,
+                    minlength: 6,
+                    maxlength: 6
+                },
+                profile_image:{
+                    required:true,
+                    accept: "image/png,image/jpeg,image/jpg"
+                },
+                address:{
+                    noSpace:true,
+                    maxlength: 1200,
+                    minlength:10
+
+                },
+                aadhar_card: {
+                    required: true,
+                    digits: true,
+                    minlength: 12,
+                    maxlength: 12
+                },
+                pan_card: {
+                    validPANCard: true,
+                    maxlength: 10
+                },
+                aadhar_card_pdf:{
+                    accept:'application/pdf',
+                    required:true,
+                },
+                pan_card_pdf:{
+                    accept:'application/pdf',
+                    
+                }
+
+
+            },
+            messages: {
+                first_name: {
+                    required: 'First Name is required',
+                    minlength: 'Minimum of 3 characters',
+                    maxlength: 'Maximum of 50 characters'
+
+                },
+                last_name: {
+                    required: 'Last Name is required',
+                    minlength: 'Minimum of 3 characters',
+                    maxlength: 'Maximum of 50 characters'
+                },
+                personal_number: {
+                    required: 'Mobile number is required',
+                },
+                personal_email: {
+                    required: 'Email is required',
+                },
+                gender: {
+                    required: 'Gender is required',
+                },
+                date_of_birth: {
+                    required: 'Date of birth is required',
+                },
+                employee_type: {
+                    required: 'Employee type is required',
+                },
+                department_name: {
+                    required: 'Department name is required',
+                },
+                designation_name: {
+                    required: 'Designation name is required',
+                },
+                branch: {
+                    required: 'Branch is required',
+                },
+                address:{
+                    maxlength: 'Maximum of 1200 characters',
+                    minlength: 'Minimum of 10 characters'
+                },
+                 profile_image:{
+                     required:'Profile image is required',
+                     accept: 'Only PNG/JPG/JPEG files are allowed.'
+                 },
+                aadhar_card: {
+                    required: 'Aadhar card is required',
+                    minlength: 'Aadhar card number should not be less than 12 digits.',
+                    maxlength: 'Aadhar card number should not be more than 12 digits.'
+                },
+                pan_card: {
+                    required: 'PAN card is required',
+                    maxlength: 'PAN card number should not be more than 10 digits.'
+                },
+                aadhar_card_pdf:{
+                     required:'Aadhar card is required',
+                    accept: 'Only PDF files are allowed.'
+                },
+                pan_card_pdf:{
+                     accept: 'Only PDF files are allowed.'
+                }
+                
+            },
+            submitHandler: function (form) {
+                form.submit();
+            }
+        })
+    })
+</script>
+
+
+<script>
+    $(document).ready(function () {
+        $.validator.addMethod("noSpecialChars", function (value, element) {
+            return /^[a-zA-Z\s]*$/.test(value);
+        }, 'No Special Charectors and numbers are not allowed');
+        //phone number
+        $.validator.addMethod(
+            "customphone",
+            function (value, element) {
+                return this.optional(element) || /^(\+91-|0)?[6-9]\d{9}$/.test(value);
+            },
+            "Please enter a valid phone number"
+        );
+        $.validator.addMethod("noSpace", function (value, element) {
+            return !(/^\s|\s$|\s{2,}/.test(value));
+          }, "No excessive or leading/trailing spaces");
+      
+
+        $.validator.addMethod("customEmail", function(value, element) {
+            // Regular expression pattern for custom email validation
+            var emailRegex = /^[^\.][a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+            // Check if the value matches the custom email pattern
+            return this.optional(element) || emailRegex.test(value);
+          }, "Please enter a valid email address.");
+        
+
+        // PAN card number
+        $.validator.addMethod("validPANCard", function(value, element) {
+            // Regular expression for PAN card format
+            var panCardRegex = /[A-Z]{5}[0-9]{4}[A-Z]{1}/;
+            // Check if the value matches the PAN card format
+            return this.optional(element) || panCardRegex.test(value.toUpperCase());
+        }, "Please enter a valid PAN card number.");
+
+        $.validator.setDefaults({
+            errorPlacement: function (error, element) {
+                if (element.attr("name") === "profile_image_edit") {
+                    error.appendTo(".profile_error_edit");
+                } else if(element.attr("name") === 'aadhar_card_pdf_edit'){
+                    error.appendTo(".aadhar_pdf_error_edit");
+
+                }else if (element.attr("name") === "pan_card_pdf_edit") {
+                    error.appendTo(".pan_pdf_error_edit");
+
+                } else {
+                    error.insertAfter(element);
+                }
+            }
+        });
+        
+        
+
+
+        $.validator.addMethod("validDateOfBirth", function(value, element) {
+            // Get today's date
+            var today = new Date();
+            // Get the date of birth entered by the user
+            var dateOfBirth = new Date(value);
+            // Compare the date of birth with today's date
+            return dateOfBirth <= today;
+        }, 'Please enter a valid date of birth.');
+        
+        $('.EmployeeEdit').each(function () {
+            $(this).validate({
+                rules: {
+                    first_name_edit: {
+                        required: true,
+                        noSpecialChars: true,
+                        maxlength: 50,
+                        minlength: 3,
+                        noSpace:true
+                    },
+                    last_name_edit: {
+                        required: true,
+                        noSpecialChars: true,
+                        maxlength: 50,
+                        minlength: 3,
+                        noSpace:true
+                    },
+                    personal_number_edit: {
+                        required: true,
+                        customphone: true
+                    },
+                    alternative_number: {
+                        customphone: true
+                    },
+                    personal_email_edit: {
+                        required: true,
+                        customEmail: true,
+                        noSpace:true
+                    },
+                    professional_email_edit: {
+                        customEmail: true,
+                        noSpace:true
+                    },
+                    gender_edit: {
+                        required: true
+                    },
+                    date_of_birth_edit: {
+                        required: true,
+                        validDateOfBirth: true
+
+                    },
+                    employee_type_edit: {
+                        required: true,
+
+                    },
+                    department_name_edit: {
+                        required: true,
+                    },
+                    designation_name_edit: {
+                        required: true,
+                    },
+                    branch_edit: {
+                        required: true,
+                    },
+                    pincode_edit:{
+                        digits: true,
+                        minlength: 6,
+                        maxlength: 6
+                    },
+                    address_edit: {
+                        noSpace:true,
+                        maxlength: 1200,
+                        minlength:10
+                    },
+
+                    aadhar_card_edit: {
+                        required: true,
+                        digits: true,
+                        minlength: 12,
+                        maxlength: 12
+                    },
+                    pan_card_edit: {
+                        validPANCard:true,
+                        maxlength: 10
+                    },
+                    profile_image_edit:{
+                        required:true,
+                        accept: "image/png,image/jpeg,image/jpg"
+                    },
+                    aadhar_card_pdf_edit:{
+                        accept:'application/pdf',
+                        required:true,
+                    },
+                    pan_card_pdf_edit:{
+                        accept:'application/pdf',
+                    },
+                    pincode_edit: {
+                        digits: true,
+                        minlength: 6,
+                        maxlength: 6
+                    },
+
+                },
+                messages: {
+                    first_name_edit: {
+                        required: 'First Name is required',
+                        minlength: 'Minimum of 3 characters',
+                        maxlength: 'Maximum of 50 characters'
+                    },
+                    last_name_edit: {
+                        required: 'Last Name is required',
+                        minlength: 'Minimum of 3 characters',
+                        maxlength: 'Maximum of 50 characters'
+                    },
+                    personal_number_edit: {
+                        required: 'Mobile number is required',
+
+                    },
+                    personal_email_edit: {
+                        required: 'Email is required',
+                    },
+                    gender_edit: {
+                        required: 'Gender is required',
+                    },
+                    date_of_birth_edit: {
+                        required: 'Date of birth is required',
+                    },
+                    employee_type_edit: {
+                        required: 'Employee type is required',
+                    },
+                    department_name_edit: {
+                        required: 'Department name is required',
+                    },
+                    designation_name_edit: {
+                        required: 'Designation name is required',
+                    },
+                    branch_edit: {
+                        required: 'Branch is required',
+                    },
+                    profile_image_edit: {
+                        required: 'Profile image is required',
+                        accept: "Only PNG/JPG/JPEG files are allowed."
+                    },
+                    aadhar_card_edit: {
+                        required: 'Aadhar card is required',
+                    },
+                    pan_card_edit: {
+                        validPANCard:true,
+                        maxlength: 'Maximum of 10 characters'
+                    },
+                    aadhar_card_pdf_edit:{
+                        accept:'Only PDF files are allowed.',
+                        required:'Aadhar card pdf is required',
+                    },
+                    pan_card_pdf_edit:{
+                        accept:'Only PDF files are allowed.',
+                    }
+                    
+                },
+                submitHandler: function (form) {
+                    form.submit();
+                }
+
+            })
+        })
+
+    })
+</script>
+
+
+
+
+
+<!---Delete Script-->
+<script>
+  // Function to update the "Select All" checkbox status
+  function updateSelectAllCheckbox() {
+    var selectAllCheckbox = document.getElementById('selectAll');
+    var rowCheckboxes = document.querySelectorAll('.row-checkbox');
+    var allChecked = true;
+
+    rowCheckboxes.forEach(function (checkbox) {
+      if (!checkbox.checked) {
+        allChecked = false;
+      }
+    });
+
+    selectAllCheckbox.checked = allChecked;
+    updateSelectedRowsList(); // Update selected rows list when "Select All" checkbox is clicked
+  }
+
+  // Function to update the selected rows list and toggle delete button visibility
+  function updateSelectedRowsList() {
+    var selectedRowsList = document.getElementById('selectedRowsList');
+    var selectedIdsInput = document.getElementById('selected_ids_input');
+    var deleteButton = document.getElementById('deleteButton');
+
+    var selectedRows = document.querySelectorAll('.row-checkbox:checked');
+    var selectedCount = selectedRows.length;
+
+    if (selectedCount > 1) {
+      deleteButton.style.display = 'block'; // Show delete button if more than one row is selected
+    } else {
+      deleteButton.style.display = 'none'; // Hide delete button if only one row or none is selected
+    }
+
+    var selectedIds = [];
+    selectedRows.forEach(function (row) {
+      var courseId = row.dataset.courseId;
+      selectedIds.push(courseId);
+    });
+
+    // Set the value of the hidden input field to the selected IDs
+    selectedIdsInput.value = selectedIds.join(',');
+
+    // Update the delete modal message with the selected count
+    document.getElementById('deleteMessage').textContent = "Are you sure you want to delete " + selectedCount + " records?";
+  }
+
+  // Event listener for checkbox change
+  document.querySelectorAll('.row-checkbox').forEach(function (checkbox) {
+    checkbox.addEventListener('change', function () {
+      updateSelectedRowsList();
+      updateSelectAllCheckbox();
+    });
+  });
+
+  // Event listener for select all checkbox change
+  document.getElementById('selectAll').addEventListener('change', function () {
+    var isChecked = this.checked;
+    document.querySelectorAll('.row-checkbox').forEach(function (checkbox) {
+      checkbox.checked = isChecked;
+    });
+    updateSelectedRowsList();
+  });
+
+  // Initially update delete button visibility
+  updateSelectedRowsList();
+
+  // Event listener for delete button click
+  document.getElementById('confirmDelete').addEventListener('click', function () {
+    // Perform delete action here
+    // For now, let's just close the modal
+    $('#deleteModal').modal('hide');
+  });
+</script>
+
+
+<!--Upload Field-->
+<script>
+    function validateUploadForm(form) {
+        $(form).find('#input-file-now').on('change', function () {
+            var file = this.files[0];
+            var fileExt = file.name.split('.').pop().toLowerCase();
+
+            if (fileExt === 'csv') {
+                $(form).find('button[type="submit"]').prop('disabled', false);
+                $(form).find('#input-file-now').html('');
+            } else {
+                $(form).find('button[type="submit"]').prop('disabled', true);
+                $(form).find('#csvPreview').html('<span style="color: red;">Only CSV files are allowed.</span>');
+            }
+        });
+
+        $(form).on('submit', function (e) {
+            var file = $(form).find('#input-file-now')[0].files[0];
+
+            if (!file) {
+                e.preventDefault();
+                $(form).find('#csvPreview').html('<span style="color: red;">Please select a csv file.</span>');
+            }
+        });
+    }
+
+    $('#UploadEmployee').on('shown.bs.modal', function () {
+        validateUploadForm($(this).find('form'));
+    });
+</script>
+
+
+
+
+
+
+
+<!--canvas logic-->
+<script>
+    const CameraButton = document.getElementById('cameraButton');
+    const canvas = document.getElementById('camera-canvas');
+    const ctx = canvas.getContext('2d');
+    const shutterButton = document.getElementById('shutterButton');
+    const capturedImage = document.getElementById('capturedImage');
+    const profileImageInput = document.getElementById('profileImage');
+
+    let cameraStream = null;
+    let imageCaptured = false; // Flag to track if image is already captured
+
+    CameraButton.addEventListener('click', () => {
+        if (!imageCaptured) {
+            canvas.style.display = 'block'; // Show the camera feed canvas
+            shutterButton.style.display = 'block'; // Show the "Take Picture" button
+            navigator.mediaDevices.getUserMedia({ video: true })
+                .then(stream => {
+                    const video = document.createElement('video');
+                    video.srcObject = stream;
+                    video.play();
+                    cameraStream = stream;
+
+                    const captureFrame = () => {
+                        canvas.width = video.videoWidth;
+                        canvas.height = video.videoHeight;
+                        ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
+                        requestAnimationFrame(captureFrame);
+                    };
+                    requestAnimationFrame(captureFrame);
+                })
+                .catch(error => {
+                    console.log('Error accessing media devices', error);
+                });
+        }
+    });
+
+    shutterButton.addEventListener('click', () => {
+        if (!imageCaptured) {
+            canvas.toBlob(blob => {
+                const imgUrl = URL.createObjectURL(blob);
+                capturedImage.src = imgUrl;
+                capturedImage.style.display = 'inline-block';
+                imageCaptured = true; // Set flag to true indicating image is captured
+
+                // Hide the camera feed canvas and the "Take Picture" button
+                canvas.style.display = 'none';
+                shutterButton.style.display = 'none';
+
+                // Reset camera stream
+                if (cameraStream) {
+                    cameraStream.getTracks().forEach(track => track.stop());
+                    cameraStream = null;
+                }
+
+                // Clear canvas for next capture
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+                // Save the captured image in the input file field
+                const file = new File([blob], 'profile_image.png', { type: 'image/png' });
+                const dataTransfer = new DataTransfer();
+                dataTransfer.items.add(file);
+                profileImageInput.files = dataTransfer.files;
+
+                // Trigger change event to inform the form about the update
+                const event = new Event('change', { bubbles: true });
+                profileImageInput.dispatchEvent(event);
+            }, 'image/png');
+        }
+    });
+
+    // Function to handle the "Remove" button click event
+    function removeImage() {
+        // Reset the value of the input file to remove the selected file
+        profileImageInput.value = '';
+
+        // Hide the captured image preview
+        capturedImage.style.display = 'none';
+
+        // Reset the imageCaptured flag to false
+        imageCaptured = false;
+
+
+    }
+</script>
+
+<!--- canvas Edit Logic---->
+
+
+
+
+<script>
+    const editForms = document.querySelectorAll('.EmployeeEdit');
+    let editImageCaptured = false; // Define editImageCaptured outside the forEach loop
+
+    editForms.forEach(form => {
+        const employeeId = form.dataset.employeeId;
+        const editCameraButton = form.querySelector('.cameraButton');
+        const editCanvas = form.querySelector('.editCameraCanvas');
+        const editCtx = editCanvas.getContext('2d');
+        const editShutterButton = form.querySelector('.editShutterButton');
+        const capturedImageEdit = form.querySelector('.capturedImageEdit');
+        const profileImageEditInput = form.querySelector('.profileImageEdit');
+        let editCameraStream = null;
+
+        editCameraButton.addEventListener('click', () => {
+            if (!editImageCaptured) {
+                editCanvas.style.display = 'block'; // Show the camera feed canvas
+                editShutterButton.style.display = 'block'; // Show the "Take Picture" button
+                navigator.mediaDevices.getUserMedia({ video: true })
+                    .then(stream => {
+                        const video = document.createElement('video');
+                        video.srcObject = stream;
+                        video.play();
+                        editCameraStream = stream;
+
+                        const captureFrame = () => {
+                            editCanvas.width = video.videoWidth;
+                            editCanvas.height = video.videoHeight;
+                            editCtx.drawImage(video, 0, 0, editCanvas.width, editCanvas.height);
+                            requestAnimationFrame(captureFrame);
+                        };
+                        requestAnimationFrame(captureFrame);
+                    })
+                    .catch(error => {
+                        console.log('Error accessing media devices', error);
+                    });
+            }
+        });
+
+        editShutterButton.addEventListener('click', () => {
+            if (!editImageCaptured) {
+                editCanvas.toBlob(blob => {
+                    const imgUrl = URL.createObjectURL(blob);
+                    capturedImageEdit.src = imgUrl;
+                    capturedImageEdit.style.display = 'inline-block';
+                    editImageCaptured = true; // Set flag to true indicating image is captured
+
+                    // Hide the camera feed canvas and the "Take Picture" button
+                    editCanvas.style.display = 'none';
+                    editShutterButton.style.display = 'none';
+
+                    // Reset camera stream
+                    if (editCameraStream) {
+                        editCameraStream.getTracks().forEach(track => track.stop());
+                        editCameraStream = null;
+                    }
+
+                    // Clear canvas for next capture
+                    editCtx.clearRect(0, 0, editCanvas.width, editCanvas.height);
+
+                    // Save the captured image in the input file field
+                    const file = new File([blob], 'profile_image.png', { type: 'image/png' });
+                    const dataTransfer = new DataTransfer();
+                    dataTransfer.items.add(file);
+                    profileImageEditInput.files = dataTransfer.files;
+
+                    // Trigger change event to inform the form about the update
+                    const event = new Event('change', { bubbles: true });
+                    profileImageEditInput.dispatchEvent(event);
+                }, 'image/png');
+            }
+        });
+    });
+
+    function removeImageEdit(element) {
+        // Hide the captured image preview
+        const capturedImageEdit = element.closest('.col-sm-12').querySelector('.capturedImageEdit');
+        capturedImageEdit.src = ''; // Remove the image source
+        capturedImageEdit.style.display = 'none'; // Hide the image preview
+    
+        // Reset the value of the input file to remove the selected file
+        const profileImageEditInput = element.closest('.col-sm-12').querySelector('.profileImageEdit');
+        profileImageEditInput.value = ''; // Clear the input field
+    
+        // Reset the imageCaptured flag to false
+        editImageCaptured = false;
+    }
+</script>
+
+
+
+<!--Delete Employee-->
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const selectAllCheckbox = document.getElementById('selectAllCheckbox');
+        const deleteButton = document.getElementById('deleteButton');
+        const checkboxes = document.querySelectorAll('tbody input[type="checkbox"]');
+
+        // Function to toggle delete button visibility
+        function toggleDeleteButton() {
+            let anyChecked = false;
+            checkboxes.forEach(function (checkbox) {
+                if (checkbox.checked) {
+                    anyChecked = true;
+                }
+            });
+            deleteButton.style.display = anyChecked ? 'inline-block' : 'none';
+        }
+
+        // Event listener for select all checkbox
+        selectAllCheckbox.addEventListener('change', function () {
+            checkboxes.forEach(function (checkbox) {
+                checkbox.checked = selectAllCheckbox.checked;
+            });
+            toggleDeleteButton();
+        });
+
+        // Event listener for individual checkboxes
+        checkboxes.forEach(function (checkbox) {
+            checkbox.addEventListener('change', function () {
+                toggleDeleteButton();
+                if (this.checked) {
+                    selectAllCheckbox.checked = false; // Uncheck "select all" if an individual checkbox is checked
+                }
+            });
+        });
+    });
+</script>
+<!-- File name -->
+<script>
+    function displaySelectedFile() {
+        var fileInput = document.getElementById('aadhar_card_pdf_edit');
+        var fileName = fileInput.files[0].name;
+        var fileInfo = document.querySelector('.fileinput-filename');
+        fileInfo.textContent = fileName;
+    }
+</script>
+<!--Drop down Depency-->
+<script>
+    // Country, State, and City data
+    var stateData = {
+        "India": ["Maharashtra", "Delhi", "Punjab", "Karnataka", "Chattisgarh", "Jharkhand", "Haryana", "Uttar Pradesh", "Rajasthan", "Madhya Pradesh", "Gujarat", "Himachal Pradesh", "Sikkim", "Manipur", "Goa", "Tripura", "Arunachal Pradesh", "Nagaland", "Meghalaya", "Mizoram", "Assam", "Bihar", "West Bengal", "Jammu and Kashmir", "Andhra Pradesh", "Kerala", "Tamil Nadu", "Pondicherry", "Andaman and Nicobar Islands", "Telangana", "Lakshadweep"],
+        "USA": ["New York", "California", "Texas", "Florida", "Illinois"],
+        "UK": ["London", "Birmingham", "Manchester", "Glasgow", "Liverpool"],
+        "England": ["London", "Manchester", "Liverpool", "Birmingham", "Leeds"]
+    };
+
+    var cityData = {
+        'Andhra Pradesh':['Adoni', 'Anantapur', 'Chittoor', 'Kadapa', 'Kakinada', 'Kurnool', 'Nellore', 'Rajahmundry', 'Tirupati', 'Vijayawada', 'Visakhapatnam', 'Guntur','Machilipatnam','Narsipatnam','Srikakulam','Vizianagaram','Eluru','Tirupati','Yemmiganur'],
+        'Telengana':['Adilabad','Hyderabad','Karimnagar','Khammam','Mahbubnagar','Nizamabad','Warangal','Ranga Reddy'],
+        'Kerala':['Alappuzha','Ernakulam','Idukki','Kannur','Kasaragod','Kollam','Kottayam','Kozhikode','Malappuram','Palakkad','Pathanamthitta','Thiruvananthapuram','Thrissur','Wayanad'],
+        'Tamil Nadu':['Chennai','Madurai','Tiruchirappalli','Vellore','Viluppuram','Virudhunagar','Dindigul','Erode','Kanchipuram','Kanniyakumari','Krishnagiri','Namakkal','Salem','Thoothukkudi','Tirunelveli','Tiruppur','Tiruvannamalai','Vellore','Viluppuram','Virudhunagar'],
+        'Pondicherry':['karaikal','Mahe','puducherry','Yanam'],
+        'Punjab':['Amritsar','Batala','Firozpur','Hoshiarpur','Jalandhar','Kapurthala','Ludhiana','Patiala','Rupnagar','Sangrur','SAS Nagar','Srinagar','Tarn Taran'],
+        'Andaman and Nicobar Islands':['Port Blair'],
+        'Chandigarh':['Chandigarh'],
+        'Chhattisgarh':['Ambikapur','Bhilai','Bilaspur','Durg','Raigarh','Raipur','Rajnandgaon','Surguja'],
+        'Himachal Pradesh':['Bilaspur','Chamba','Hamirpur','Kangra','Kullu','Mandi','Shimla','Sirmaur','Solan','Una'],
+        'Uttarakhand':['Dehradun','Haridwar','Nainital','Pauri Garhwal','Pithoragarh','Rudraprayag','Tehri Garhwal','Udham Singh Nagar','Uttarkashi'],
+        'Delhi':['Delhi','New Delhi'],
+        'Jharkhand':['Dhanbad','Jamshedpur','Ranchi','Wasseypur'],
+        'Rajasthan':['Ajmer','Bikaner','Bharatpur','Jaipur','Jodhpur','Kota','Udaipur'],
+        'Madhya Pradesh':['Bhopal','Indore','Jabalpur','Satna'],
+        'Goa':['Panaji'],
+        'Haryana':['Ambala','Chandigarh','Faridabad','Gurgaon','Hisar','Jhajjar','Karnal','Kurukshetra','Panipat','Rohtak','Sirsa','Sonipat','Yamunanagar'],
+        'Manipur':['Bishnupur','Chandel','Churachandpur','Imphal','Senapati','Tamenglong','Thoubal','Ukhrul'],
+        'Nagaland':['Dimapur','Kohima','Mokokchung','Mon','Noklak','Peren','Phek','Tuensang','Wokha','Zunheboto'],
+        'Meghalaya':['East Garo Hills','East Khasi Hills','North Garo Hills','Ri Bhoi','South Garo Hills','South West Garo Hills','South West Khasi Hills','West Garo Hills','West Khasi Hills'],
+        'Tripura':['Dhalai','Gomati','Khowai','North Tripura','Sepahijala','South Tripura','Unokoti','West Tripura'],
+        'Sikkim':['Gangtok','Gyalshing','Lachung','Mangan','Namchi','Pasangtok','Rangpo'],
+        'Mizoram':['Aizawl','Champhai','Kolasib','Lawngtlai','Lunglei','Mamit','Saiha','Saitual','Serchhip'],
+        'Arunachal Pradesh':['Itanagar'],
+        'West Bengal':['Bardhaman','Darjiling','Hugli','Kharagpur','Kolkata','Nadia','North 24 Parganas','Paschim Medinipur','Purba Medinipur','Purulia','South 24 Parganas','Uttar Dinajpur'],
+        'Lakshadweep':['Lakshadweep'],
+        'Rajasthan':['Ajmer','Bikaner','Bharatpur','Jaipur','Jodhpur','Kota','Udaipur'],
+        'Odisha':['Bhubaneswar','Cuttack','Dhenkanal','Gangtok','Gopalpur','Jharsuguda','Nabarangpur','Nayagarh','Puri','Raurkela','Sambalpur','Sundargarh'],
+        'Maharashtra':['Ahmednagar','Aurangabad','Beed','Chandrapur','Dhule','Jalgaon','Kolhapur','Latur','Nanded','Nagpur','Nashik','Pune','Sangli','Satara','Sindhudurg','Solapur','Thane','Wardha','Washim','Yavatmal'],
+        'Gujarat':['Ahmedabad','surat','Amreli','Anand','Bharuch','Bhavnagar','Dahod','Gandhinagar','Jamnagar','Kutch','Narmada','Navsari','Patan','Porbandar','Rajkot','Sabarkantha','Surat','Surendranagar','Tapi','Vadodara','Valsad'],
+        'Daman and Diu':['Daman','Diu'],
+
+
+        // Add more city data as needed...
+    };
+
+    // Function to populate states based on selected country
+    function populateStates() {
+        var country = document.getElementById("country");
+        var state = document.getElementById("state");
+        var selectedCountry = country.value;
+
+        // Clear existing options
+        state.innerHTML = "<option selected value=''>Select Your State</option>";
+
+        // Populate states based on selected country
+        if (selectedCountry !== "") {
+            stateData[selectedCountry].forEach(function (stateOption) {
+                var option = document.createElement("option");
+                option.text = stateOption;
+                option.value = stateOption;
+                state.add(option);
+            });
+        }
+    }
+
+    // Function to populate cities based on selected state
+    function populateCities() {
+        var state = document.getElementById("state");
+        var city = document.getElementById("city");
+        var selectedState = state.value;
+
+        // Clear existing options
+        city.innerHTML = "<option selected value=''>Select Your City</option>";
+
+        // Populate cities based on selected state
+        if (selectedState !== "") {
+            cityData[selectedState].forEach(function (cityOption) {
+                var option = document.createElement("option");
+                option.text = cityOption;
+                option.value = cityOption;
+                city.add(option);
+            });
+        }
+    }
+
+    // Event listeners to populate states and cities on country and state selection
+    document.getElementById("country").addEventListener("change", populateStates);
+    document.getElementById("state").addEventListener("change", populateCities);
+
+    // Initial population of states
+    populateStates();
+</script>
+
+
+<script>
+    // Country, State, and City data
+    var stateData = {
+        "India": ["Maharashtra", "Delhi", "Punjab", "Karnataka", "Chattisgarh", "Jharkhand", "Haryana", "Uttar Pradesh", "Rajasthan", "Madhya Pradesh", "Gujarat", "Himachal Pradesh", "Sikkim", "Manipur", "Goa", "Tripura", "Arunachal Pradesh", "Nagaland", "Meghalaya", "Mizoram", "Assam", "Bihar", "West Bengal", "Jammu and Kashmir", "Andhra Pradesh", "Kerala", "Tamil Nadu", "Pondicherry", "Andaman and Nicobar Islands", "Telangana", "Lakshadweep"],
+        "USA": ["New York", "California", "Texas", "Florida", "Illinois"],
+        "UK": ["London", "Birmingham", "Manchester", "Glasgow", "Liverpool"],
+        "England": ["London", "Manchester", "Liverpool", "Birmingham", "Leeds"]
+    };
+
+    var cityData = {
+        'Andhra Pradesh':['Adoni', 'Anantapur', 'Chittoor', 'Kadapa', 'Kakinada', 'Kurnool', 'Nellore', 'Rajahmundry', 'Tirupati', 'Vijayawada', 'Visakhapatnam', 'Guntur','Machilipatnam','Narsipatnam','Srikakulam','Vizianagaram','Eluru','Tirupati','Yemmiganur'],
+        'Telengana':['Adilabad','Hyderabad','Karimnagar','Khammam','Mahbubnagar','Nizamabad','Warangal','Ranga Reddy'],
+        'Kerala':['Alappuzha','Ernakulam','Idukki','Kannur','Kasaragod','Kollam','Kottayam','Kozhikode','Malappuram','Palakkad','Pathanamthitta','Thiruvananthapuram','Thrissur','Wayanad'],
+        'Tamil Nadu':['Chennai','Madurai','Tiruchirappalli','Vellore','Viluppuram','Virudhunagar','Dindigul','Erode','Kanchipuram','Kanniyakumari','Krishnagiri','Namakkal','Salem','Thoothukkudi','Tirunelveli','Tiruppur','Tiruvannamalai','Vellore','Viluppuram','Virudhunagar'],
+        'Pondicherry':['karaikal','Mahe','puducherry','Yanam'],
+        'Punjab':['Amritsar','Batala','Firozpur','Hoshiarpur','Jalandhar','Kapurthala','Ludhiana','Patiala','Rupnagar','Sangrur','SAS Nagar','Srinagar','Tarn Taran'],
+        'Andaman and Nicobar Islands':['Port Blair'],
+        'Chandigarh':['Chandigarh'],
+        'Chhattisgarh':['Ambikapur','Bhilai','Bilaspur','Durg','Raigarh','Raipur','Rajnandgaon','Surguja'],
+        'Himachal Pradesh':['Bilaspur','Chamba','Hamirpur','Kangra','Kullu','Mandi','Shimla','Sirmaur','Solan','Una'],
+        'Uttarakhand':['Dehradun','Haridwar','Nainital','Pauri Garhwal','Pithoragarh','Rudraprayag','Tehri Garhwal','Udham Singh Nagar','Uttarkashi'],
+        'Delhi':['Delhi','New Delhi'],
+        'Jharkhand':['Dhanbad','Jamshedpur','Ranchi','Wasseypur'],
+        'Rajasthan':['Ajmer','Bikaner','Bharatpur','Jaipur','Jodhpur','Kota','Udaipur'],
+        'Madhya Pradesh':['Bhopal','Indore','Jabalpur','Satna'],
+        'Goa':['Panaji'],
+        'Haryana':['Ambala','Chandigarh','Faridabad','Gurgaon','Hisar','Jhajjar','Karnal','Kurukshetra','Panipat','Rohtak','Sirsa','Sonipat','Yamunanagar'],
+        'Manipur':['Bishnupur','Chandel','Churachandpur','Imphal','Senapati','Tamenglong','Thoubal','Ukhrul'],
+        'Nagaland':['Dimapur','Kohima','Mokokchung','Mon','Noklak','Peren','Phek','Tuensang','Wokha','Zunheboto'],
+        'Meghalaya':['East Garo Hills','East Khasi Hills','North Garo Hills','Ri Bhoi','South Garo Hills','South West Garo Hills','South West Khasi Hills','West Garo Hills','West Khasi Hills'],
+        'Tripura':['Dhalai','Gomati','Khowai','North Tripura','Sepahijala','South Tripura','Unokoti','West Tripura'],
+        'Sikkim':['Gangtok','Gyalshing','Lachung','Mangan','Namchi','Pasangtok','Rangpo'],
+        'Mizoram':['Aizawl','Champhai','Kolasib','Lawngtlai','Lunglei','Mamit','Saiha','Saitual','Serchhip'],
+        'Arunachal Pradesh':['Itanagar'],
+        'West Bengal':['Bardhaman','Darjiling','Hugli','Kharagpur','Kolkata','Nadia','North 24 Parganas','Paschim Medinipur','Purba Medinipur','Purulia','South 24 Parganas','Uttar Dinajpur'],
+        'Lakshadweep':['Lakshadweep'],
+        'Rajasthan':['Ajmer','Bikaner','Bharatpur','Jaipur','Jodhpur','Kota','Udaipur'],
+        'Odisha':['Bhubaneswar','Cuttack','Dhenkanal','Gangtok','Gopalpur','Jharsuguda','Nabarangpur','Nayagarh','Puri','Raurkela','Sambalpur','Sundargarh'],
+        'Maharashtra':['Ahmednagar','Aurangabad','Beed','Chandrapur','Dhule','Jalgaon','Kolhapur','Latur','Nanded','Nagpur','Nashik','Pune','Sangli','Satara','Sindhudurg','Solapur','Thane','Wardha','Washim','Yavatmal'],
+        'Gujarat':['Ahmedabad','surat','Amreli','Anand','Bharuch','Bhavnagar','Dahod','Gandhinagar','Jamnagar','Kutch','Narmada','Navsari','Patan','Porbandar','Rajkot','Sabarkantha','Surat','Surendranagar','Tapi','Vadodara','Valsad'],
+        'Daman and Diu':['Daman','Diu'],
+        // Add more city data as needed...
+    };
+
+    function fetchStates(country, employeeId) {
+        var states = stateData[country];
+        var stateSelect = document.getElementById('state_edit_' + employeeId);
+        stateSelect.innerHTML = '<option selected value="">Select Your State</option>';
+        states.forEach(function (state) {
+            var option = document.createElement('option');
+            option.value = state;
+            option.text = state;
+            stateSelect.appendChild(option);
+        });
+    }
+
+    function fetchCities(state, employeeId) {
+        var cities = cityData[state];
+        var citySelect = document.getElementById('city_edit_' + employeeId);
+        citySelect.innerHTML = '<option selected value="">Select Your City</option>';
+        cities.forEach(function (city) {
+            var option = document.createElement('option');
+            option.value = city;
+            option.text = city;
+            citySelect.appendChild(option);
+        });
+    }
+</script>
+
+
+
+<script>
+    $(document).ready(function () {
+        $('#designation_select').prop('disabled', true);
+        $('#departmentSelects').on('change', function () {
+            var departmentid = $(this).val();
+            if (departmentid) {
+                $.ajax({
+                    url: '{% url "get_department" department_id=0 %}'.replace('0', departmentid),
+                    data: { 'department_id': departmentid },
+
+                    success: function (data) {
+                        $('#designation_select').prop('disabled', false);
+                        $('#designation_select').empty();
+                        $('#designation_select').append('<option value="">Select Your Designation</option>');
+                        $.each(data.designation_data, function (index, designation) {
+                            $('#designation_select').append('<option value="' + designation.id + '">' + designation.designation_name + '</option>');
+                        });
+                    },
+                    error: function (data) {
+                        alert('Error fetching designations');
+                    }
+                });
+
+            } else {
+                $('#designation_select').prop('disabled', true);
+                $('#designation_select').empty();
+                $('#designation_select').append('<option value="">Select Your Designation</option>');
+            }
+        });
+        $('.edit_designation_select').prop('disabled', true);
+
+        $('.edit_department_select').on('change', function () {
+            var departmentid = $(this).val();
+            var editdesignationselect = $(this).closest('.modal-content').find('.edit_designation_select');
+            if (departmentid) {
+                $.ajax({
+                    url: '{% url "get_department" department_id=0 %}'.replace('0', departmentid),
+                    data: { 'department_id': departmentid },
+                    success: function (data) {
+                        editdesignationselect.prop('disabled', false);
+                        editdesignationselect.empty();
+                        editdesignationselect.append('<option value="">Select Your Designation</option>');
+                        $.each(data.designation_data, function (index, designation) {
+                            editdesignationselect.append('<option value="' + designation.id + '">' + designation.designation_name + '</option>');
+                        });
+                    },
+                    error: function (data) {
+                        alert('Error fetching designations');
+                    }
+                });
+
+            } else {
+                editdesignationselect.prop('disabled', true);
+                editdesignationselect.empty();
+                editdesignationselect.append('<option value="">Select Your Designation</option>');
+            }
+        })
+    })
+</script>
+
+
+
+{% endblock %}

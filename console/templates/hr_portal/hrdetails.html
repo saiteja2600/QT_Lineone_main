@@ -1,0 +1,338 @@
+{% extends 'base/base.html' %}
+
+{% block breadCrum %}
+
+<!-- Breadcrumb -->
+<div class="hk-pg-header d-flex justify-content-between mb-0">
+  <h4 class="hk-pg-title m-3">HR</h4>
+  <nav aria-label="breadcrumb">
+    <ol class="breadcrumb bg-transparent mb-0">
+      <li class="breadcrumb-item"><a href="{% url 'placement_dashboard' %}">Dashboard</a></li>
+      <li class="breadcrumb-item active" aria-current="page">HR details</li>
+    </ol>
+  </nav>
+</div>
+<!-- /Breadcrumb -->  
+{% endblock %}
+{% block content %}
+
+ <!-- Row -->
+ 
+ <section class="hk-sec-wrapper">
+  <div class="">
+    <button
+      type="button"
+      class="btn btn-primary mr-2 mb-3"
+      data-toggle="modal"
+      data-target="#addhr"
+    >
+    <i class="glyphicon glyphicon-plus"></i> Add HR
+    </button>
+    <a href='#' type="button" class="btn btn-success mr-2 mb-3"><i class="glyphicon glyphicon-export"></i> Export</a>
+    <button
+      type="button"
+      class="btn btn-secondary mr-2 mb-3"
+      data-toggle="modal"
+      data-target="#Uploadhr"
+    >
+    <i class="glyphicon glyphicon-import"></i> Import
+    </button>
+  </div>
+
+  <div class="row">
+    <div class="col-xl-12">
+  <table id="datable_1" class="table table-hover w-100 display pb-30 ">
+      <thead class="bg-dark">
+          <tr>
+              <th class="text-white">Name</th>
+              <th class="text-white">Email</th>
+              <th class="text-white">Phone</th>
+              <th class="text-white">Branch</th>
+              <th class="text-white">Action</th>
+          </tr>
+      </thead>
+      <tbody>
+          <tr>
+              <td><a href="{% url 'jobdetails' %}">Anusha Reddy</a></td>
+              <td>anusha.p@qualitythought.in</td>
+              <td>9494324345</td>
+              <td>Ameerpet</td>
+              <td>
+                  <button
+                      class="btn btn-primary m-1"data-toggle="modal"data-target="#EditCourse">
+                      <i class="fa fa-pencil"></i>
+                  </button>
+                  <button
+                  class="btn btn-danger m-1"
+                  data-toggle="modal"
+                  data-target="#Delete">
+                      <i class="fa fa-trash"></i>
+                  </button>  
+              </td>                         
+          </tr>
+          
+      </tfoot>
+  </table>
+</div>
+</div>
+</div>
+</section>
+
+
+<!-- create model start here -->
+
+<div
+class="modal fade"
+id="addhr"
+tabindex="-1"
+role="dialog"
+aria-labelledby="addhr"
+aria-hidden="true"
+>
+<div class="modal-dialog  modal-dialog-centered" role="document">
+  <div class="modal-content">
+    <div class="modal-header bg-dark">
+      <h5 class="modal-title text-white">Add HR details</h5>
+      <button
+        type="button"
+        class="close"
+        data-dismiss="modal"
+        aria-label="Close"
+      >
+        <span aria-hidden="true" class="text-white">&times;</span>
+      </button>
+    </div>
+    <div class="modal-body">
+      <form action="">
+        <div class="">
+          <label for="" class="form-label "
+            >Name <span class="text-danger">*</span></label
+          >
+          <input
+            type="text"
+            placeholder="Lokesh"
+            name="name"
+            class="form-control mb-3"
+          />
+        <label for="" class="form-label"
+            >Email <span class="text-danger">*</span></label
+          >
+          <input
+            type="text"
+            placeholder="Lokesh@gmail.com"
+            name="email"
+            class="form-control mb-3"
+          />
+        <label for="" class="form-label"
+            >Phone <span class="text-danger">*</span></label
+          >
+          <input
+            type="number"
+            placeholder="9876598765"
+            name="phone"
+            class="form-control mb-3"
+          />
+          <label for="" class="form-label"
+            >Branch <span class="text-danger">*</span></label
+          >
+          <input
+            type="text"
+            placeholder="Ameerpet"
+            class="form-control mb-3"
+            name="branch"
+          />
+        </div>
+
+      </form>
+    </div>
+    <div class="modal-footer d-flex justify-content-center">
+      <button type="button" class="btn btn-primary">Submit</button>
+      <button type="reset" class="btn btn-secondary">Reset</button>
+    </div>
+  </div>
+</div>
+</div>
+
+<!-- Create model end here -->
+
+<!-- Edit model start here -->
+
+<div
+  class="modal fade"
+  id="EditCourse"
+  tabindex="-1"
+  role="dialog"
+  aria-labelledby="EditCourse"
+  aria-hidden="true"
+>
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header bg-dark">
+        <h5 class="modal-title text-white">Edit Course</h5>
+        <button
+          type="button"
+          class="close"
+          data-dismiss="modal"
+          aria-label="Close"
+        >
+          <span aria-hidden="true" class="text-white">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form action="">
+            <div class="mb-3">
+                <label for="" class="form-label"
+                  >Name <span class="text-danger">*</span></label
+                >
+                <input
+                  type="text"
+                  placeholder="Lokesh"
+                  class="form-control"
+                />
+              <label for="" class="form-label"
+                  >Name <span class="text-danger">*</span></label
+                >
+                <input
+                  type="text"
+                  placeholder="Lokesh@gmail.com"
+                  class="form-control"
+                />
+              <label for="" class="form-label"
+                  >Phone <span class="text-danger">*</span></label
+                >
+                <input
+                  type="number"
+                  placeholder="9876598765"
+                  class="form-control"
+                />
+                <label for="" class="form-label"
+                  >Branch <span class="text-danger">*</span></label
+                >
+                <input
+                  type="text"
+                  placeholder="Ameerpet"
+                  class="form-control"
+                />
+              </div>
+        </form>
+      </div>
+      <div class="modal-footer d-flex justify-content-center">
+        <button type="button" class="btn btn-primary">Submit</button>
+        <button
+          type="button"
+          class="btn btn-secondary"
+          data-dismiss="modal"
+          aria-label="Close"
+        >
+          Close
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Edit model end here -->
+
+<!-- Upload model  -->
+
+<div
+  class="modal fade"
+  id="Uploadhr"
+  tabindex="-1"
+  role="dialog"
+  aria-labelledby="Uploadhr"
+  aria-hidden="true"
+>
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header bg-dark">
+        <h5 class="modal-title text-white">Upload File</h5>
+        <button
+          type="button"
+          class="close"
+          data-dismiss="modal"
+          aria-label="Close"
+        >
+          <span aria-hidden="true" class="text-whte">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form action="">
+          <input type="file" id="input-file-now" class="dropify" />
+        </form>
+      </div>
+      <div class="modal-footer d-flex justify-content-center">
+        <button type="button" class="btn btn-primary">Submit</button>
+        <button
+          type="button"
+          class="btn btn-secondary"
+          data-dismiss="modal"
+          aria-label="Close"
+        >
+          Close
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Upload model end here -->
+
+
+<!-- Delete model start here -->
+
+<div
+  class="modal fade"
+  id="Delete"
+  tabindex="-1"
+  role="dialog"
+  aria-labelledby="Delete"
+  aria-hidden="true"
+>
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header bg-danger">
+        <h5 class="modal-title text-white">Delete Department</h5>
+        <button
+          type="button"
+          class="close"
+          data-dismiss="modal"
+          aria-label="Close"
+        >
+          <span aria-hidden="true" class="text-white">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form action="">
+          <div class="mb-3 text-center">
+            <div class="d-flex justify-content-center mb-3">
+
+              <img src="../../static/triangle-exclamation-solid.svg" width="120" height="70" alt="">
+            </div>
+            Are Your sure You want to delete Full stack Specialization ?
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer d-flex justify-content-center">
+        <button
+          type="button"
+          class="btn btn-secondary"
+          data-dismiss="modal"
+          aria-label="Close"
+        >
+          Close
+        </button>
+        <button type="button" class="btn btn-danger">Delete</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Delete model end here -->
+
+
+
+
+<!-- model jobdetails ends here -->
+
+{% endblock %}

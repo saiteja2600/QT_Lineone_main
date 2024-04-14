@@ -1,0 +1,130 @@
+{% extends 'base/base.html' %} 
+{% block title %}QTLineone | Student Filter{% endblock %}
+{% block breadCrum %}
+
+<!-- Breadcrumb -->
+<div class="hk-pg-header d-flex justify-content-between mb-0">
+<h4 class="hk-pg-title m-3">Student Filter</h4>
+<nav aria-label="breadcrumb">
+    <ol class="breadcrumb bg-transparent mb-0">
+    <li class="breadcrumb-item"><a href="{% url 'dashboard' %}">Dashboard</a></li>
+    <li class="breadcrumb-item active" aria-current="page">Student Filter</li>      
+    </ol>
+</nav>
+</div>
+<!-- /Breadcrumb -->
+{% endblock %}
+
+{% block content %}
+
+<section class="hk-sec-wrapper">
+    <div class="row ">
+        <div class="col-sm-12">
+            <div class="row ">
+                <div class="col-sm">
+                    <div class="row">
+                        <div class="col-md-3 mb-3">
+                            {% comment %} <label for="">Select Qualifications</label> {% endcomment %}
+                            <select class="form-control form-select border border-dark">
+                                <option selected>Select Qualifications</option>
+                                <option value="">Bsc Computers</option>
+                                <option value="">B Tech csc/M Tech</option>
+                                <option value="">MCA</option>
+                                <option value="">Bsc statastics</option>
+                              </select>                        
+                        </div>
+                        <div class="col-md-3 mb-3">
+                            {% comment %} <label for="">Select Year of Pass</label> {% endcomment %}
+                            <select class="form-control form-select border border-dark">
+                                <option selected>Select Year Of Pass</option>
+                                <option value="">2021</option>
+                                <option value="">2022</option>
+                                <option value="">2023</option>
+                                <option value="">2024</option>
+                              </select>                        
+                        </div>
+                        <div class="col-md-3 mb-3">
+                            {% comment %} <label for="">Select Percentage</label> {% endcomment %}
+                            <select class="form-control form-select border border-dark">
+                                <option selected>Select Percentage</option>
+                                <option value="">50-60%</option>
+                                <option value="">60-70%</option>
+                                <option value="">70-80%</option>
+                                <option value="">80-90%</option>
+                                <option value="">90-100%</option>
+                              </select>
+                        </div>
+                        <div class="col-md-3 mb-3">
+                            {% comment %} <label for="" >Select Experience</label> {% endcomment %}
+                            <select class="form-control form-select border border-dark">
+                              <option selected>Select Experience</option>
+                              <option value="">0-1</option>
+                              <option value="">1-2</option>
+                              <option value="">2-3</option>
+                              <option value="">3-4</option>
+                              <option value="">4-5</option>
+                              <option value="">5-6</option>
+                              <option value="">6-7</option>
+                              <option value="">7-8</option>
+                              <option value="">8-9</option>
+                              <option value="">9-10</option>
+                              <option value="">Greater than 10</option>
+                            </select>                            
+                          </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-sm">
+                        <div class="row ">
+                            <div class="col-md-3 mb-3">
+                              {% comment %} <label for="" >Select Technology</label> {% endcomment %}
+                              <select class="form-control form-select border border-dark">
+                                <option selected>Select Technology</option>
+                                <option value="">Python</option>
+                                <option value="">Java</option>
+                                <option value="">Testing</option>
+                                <option value="">AWS</option>
+                                <option value="">Dot Net</option>
+                              </select>                            
+                            </div>
+                            <div class="col-md-3 mb-3">
+                               {% comment %} <label for="" >Select Gender</label> {% endcomment %}
+                               <select class="form-control form-select border border-dark">
+                                <option selected>Select Gender</option>
+                                <option value="">Female</option>
+                                <option value="">Male</option>
+                                <option value="">Trans Gender</option>
+                              </select>                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div>
+                    <button type="button" class="btn btn-primary mr-2 mb-3" data-toggle="modal" data-target="#Addstudent">Student Filter</button>
+                    <button type="button" class="btn btn-success mr-2 mb-3">Print</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</section>
+<section class="hk-sec-wrapper">
+<div class="row">
+<div class="col-sm">
+    <div class="table-wrap">
+        <table id="datable_1" class="table table-hover w-100 display pb-30 table-bordered">
+            <thead class="bg-dark">
+                <tr>
+                    <th class="text-white">Admission ID</th>
+                    <th class="text-white">Student Name</th>
+                    <th class="text-white">Phone Number</th>
+                    <th class="text-white">Email</th>
+                    <th class="text-white">Technology</th>
+                    <th class="text-white">Experience</th>
+                    <th class="text-white">Resume</th>
+                </tr>
+            </thead>
+        </table>
+    </div>
+</div>
+</section>
+{% endblock %}

@@ -1,0 +1,779 @@
+{% extends 'base/base.html' %}
+{% block title %}QTLineone | Calendar{% endblock %} 
+
+{% block breadCrum %}
+
+<!-- Breadcrumb -->
+<div class="hk-pg-header d-flex justify-content-between mb-0">
+  <h4 class="hk-pg-title m-3">Calendar</h4>
+  <nav aria-label="breadcrumb">
+    <ol class="breadcrumb bg-transparent mb-0">
+      <li class="breadcrumb-item"><a href="{% url 'dashboard' %}">Dashboard</a></li>
+      <li class="breadcrumb-item"><a href="{% url 'settings' %}">Settings</a></li>
+      <li class="breadcrumb-item active" aria-current="page">Calendar</li>
+    </ol>
+  </nav>
+</div>
+<!-- /Breadcrumb -->
+
+{% endblock %} {% block content %}
+ <!-- message here -->
+
+ {% if messages %}
+ {% for message in messages %}
+   {% if message.tags == "error" %}
+     <div class="h-25 alert alert-danger alert-dismissible fade show mt-2 h-25 text-center" role="alert">{{ message }}</div>
+   {% elif message.tags == "success" %}
+     <div class="h-25 alert alert-success alert-dismissible fade show mt-2 h-25 text-center" role="alert">{{ message }}</div>
+     {% else %}
+    <div class="h-25 alert alert-info alert-dismissible fade show mt-2 h-25 text-center" role="alert">{{ message }}</div>
+    {% endif %}
+   {% endfor %}
+ {% endif %}
+
+<!-- message end here -->
+<section class="hk-sec-wrapper">
+  <div class="d-flex justify-content-between">
+
+    <div class="">
+      <button
+        type="button"
+        class="btn btn-primary mr-2 mb-3"
+        data-toggle="modal"
+        data-target="#CreateCalender"
+      >
+      <i class="glyphicon glyphicon-plus"></i> Create Event
+      </button>
+      <a href="{% url 'calender_export' %}" type="button" class="btn btn-success mr-2 mb-3"><i class="glyphicon glyphicon-export"></i> Export</a>
+      <button
+        type="button"
+        class="btn btn-secondary mr-2 mb-3"
+        data-toggle="modal"
+        data-target="#UploadDepartment"
+      ><i class="glyphicon glyphicon-import"></i> Import
+      </button>
+    </div>
+    <div>
+      <button type="button" class="btn btn-danger mr-2 mb-3" id="deleteButton" data-toggle="modal"
+    data-target="#deleteModal" style="display: none; position: relative; top: 0px; ">
+    <i class="glyphicon glyphicon-trash"></i> Delete
+</button>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-sm">
+      <div class="table-wrap">
+        <table
+          id="datable_1"
+          class="table table-hover w-100 display pb-30 table-bordered"
+        >
+          <thead class="bg-dark">
+            <tr>
+              <th class="text-white text-center"><input type="checkbox" id="selectAll"> All</th>
+
+              <th class="text-white">S.No</th>
+              <th class="text-white">Title</th>
+              <th class="text-white">Date</th>
+              
+              <th class="text-white">Category</th>
+              <th class="text-white">Branch</th>
+              <th class="text-white">Message</th>
+              <th class="text-white">Status</th>
+              <th class="text-white">Actions</th>
+            </tr>
+
+          </thead>
+          <tbody>
+            {% for event in calander %}
+            <tr>
+              <td class="text-center"><input type="checkbox" class="row-checkbox" data-course-id="{{event.id}}"
+                data-course-name="{{event.batch_number}}"></td>
+              <td> {{forloop.counter}} </td>
+              <td> {{event.title}} </td>
+              <td> {{event.date_time}} </td>
+              <td> {{event.category}} </td>
+              <td> {{event.branch}} </td>
+              <td> {{event.message|safe}} </td>
+              <td class="text-center">
+                {% if event.status == 'Active' %}
+                <a href="{% url 'calender_status' event.id %}">
+                  <span class="badge badge-success badge-pill" >{{event.status}}</span>
+                </a>
+                {% else %}
+                <a href="{% url 'calender_status' event.id %}">
+                  <span class="badge badge-danger badge-pill">{{event.status}}</span>
+                </a>
+                {% endif %}
+              </td>
+
+              <td class="text-center">
+                <button
+                  class="btn btn-primary m-1"
+                  data-toggle="modal" 
+                  data-target="#EditEvent{{forloop.counter}}"
+                >
+                  <i class="fa fa-pencil"></i>
+                </button>
+                <button
+                  class="btn btn-danger m-1"
+                  data-toggle="modal"
+                  data-target="#DeleteEvent{{forloop.counter}}"
+                >
+                  <i class="fa fa-trash"></i>
+                </button>
+              </td>
+            </tr>
+           {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- create model start here -->
+
+<div
+  class="modal fade"
+  id="CreateCalender"
+  tabindex="-1"
+  role="dialog"
+  aria-labelledby="CreateCalender"
+  aria-hidden="true"
+>
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header bg-dark">
+        <h5 class="modal-title text-white">Create New Event</h5>
+        <button
+          type="button"
+          class="close"
+          data-dismiss="modal"
+          aria-label="Close"
+        >
+          <span aria-hidden="true" class="text-white">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form action="{% url 'calender' %}" method="post" id="calenderValid">
+          {% csrf_token %}
+            
+          <div class="mb-3">
+            <label for="" class="form-label"
+              >Title <span class="text-danger">*</span></label
+            >
+            <input
+              type="text"
+              placeholder="Ex: meeting, holiday"
+              class="form-control" name="title"
+            />
+          </div>
+            <div class="mb-3">
+              <label for="" class="form-label">Date and Time <span class="text-danger">*</span></label>
+              <input
+                type="datetime-local"
+                class="form-control"
+                name="date_time"
+                id="event_date_time"
+                placeholder=""
+              />
+              
+            </div>
+              <div class="mb-3">
+                <label for="" class="form-label">Category <span class="text-danger">*</span></label>
+                <select
+                  class="form-control custom-select"
+                  name="category"
+                  id=""
+                >
+                  <option selected value="">Select Your Category</option>
+                  <option value="Student">Student</option>
+                  <option value="Employee">Employee</option>
+                  <option value="All">All</option>
+                </select>
+              </div>
+              <div class="mb-3">
+                <label for="" class="form-label">Branch <span class="text-danger">*</span></label>
+                <select
+                  class="form-control custom-select"
+                  name="branch"
+                  id=""
+                >
+                  <option selected value="">Select Your Branch</option>
+                  {% for branches in branch %}
+                  {% if branches.status == 'Active' %}
+                  <option value="{{branches.id}}">{{branches.branch_name}}</option>
+                  {% endif %}
+                  {% endfor %}
+                 
+                </select>
+              </div>
+
+              <div class="mb-3">
+                <label for="" class="form-label">Message <span class="text-danger">*</span></label>
+                <textarea class="form-control" rows="3" name="message" placeholder="Enter your message"></textarea>
+
+              </div>
+              
+              <div class="mb-3 d-flex justify-content-center">
+                <button type="submit"  class="btn btn-primary m-1">Submit</button>
+                <button type="reset" class="btn btn-secondary m-1">Reset</button>
+              </div>
+              
+            
+          
+        </form>
+      </div>
+      
+    </div>
+  </div>
+</div>
+
+<!-- Create model end here -->
+<!-- Edit model start here -->
+{% for event in calander %}
+<div
+  class="modal fade"
+  id="EditEvent{{forloop.counter}}"
+  tabindex="-1"
+  role="dialog"
+  aria-labelledby="EditEvent{{forloop.counter}}"
+  aria-hidden="true"
+>
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header bg-dark">
+        <h5 class="modal-title text-white">Edit Event</h5>
+        <button
+          type="button"
+          class="close"
+          data-dismiss="modal"
+          aria-label="Close"
+        >
+          <span aria-hidden="true" class="text-white">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form action="{% url 'calender_update' event.id %}" method="post" class="EditValid">
+          {% csrf_token %}
+            
+          <div class="mb-3">
+            <label for="" class="form-label"
+              >Title <span class="text-danger">*</span></label
+            >
+            <input
+              type="text"
+              placeholder="Ex: meeting, holiday"
+              class="form-control" name="event_title_edit" value="{{event.title}}"
+            />
+          </div>
+            <div class="mb-3">
+              <label for="" class="form-label">Date and Time <span class="text-danger">*</span></label>
+              <input
+                type="datetime-local"
+                class="form-control"
+                name="event_date_edit"
+               id="edit_event_date_time"
+                value="{{event.date_time|date:'Y-m-d H:i'}}"
+                placeholder=""
+              />
+            </div>
+              <div class="mb-3">
+                <label for="" class="form-label">Category <span class="text-danger">*</span></label>
+                <select
+                  class="form-control custom-select"
+                  name="event_category_edit"
+                  
+                >
+                  <option selected value="">Select Your Category</option>
+                  
+                  <option value="Student">Student</option>
+                  <option value="Employee">Employee</option>
+                  <option value="All">All</option>
+                  
+                  
+                </select>
+              </div>
+              <div class="mb-3">
+                <label for="" class="form-label">Branch <span class="text-danger">*</span></label>
+                <select
+                  class="form-control custom-select"
+                  name="event_branch_edit"
+                  id=""
+                >
+                  <option selected value="">Select Your Branch</option>
+                  {% for branches in branch %}
+                  {% if branches.status == 'Active' %}
+                  <option value="{{branches.id}}">{{branches.branch_name}}</option>
+                  {% endif %}
+                  {% endfor %}
+                </select>
+              </div>
+
+              <div class="mb-3">
+                <label for="" class="form-label">Message <span class="text-danger">*</span></label>
+                <textarea class="form-control" 
+          name="event_message_edit" 
+          id="event_message_edit" 
+          rows="3"
+          >{{ event.message | safe }}</textarea>
+          </div>
+
+
+              </div>
+              
+              <div class="mb-3 d-flex justify-content-center">
+                <button type="submit"  class="btn btn-primary m-1">Submit</button>
+                <button
+                  type="button"
+                  class="btn btn-secondary m-1"
+                  data-dismiss="modal"
+                  aria-label="Close"
+                >
+                  Close
+                </button>
+              </div>
+              
+            
+          
+        </form>
+      </div>
+      
+    </div>
+  </div>
+
+{% endfor %}
+
+<!-- Edit model end here -->
+
+<!-- Delete model start here -->
+<div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="deleteModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+      <div class="modal-content">
+          <div class="modal-header bg-danger">
+              <h5 class="modal-title text-white " id="deleteModalLabel">Delete Calender</h5>
+              <button type="button" class="close text-white" data-dismiss="modal" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+              </button>
+          </div>
+          <div class="modal-body">
+              <div class="mb-3 text-center">
+                  <div class="d-flex justify-content-center mb-3">
+                      <img src="../../static/triangle-exclamation-solid.svg" width="120" height="70" alt="">
+                  </div>
+                  <form action="{% url 'calender_all'  %}" method="post">
+                      {% csrf_token %}
+                      <p id="deleteMessage">Are you sure you want to delete <strong><span id="selectedCount"></span></strong> records?</p>
+                      <input type="hidden" id="selected_ids_input" name="selected_ids">
+              </div>
+              <div class="d-flex justify-content-center">
+                <button type="submit" class="btn btn-danger m-1" id="confirmDelete">Yes</button>
+                  <button type="button" class="btn btn-secondary m-1" data-dismiss="modal">No</button>
+              </div>
+              </form>
+          </div>
+
+      </div>
+  </div>
+</div>
+{% for event in calander %}
+<div
+  class="modal fade"
+  id="DeleteEvent{{forloop.counter}}"
+  tabindex="-1"
+  role="dialog"
+  aria-labelledby="DeleteEvent{{forloop.counter}}"
+  aria-hidden="true"
+>
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header bg-danger">
+        <h5 class="modal-title text-white">Delete Event</h5>
+        <button
+          type="button"
+          class="close"
+          data-dismiss="modal"
+          aria-label="Close"
+        >
+          <span aria-hidden="true" class="text-white">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form action="{% url 'calender_delete' event.id %}" method="post">
+          {% csrf_token %}
+          <div class="mb-3 text-center">
+            <div class="d-flex justify-content-center mb-3">
+
+              <img src="../../static/triangle-exclamation-solid.svg" width="120" height="70" alt="">
+            </div>
+            Are you sure you want to delete {{ event.title }} {{ event.date_time}} Event ?
+          </div>
+          <div class="mb-3 d-flex justify-content-center">
+            <button type="submit" class="btn btn-danger m-1">Yes</button>
+            <button
+              type="button"
+              class="btn btn-secondary m-1"
+              data-dismiss="modal"
+              aria-label="Close"
+            >
+              No
+            </button>
+          </div>
+        </form>
+      </div>
+     
+    </div>
+  </div>
+</div>
+{% endfor %}
+<!-- Delete model end here -->
+
+<!-- Upload model  -->
+
+<div
+  class="modal fade"
+  id="UploadDepartment"
+  tabindex="-1"
+  role="dialog"
+  aria-labelledby="UploadDepartment"
+  aria-hidden="true"
+>
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header bg-dark">
+        <h5 class="modal-title text-white">Upload File</h5>
+        <button
+          type="button"
+          class="close"
+          data-dismiss="modal"
+          aria-label="Close"
+        >
+          <span aria-hidden="true" class="text-white">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form action="{% url 'calender_import' %}" method="post"  enctype="multipart/form-data">
+          {% csrf_token %}
+          <input type="file" id="input-file-now" class="dropify"  name="calender_file" accept=".csv" >
+
+          <div id="csvPreview"></div>
+          <div class="mb-3 d-flex justify-content-center">
+            <button type="submit"  class="btn btn-primary m-1">Submit</button>
+            <button
+              type="button"
+              class="btn btn-secondary m-1"
+              data-dismiss="modal"
+              aria-label="Close"
+            >
+              Close
+            </button>
+          </div>
+        </form>
+      </div>
+      
+    </div>
+  </div>
+</div>
+
+<!-- Upload model end here -->
+
+{% endblock %}
+
+{% block scripts %}
+
+
+<script src="https://cdn.ckeditor.com/4.19.1/standard/ckeditor.js"></script>
+<!--<script>
+  CKEDITOR.replace("create_Calender",{
+    Plugins:'required',
+  });
+  CKEDITOR.replace("edit_Calender",{
+    Plugins:'required',
+  });
+</script>-->
+<script>
+  $(document).ready(function () {
+    var now = new Date().toISOString().slice(0, 16);
+
+
+    $("#event_date_time").attr("min", now);
+    $("#edit_event_date_time").attr("min", now);
+
+   
+  })
+</script>
+
+<script>
+  
+  $(document).ready(function () {
+
+    $.validator.addMethod("dateTimeValidFormat", function (value, element) {
+      
+      const pattern = /^(Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec)\.\s\d{1,2},\s\d{4},\s\d{1,2}\s(a\.m\.|p\.m\.)$/i;
+      return this.optional(element) || pattern.test(value);
+    }, "Please enter a valid date and time in the format 'Dec. 31, 9909, 9 p.m.'");
+
+
+
+    $.validator.addMethod('noSpecialChar',function(value,element){
+      return this.optional(element) || /^[a-zA-Z0-9\s]+$/.test(value);
+    },'No Special Character and Number are not allowed')
+    $.validator.addMethod("noSpace", function(value, element) {
+      return !(/^\s|\s$|\s{2,}/.test(value));
+  }, "No excessive or leading/trailing spaces");
+    $('#calenderValid').validate({
+      rules:{
+        title:{
+          required:true,
+          noSpecialChar:true,
+          minlength:5,
+          noSpace:true,
+          maxlength:50
+        },
+        date_time:{
+          required:true,
+          dateTimeValid:true
+
+
+        },
+        category:{
+          required:true,
+          noSpace:true
+        },
+        branch:{
+          required:true,
+        },
+        message:{
+          required:true,
+          maxlength:1000,
+          minlength:20
+        }
+      },
+      messages:{
+        title:{
+          required:"Please Enter Title",
+          minlength:"Minimum 5 characters",
+          maxlength:"Maximum 50 characters",
+
+        },
+        date_time:{
+          required:"Please Enter Date",
+        },
+        category:{
+          required:"Please Enter Category",
+        },
+        branch:{
+          required:"Please Enter Branch",
+        },
+        message:{
+          required:"Please Enter Message",
+          maxlength:"Maximum 1000 characters",
+          minlength:"Minimum 20 characters"
+        }
+      },
+      submitHandler:function(form){
+        form.submit();
+      }
+    })
+
+
+  
+    
+  })
+</script>
+
+<script>
+  $(document).ready(function () {
+
+    $.validator.addMethod("dateTimeValidFormat", function (value, element) {
+      
+      const pattern = /^(Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec)\.\s\d{1,2},\s\d{4},\s\d{1,2}\s(a\.m\.|p\.m\.)$/i;
+      return this.optional(element) || pattern.test(value);
+    }, "Please enter a valid date and time in the format 'Dec. 31, 9909, 9 p.m.'");
+
+
+
+
+
+    $.validator.addMethod("noSpecialChar", function (value, element) {
+      return this.optional(element) || /^[a-zA-Z\s]+$/.test(value);
+    }, "Special Characters are not allowed and Numbers are not allowed");
+
+    //
+    $.validator.addMethod("noSpace", function(value, element) {
+      return !(/^\s|\s$|\s{2,}/.test(value));
+  }, "No excessive or leading/trailing spaces");
+    $('.EditValid').each(function(){
+      $(this).validate({
+        rules:{
+          event_title_edit:{
+            required:true,
+            noSpecialChar:true,
+            minlength:5,
+            maxlength:50,
+            noSpace:true
+          },
+          event_date_edit:{
+            required:true,
+            dateTimeValidFormat:true
+          },
+          event_category_edit:{
+            required:true,
+
+          },
+          event_branch_edit:{
+            required:true,
+            
+          },
+          event_message_edit:{
+            required:true,
+            maxlength:1000,
+            minlength:20
+
+          },
+        },
+        messages:{
+          event_title_edit:{
+            required:"Please Enter Title",
+            minlength:"Minimum 5 characters",
+            maxlength:"Maximum 50 characters",
+
+          },
+          event_date_edit:{
+            required:"Please Enter Date",
+          },
+          event_category_edit:{
+            required:"Please Select Category",
+
+          },
+          event_branch_edit:{
+            required:"Please Select Branch",
+          },
+          event_message_edit:{
+            required:"Please Enter Message",
+            maxlength:"Maximum 1000 characters allowed",
+            minlength:"Minimum 20 characters required",
+          },
+        },
+        //errorPlacement: function(error,element){
+        //  if (element.attr('name')  === 'event_message_edit'){
+        //    error.insertAfter(element.closest('.ckeditor'));
+        //  }else{
+        //    error.insertAfter(element);
+        //  }
+        //},
+        submitHandler: function(form) {
+          form.submit();
+        }
+      })
+    })
+
+  })
+</script>
+<script>
+  function validateUploadForm(form) {
+    $(form).find('#input-file-now').on('change', function () {
+      var file = this.files[0];
+      var fileExt = file.name.split('.').pop().toLowerCase();
+
+      if (fileExt === 'csv') {
+        $(form).find('button[type="submit"]').prop('disabled', false);
+        $(form).find('#input-file-now').html('');
+      } else {
+        $(form).find('button[type="submit"]').prop('disabled', true);
+        $(form).find('#csvPreview').html('<span style="color: red;">Only CSV files are allowed.</span>');
+      }
+    });
+
+    $(form).on('submit', function (e) {
+      var file = $(form).find('#input-file-now')[0].files[0];
+
+      if (!file) {
+        e.preventDefault();
+        $(form).find('#csvPreview').html('<span style="color: red;">Please select a csv file.</span>');
+      }
+    });
+  }
+
+  $('#UploadDepartment').on('shown.bs.modal', function () {
+    validateUploadForm($(this).find('form'));
+  });
+</script>
+ 
+
+
+<!---Delete Script-->
+<script>
+  // Function to update the "Select All" checkbox status
+  function updateSelectAllCheckbox() {
+    var selectAllCheckbox = document.getElementById('selectAll');
+    var rowCheckboxes = document.querySelectorAll('.row-checkbox');
+    var allChecked = true;
+
+    rowCheckboxes.forEach(function (checkbox) {
+      if (!checkbox.checked) {
+        allChecked = false;
+      }
+    });
+
+    selectAllCheckbox.checked = allChecked;
+    updateSelectedRowsList(); // Update selected rows list when "Select All" checkbox is clicked
+  }
+
+  // Function to update the selected rows list and toggle delete button visibility
+  function updateSelectedRowsList() {
+    var selectedRowsList = document.getElementById('selectedRowsList');
+    var selectedIdsInput = document.getElementById('selected_ids_input');
+    var deleteButton = document.getElementById('deleteButton');
+
+    var selectedRows = document.querySelectorAll('.row-checkbox:checked');
+    var selectedCount = selectedRows.length;
+
+    if (selectedCount > 1) {
+      deleteButton.style.display = 'block'; // Show delete button if more than one row is selected
+    } else {
+      deleteButton.style.display = 'none'; // Hide delete button if only one row or none is selected
+    }
+
+    var selectedIds = [];
+    selectedRows.forEach(function (row) {
+      var courseId = row.dataset.courseId;
+      selectedIds.push(courseId);
+    });
+
+    // Set the value of the hidden input field to the selected IDs
+    selectedIdsInput.value = selectedIds.join(',');
+
+    // Update the delete modal message with the selected count
+    document.getElementById('deleteMessage').textContent = "Are you sure you want to delete " + selectedCount + " records?";
+  }
+
+  // Event listener for checkbox change
+  document.querySelectorAll('.row-checkbox').forEach(function (checkbox) {
+    checkbox.addEventListener('change', function () {
+      updateSelectedRowsList();
+      updateSelectAllCheckbox();
+    });
+  });
+
+  // Event listener for select all checkbox change
+  document.getElementById('selectAll').addEventListener('change', function () {
+    var isChecked = this.checked;
+    document.querySelectorAll('.row-checkbox').forEach(function (checkbox) {
+      checkbox.checked = isChecked;
+    });
+    updateSelectedRowsList();
+  });
+
+  // Initially update delete button visibility
+  updateSelectedRowsList();
+
+  // Event listener for delete button click
+  document.getElementById('confirmDelete').addEventListener('click', function () {
+    // Perform delete action here
+    // For now, let's just close the modal
+    $('#deleteModal').modal('hide');
+  });
+</script>
+{% endblock %}

@@ -1,0 +1,548 @@
+<!DOCTYPE html>
+
+<html lang="en">
+
+{% load static %}
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <title>{% block title %}{% endblock %}</title>
+    <meta name="description" content="A responsive bootstrap 4 admin dashboard vendors4late by hencework" />
+
+    <!-- Favicon -->
+    <link rel="shortcut icon" href="favicon.ico">
+    <link rel="icon" href="../../static/images/logo/qt_instance.png" type="image/x-icon">
+	<!-- Data Table CSS -->
+    <link href="../../static/data-table/datatables.net-dt/css/jquery.dataTables.min.css" rel="stylesheet" type="text/css" />
+    <link rel="stylesheet" href="../../static/data-table/datatables.net-responsive-dt/css/responsive.dataTables.min.css"  type="text/css">
+    
+    <!-- Toggles CSS -->
+    <link href="../../static/css/jquery-toggles/css/toggles.css" rel="stylesheet" type="text/css">
+    <link href="../../static/css/jquery-toggles/css/themes/toggles-light.css" rel="stylesheet" type="text/css">
+	<!-- Morris Charts CSS -->
+    
+      <link rel="stylesheet" href="../../static/temp/morris.js/morris.css"  type="text/css">  
+	
+	<!-- Toastr CSS -->
+    
+    <link rel="stylesheet" href="../../static/css/jquery-toast-plugin/dist/jquery.toast.min.css" type="text/css">
+
+    <!-- Custom CSS -->
+    <link href="../../static/dist/css/style.css" rel="stylesheet" type="text/css">
+    <!-- bootstrap css -->
+    <link rel="stylesheet" href="../../static/css/bootstrap.min.css" type="text/css">
+    <!--  -->
+    <link rel="stylesheet" href="../../static/css/owl.carousel/dist/assets/owl.carousel.min.css">
+    <link rel="stylesheet" href="../../static/css/owl.carousel/dist/assets/owl.theme.default.min.css">
+    <!-- icons -->
+    <link rel="stylesheet" href="../../static/dist/css/font-awesome.min.css"  type="text/css">
+    <link rel="stylesheet" href="../../static/dist/css/animate.css"  type="text/css">
+    <link rel="stylesheet" href="../../static/dist/css/dripicons.css"  type="text/css">
+    <link rel="stylesheet" href="../../static/dist/css/glyphicons.css"  type="text/css">
+    <link rel="stylesheet" href="../../static/dist/css/ionicons.min.css"  type="text/css">
+    <link rel="stylesheet" href="../../static/dist/css/lightgallery.css"  type="text/css">
+    <link rel="stylesheet" href="../../static/dist/css/linea-icon.css"  type="text/css">
+    <link rel="stylesheet" href="../../static/dist/css/material-design-iconic-font.min.css"  type="text/css">
+    <link rel="stylesheet" href="../../static/dist/css/pe-icon-7-stroke.css"  type="text/css">
+    <link rel="stylesheet" href="../../static/dist/css/simple-line-icons.css"  type="text/css">
+    <link rel="stylesheet" href="../../static/dist/css/themify-icons.css"  type="text/css">
+    <link rel="stylesheet" href="../../static/wp-content-Admin/themes/freeio/css/all-awesomeaec5.css" type="text/css">
+
+
+
+
+    <!-- dropify css cdns -->
+    <!-- Bootstrap Dropzone CSS -->
+	
+	<link href="../../static/css/dropzone/dist/dropzone.css" rel="stylesheet" type="text/css"/>
+	
+	<!-- Bootstrap Dropzone CSS -->
+
+	
+	<link href="../../static/css/dropify/dist/css/dropify.min.css" rel="stylesheet" type="text/css"/>
+    
+
+    
+
+
+
+
+    <!--css here  -->
+
+    <style>
+        .form-control.error {
+          border: 3px solid red !important;
+          background-image: url('../../static/circle-xmark-regular.svg');
+          background-repeat: no-repeat;
+          background-position: right 5px center;
+          background-size: 20px;
+          padding-right: 30px;
+        }
+      
+        label.error {
+          color: red;
+          font-size: 14px;
+          margin-top: 3px;
+        }
+      
+        .form-control.valid {
+          border: 3px solid green !important;
+          background-image: url('../../static/check-solid.svg');
+          background-repeat: no-repeat;
+          background-position: right 5px center;
+          background-size: 20px;
+          padding-right: 30px;
+      
+        }
+        .custom-select.error {
+          border: 3px solid red !important;
+          background-image: url('../../static/circle-xmark-regular.svg');
+          background-repeat: no-repeat;
+          background-position: right 5px center;
+          background-size: 20px;
+          padding-right: 30px;
+          
+        }
+        .custom-select.valid{
+          border: 3px solid green !important;
+          background-image: url('../../static/check-solid.svg');
+          background-repeat: no-repeat;
+          background-position: right 5px center;
+          background-size: 20px;
+          padding-right: 30px;
+
+        }
+
+
+        /*toast  custmization*/
+        .jq-toast-single {
+            border: none !important; /* Remove borders */
+        }
+    
+        .jq-toast-single .jq-toast-heading {
+            font-family: "Roboto", sans-serif; /* Use Roboto font for the heading */
+            margin: 0px !important; /* Remove margin from heading */
+        }
+    
+        .jq-toast-single .jq-toast-loader {
+            height: 4px !important; /* Increase loader height */
+            transition: width 1.2 ease-in-out !important; /* Adjust loader transition */
+        }
+        .jq-toast-single .jq-toast-message {
+            transition: none !important; /* Disable text transition */
+            opacity: 1 !important; /* Ensure text appears suddenly */
+        }
+    
+      </style>
+
+    <!-- css end here -->
+
+    
+	<!-- upload image CSS -->
+	<link href="../../static/dist/css/style.css" rel="stylesheet" type="text/css">
+    
+    
+    
+<!-- custom css -->
+{% block style %}
+
+
+{% endblock %}
+<!-- custom css -->
+</head>
+
+<body>
+ <!-- Main Content -->
+        <div class="hk-pg-wrapper pt-3">
+			<!-- Container -->
+            <div class="d-flex justify-content-center mb-3"><img src="../../static/images/logo/Quality_thought_logo.png" alt=""></div>
+            <div class="container-fluid">
+				
+                <!-- main content staart here -->
+                <body>
+                  <div class="">
+                    <div class="row d-flex">
+                      <div class="col-md-6 col-sm-12 col-lg-6 mx-auto">
+                        <div class="card  shadow mb-3">
+                          <div class="card-bory p-4">
+                             <!-- message here -->
+
+ {% if messages %}
+ {% for message in messages %}
+   {% if message.tags == "error" %}
+     <div class="h-25 alert alert-danger alert-dismissible fade show mt-2 h-25 text-center" role="alert">{{ message }}</div>
+   {% elif message.tags == "success" %}
+     <div class="h-25 alert alert-success alert-dismissible fade show mt-2 h-25 text-center" role="alert">{{ message }}</div>
+     {% else %}
+    <div class="h-25 alert alert-info alert-dismissible fade show mt-2 h-25 text-center" role="alert">{{ message }}</div>
+    {% endif %}
+   {% endfor %}
+ {% endif %}
+
+<!-- message end here -->
+                            <form action="{% url 'create_lead' %}" id="enquiryForm" method="post">
+                              {% csrf_token %}
+                              <div class="mb-3">
+                                <label for="" class="form-label"
+                                  >First Name <span class="text-danger">*</span></label
+                                >
+                                <input type="text" name="first_name" class="form-control" />
+                              </div>
+                              <div class="mb-3">
+                                <label for="" class="form-label"
+                                  >Last Name <span class="text-danger">*</span></label
+                                >
+                                <input type="text" name="last_name" class="form-control" />
+                              </div>
+                              <div class="mb-3">
+                                <label for="" class="form-label"
+                                  >Phone Number <span class="text-danger">*</span></label
+                                >
+                                <input
+                                  type="text"
+                                  name="mobile_number"
+                                  class="form-control"
+                                />
+                              </div>
+                              <div class="mb-3">
+                                <label for="" class="form-label"
+                                  >Email <span class="text-danger">*</span></label
+                                >
+                                <input type="email" name="email" class="form-control" />
+                              </div>
+                              <div class="mb-3">
+                                <label for="" class="form-label"
+                                  >Course <span class="text-danger">*</span></label
+                                >
+              
+                                <select
+                                  class="form-select custom-select"
+                                  name="course_name"
+                                  id="course_name"
+                                >
+                                  <option value="">Select Your Course</option>
+                                  {% for course in courses %}
+                                  <option value="{{course.id}}">
+                                    {{course.course_name}}
+                                  </option>
+                                  {% endfor %}
+                                </select>
+                              </div>
+
+                              <div class="mb-3">
+                                <label for="branch_name" class="form-lab"
+                                  >Branch Name <span class="text-danger">*</span></label
+                                >
+                                <input
+                                  type="text"
+                                  name="branch_name"
+                                  disabled
+                                  value="{{branch.branch_name}}"
+                                  class="form-control"
+                                />
+                                <input type="hidden" name="branch_id" value="{{branch.id}}">
+                              </div>
+                              <div class="mb-3">
+                                <label for="" class="form-label"
+                                  >Training Type <span class="text-danger">*</span></label
+                                >
+                                <select
+                                  class="form-select custom-select"
+                                  name="training_type"
+                                  id="training_type"
+                                >
+                                  <option value="">Select Your Training Type</option>
+                                  {% for training in training_types %}
+                                  <option value="{{training.id}}">
+                                    {{training.TrainingTypeName}}
+                                  </option>
+                                  {% endfor %}
+                                </select>
+                              </div>
+                              <div class="mb-3">
+                                <label for="" class="form-"
+                                  >Referral Type <span class="text-danger">*</span></label
+                                >
+                                <select
+                                  class="form-select custom-select"
+                                  name="lead_type"
+                                  id="lead_type"
+                                >
+                                  <option value="">Select Your Referral Type</option>
+                                  {% for prospect in prospect_types %}
+                                  <option value="{{prospect.id}}">
+                                    {{prospect.prospect_type}}
+                                  </option>
+                                  {% endfor %}
+                                </select>
+                              </div>
+                              <input type="hidden" name="crn" value="{{crn}}">
+                              <input type="hidden" name="id" value="{{id}}">
+                              
+              
+                              <div class="mb-3 d-flex justify-content-center">
+                                <button type="submit" class="btn btn-primary m-1">
+                                  Submit
+                                </button>
+                                <button type="reset" class="btn btn-secondary m-1">
+                                  Reset
+                                </button>
+                              </div>
+                            </form>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+              
+                <!-- main content end here -->
+
+
+
+            </div>
+            <!-- /Container -->
+			
+            <!-- Footer -->
+            <div class="hk-footer-wrap container">
+                <footer class="footer">
+                    <div class="row">
+                        <div class="col-md-6 col-sm-12">
+                            <p>Pampered by<a href="#" class="text-dark" >RamanaSoft</a> © 2024</p>
+                        </div>
+                        <div class="col-md-6 col-sm-12">
+                            <p class="d-inline-block">Follow us</p>
+                            <a href="#" class="d-inline-block btn btn-icon btn-icon-only btn-indigo btn-icon-style-4"><span class="btn-icon-wrap"><i class="fa fa-facebook"></i></span></a>
+                            <a href="#" class="d-inline-block btn btn-icon btn-icon-only btn-indigo btn-icon-style-4"><span class="btn-icon-wrap"><i class="fa fa-twitter"></i></span></a>
+                            <a href="#" class="d-inline-block btn btn-icon btn-icon-only btn-indigo btn-icon-style-4"><span class="btn-icon-wrap"><i class="fa fa-google-plus"></i></span></a>
+                        </div>
+                    </div>
+                </footer>
+            </div>
+            <!-- /Footer -->
+        </div>
+        <!-- /Main Content -->
+
+    </div>
+    <!-- /HK Wrapper -->
+
+    <!-- jQuery -->
+    
+    <script src="../../static/js/jquery/dist/jquery.min.js"></script>
+    <!-- Bootstrap Core JavaScript -->
+    <script src="../../static/temp/popper.js/dist/umd/popper.min.js"></script>
+
+    <script src="../../static/js/bootstrap/dist/js/bootstrap.min.js" ></script>
+
+    <!-- Slimscroll JavaScript -->
+    <script src="../../static/dist/js/jquery.slimscroll.js"></script>
+
+    <!-- Fancy Dropdown JS -->
+    <script src="../../static/dist/js/dropdown-bootstrap-extended.js"></script>
+
+    <!-- FeatherIcons JavaScript -->
+    <script src="../../static/dist/js/feather.min.js"></script>
+
+    <!-- Toggles JavaScript -->
+    <script src="../../static/temp/jquery-toggles/toggles.min.js"></script>
+    
+
+    <script src="../../static/dist/js/toggle-data.js"></script>
+	
+	<!-- Toastr JS -->
+    <script src="../../static/temp/jquery-toast-plugin/dist/jquery.toast.min.js"></script>
+    
+	<!-- Counter Animation JavaScript -->
+	<script src="../../static/temp/waypoints/lib/jquery.waypoints.min.js"></script>
+	<script src="../../static/temp/jquery.counterup/jquery.counterup.min.js"></script>
+	
+	<!-- Morris Charts JavaScript -->
+    <script src="../../static/temp/raphael/raphael.min.js"></script>
+    <script src="../../static/temp/morris.js/morris.min.js"></script>
+	
+	<!-- Easy pie chart JS -->
+    <script src="../../static/vendors4/easy-pie-chart/dist/jquery.easypiechart.min.js"></script>
+	
+	<!-- Apex JavaScript -->
+    <script src="../../static/vendors4/apexcharts/dist/apexcharts.min.js"></script>
+	
+	<!-- EChartJS JavaScript -->
+    <script src="../../static/vendors4/echarts/dist/echarts-en.min.js"></script>
+    
+    <!-- Init JavaScript -->
+    <script src="../../static/dist/js/init.js"></script>
+	<script src="../../static/dist/js/dashboard2-data.js"></script>
+    <!-- data table -->
+
+
+
+        <!-- Toggles JavaScript -->
+        <script src="../../static/vendors4/jquery-toggles/toggles.min.js"></script>
+        <script src="../../static/dist/js/toggle-data.js"></script>
+    
+
+
+        <!-- jquery validations -->
+        <script src="../../static/js/jquery-validations/jquery-validation.js"></script>
+        <script src="../../static/js/jquery-validations/jquery-additions-validations.js"></script>
+        <!-- dropify -->
+
+
+
+<script>
+    $(document).ready(function() {
+    // Your existing code...
+
+    // Function to check and remove the toast if it matches the unwanted message
+    function checkAndRemoveToast(node) {
+        if (node.nodeType === 1 && node.matches('.jq-toast-single')) { // Check if the added node is an element and has the toast class
+            const toastText = node.innerText || "";
+            if (toastText.includes("Change a few things and try submitting again.")) {
+                node.remove(); // Remove this toast if it contains the specific message
+            }
+        }
+    }
+
+    // Observe the body for added child elements (toasts)
+    const observer = new MutationObserver(mutations => {
+        mutations.forEach(mutation => {
+            mutation.addedNodes.forEach(node => {
+                checkAndRemoveToast(node);
+            });
+        });
+    });
+
+    observer.observe(document.body, { childList: true, subtree: true });
+
+    // Additionally, check existing toasts when the script runs
+    document.querySelectorAll('.jq-toast-single').forEach(checkAndRemoveToast);
+});
+
+</script>
+
+<script>
+  $(document).ready(function(){
+      
+
+  setTimeout(function() {
+      $(".alert").fadeOut("slow", function() {
+          // This function is called after the fadeOut completes
+          $(this).remove(); // Removes the element from the DOM
+      });
+  }, 5000);
+  })
+</script>
+
+    <!-- Scripts block end here -->
+
+    <script>
+      $(document).ready(function () {
+        $.validator.addMethod(
+          "noSpecialChars",
+          function (value, element) {
+            return this.optional(element) || /^[a-zA-Z\s]+$/.test(value);
+          },
+          "Special Characters are not allowed and Numbers are not allowed"
+        );
+
+        $.validator.addMethod(
+          "customphone",
+          function (value, element) {
+            return (
+              this.optional(element) || /^(\+91-|0)?[6-9]\d{9}$/.test(value)
+            );
+          },
+          "Please enter a valid phone number"
+        );
+        $.validator.addMethod("customEmail", function(value, element) {
+          // Regular expression pattern for custom email validation
+          var emailRegex = /[^\.][a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+          // Check if the value matches the custom email pattern
+          return this.optional(element) || emailRegex.test(value);
+        }, "Please enter a valid email address.");
+
+      $.validator.addMethod("noSpace", function(value, element) {
+        return !(/^\s|\s$|\s{2,}/.test(value));
+    }, "No excessive or leading/trailing spaces");
+  
+
+        $("#enquiryForm").validate({
+          rules: {
+            first_name: {
+              required: true,
+              minlength: 3,
+              maxlength: 50,
+              noSpecialChars: true,
+              noSpace:true
+            },
+            last_name: {
+              required: true,
+              minlength: 3,
+              maxlength: 50,
+              noSpecialChars: true,
+              noSpace:true
+            },
+            mobile_number: {
+              required: true,
+              customphone: true,
+              noSpace:true
+            },
+            email: {
+              required: true,
+              email: true,
+              customEmail:true
+            },
+            course_name: {
+              required: true,
+            },
+
+            lead_type: {
+              required: true,
+            },
+            training_type:{
+              required: true,
+            }
+
+          },
+          messages: {
+            first_name: {
+              required: "Please enter your first name",
+              minlength: "First name must be at least 3 characters",
+              maxlength: "First name must be at most 50 characters",
+            },
+            last_name: {
+              required: "Please enter your last name",
+              minlength: "Last name must be at least 3 characters",
+              maxlength: "Last name must be at most 50 characters",
+            },
+            mobile_number: {
+              required: "Please enter your mobile number",
+              customphone: "Please enter a valid mobile number",
+            },
+            email: {
+              required: "Please enter your email",
+              email: "Please enter a valid email address",
+            },
+            course_name: {
+              required: "Please select a course name",
+            },
+
+            lead_type: {
+              required: "Please select a lead type",
+            },
+            training_type:{
+              required: "Please select a training type",
+            }
+
+          },
+          submitHandler: function (form) {
+            form.submit();
+          },
+        });
+      });
+    </script>
+
+
+</body>
+
+
+</html>

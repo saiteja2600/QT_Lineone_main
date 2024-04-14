@@ -1,0 +1,633 @@
+{% extends 'base/base.html' %}
+{% block title %}QTLineone | Net Banking{% endblock %}
+{% block breadCrum %}
+
+<!-- Breadcrumb -->
+<div class="hk-pg-header d-flex justify-content-between mb-0">
+  <h4 class="hk-pg-title m-3">Net Banking</h4>
+  <nav aria-label="breadcrumb">
+    <ol class="breadcrumb bg-transparent mb-0">
+      <li class="breadcrumb-item"><a href="{% url 'dashboard' %}">Dashboard</a></li>
+      <li class="breadcrumb-item"><a href="{% url 'settings' %}">Settings</a></li>
+      <li class="breadcrumb-item active" aria-current="page">Net Banking</li>
+    </ol>
+  </nav>
+</div>
+<!-- /Breadcrumb -->
+
+ <!-- message here -->
+
+ {% if messages %}
+ {% for message in messages %}
+   {% if message.tags == "error" %}
+     <div class="h-25 alert alert-danger alert-dismissible fade show mt-2 h-25 text-center" role="alert">{{ message }}</div>
+   {% elif message.tags == "success" %}
+     <div class="h-25 alert alert-success alert-dismissible fade show mt-2 h-25 text-center" role="alert">{{ message }}</div>
+     {% else %}
+    <div class="h-25 alert alert-info alert-dismissible fade show mt-2 h-25 text-center" role="alert">{{ message }}</div>
+    {% endif %}
+   {% endfor %}
+ {% endif %}
+
+<!-- message end here -->
+<section class="hk-sec-wrapper">
+  <div class="d-flex justify-content-between">
+
+    <div class="">
+      <button type="button" class="btn btn-primary mr-2 mb-3" data-toggle="modal" data-target="#CreateNetBanking">
+        <i class="glyphicon glyphicon-plus"></i> Add Net Banking
+      </button>
+      <a href="{% url 'net_export' %}" class="btn btn-success mr-2 mb-3"><i class="glyphicon glyphicon-export"></i> Export</a>
+      <button type="button" class="btn btn-secondary mr-2 mb-3" data-toggle="modal" data-target="#UploadNetBanking">
+        <i class="glyphicon glyphicon-import"></i> Import
+      </button>
+    </div>
+    <div>
+      <button type="button" class="btn btn-danger mr-2 mb-3" id="deleteButton" data-toggle="modal"
+      data-target="#deleteModal" style="display: none; position: relative; top: 0px; ">
+      <i class="glyphicon glyphicon-trash"></i> Delete
+  </button>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-sm">
+      <div class="table-wrap">
+        <table id="datable_1" class="table table-hover w-100 display pb-30 table-bordered">
+          <thead class="bg-dark">
+            <tr>
+              <th class="text-white text-center"><input type="checkbox" id="selectAll"> All</th>
+
+              <th class="text-white">S.No</th>
+              <th class="text-white">Account Holder Name</th>
+              <th class="text-white">Account Number</th>
+              <th class="text-white">Account Type</th>
+              <th class="text-white">IFS Code</th>
+              <th class="text-white">Bank Name</th>
+              <th class="text-white">Branch</th>
+              <th class="text-white text-center">Status</th>
+              <th class="text-white text-center">Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for i in net %}
+            <tr>
+              <td class="text-center"><input type="checkbox" class="row-checkbox" data-course-id="{{i.id}}"
+                data-course-name="{{i.accountname}}"></td>
+              <td>{{forloop.counter}}</td>
+              <td>{{i.netbanking_name}}</td>
+              <td class="">{{i.accountnumber}}</td>
+              <td class="">{{i.accounttype}}</td>
+              <td class="">{{i.ifscode}}</td>
+              <td class="">{{i.bankname}}</td>
+              <td class="">{{i.branchname}}</td>
+              <td class="text-center">
+                {% if i.status == 'Active' %}
+                <a href="{% url 'net_status' i.id %}" class="btn btn-success badge text-bg-light rounded-pill">Active</a>
+                {% else %}
+                <a href="{% url 'net_status' i.id %}" class="btn btn-danger badge text-bg-light rounded-pill">Deactive</a>
+                {% endif %}
+              </td>
+              <td class="text-center">
+                <button class="btn btn-primary m-1" data-toggle="modal" data-target="#EditNetBanking{{forloop.counter}}">
+                  <i class="fa fa-pencil"></i>
+                </button>
+                <button class="btn btn-danger m-1" data-toggle="modal" data-target="#DeleteNetBanking{{forloop.counter}}">
+                  <i class="fa fa-trash"></i>
+                </button>
+              </td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- create model start here -->
+
+<div class="modal fade" id="CreateNetBanking" tabindex="-1" role="dialog" aria-labelledby="Createnetbanking"
+  aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header bg-dark">
+        <h5 class="modal-title text-white">Add New Net Banking</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true" class="text-white">&times;</span>
+        </button>
+      </div>
+      <form action="" method="post" id="Createnetbanking">
+        {% csrf_token %}
+        <div class="modal-body">
+          <div class="mb-3">
+            <label for="">Account Holder name<span class="text-danger">*</span></label>
+            <input type="text" class="form-control" id="accountname" name="Accountname"
+              placeholder="Enter Account Holder Name" value=""  />
+          </div>
+          <div class="mb-3">
+            <label for="">Account number<span class="text-danger">*</span></label>
+            <input type="text" class="form-control" id="accountnumber" name="Accountnumber"
+              placeholder="Enter Account Number" value=""  />
+          </div>
+          <div class="mb-3">
+            <label for="">Account type<span class="text-danger">*</span></label>
+            <select class="form-control custom-select" name="Accounttype" >
+              <option selected value="">Select</option>
+              <option value="saving">saving</option>
+              <option value="current">current</option>
+              <option value="other">other</option>
+            </select>
+          </div>
+          <div class="mb-3">
+            <label for="">IFS Code<span class="text-danger">*</span></label>
+            <input type="text" oninput="this.value=this.value.toUpperCase()" class="form-control" id="IFSCode" name="IFSCode" placeholder="Enter IFS Code" />
+
+          </div>
+          <div class="mb-3">
+            <label for="">Bank name <span class="text-danger">*</span></label>
+            <input type="text" class="form-control" id="bankname" name="Bankname" placeholder="Enter Bank name" value="" />
+          </div>
+          <div class="mb-3">
+            <label for="">Branch Name <span class="text-danger">*</span></label>
+            <input type="text" class="form-control" id="branchname" name="Branchname" placeholder="Enter Branch name" value=""  />
+          </div>
+        </div>
+        <div class="mb-3 d-flex justify-content-center">
+          <button type="submit" class="btn btn-primary m-1">Submit</button>
+          <button type="reset" class="btn btn-secondary m-1">Reset</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+<!-- Create model end here -->
+<!-- Edit model start here -->
+{% for i in net %}
+<div class="modal fade" id="EditNetBanking{{forloop.counter}}" tabindex="-1" role="dialog" aria-labelledby="EditNetBanking"
+  aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header bg-dark">
+        <h5 class="modal-title text-white">Edit Net Banking</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true" class="text-white">&times;</span>
+        </button>
+      </div>
+      <form action="{% url 'net_edit' i.id %}" method="post" class="EditNetBanking">
+        {% csrf_token %}
+      <div class="modal-body">
+        <div class="mb-3">
+          <label for="">Account Holder Name<span class="text-danger">*</span></label>
+          <input type="text" class="form-control" id="editaccountname" name="accountname"
+            placeholder="Enter Account Holder Name" value="{{i.netbanking_name}}"  />
+        </div>
+          <div class="mb-3">
+            <label for="">Account Number<span class="text-danger">*</span></label>
+            <input type="text" class="form-control" id="editaccountnumber" name="accountnumber"
+              placeholder="Enter Account Number" value="{{i.accountnumber}}"  />
+          </div>
+          <div class="mb-3">
+            <label for="">Account type<span class="text-danger">*</span></label>
+            <select class="form-control custom-select" name="accounttype" >
+              <option selected value="">Select</option>
+              <option value="saving">saving</option>
+              <option value="current">current</option>
+              <option value="other">other</option>
+            </select>
+          </div>
+          <div class="mb-3">
+            <label for="">IFS Code<span class="text-danger">*</span></label>
+            <input type="text" oninput="this.value=this.value.toUppercase();" class="form-control" id="editIFSCode" name="ifscode"
+              placeholder="Enter IFS Code" value="{{i.ifscode}}"  />
+          </div>
+          <div class="mb-3">
+            <label for="">Bank name <span class="text-danger">*</span></label>
+            <input type="text" class="form-control"value="{{i.bankname}}" id="" name="bankname" placeholder="Enter Bank name" value=""  />
+          </div>
+          <div class="mb-3">
+            <label for="">Branch name <span class="text-danger">*</span></label>
+            <input type="text" class="form-control"value="{{i.branchname}}" id="" name="branchname" placeholder="Enter Branch name" value=""  />
+          </div>
+      </div>
+      <div class="mb-3 d-flex justify-content-center">
+        <button type="submit" class="btn btn-primary m-1">Submit</button>
+        <button type="button" class="btn btn-secondary m-1" data-dismiss="modal" aria-label="Close">
+          Close
+        </button>
+      </div>
+      </form>
+    </div>
+  </div>
+</div>
+{% endfor %}
+
+<!-- Edit model end here -->
+
+<!-- Delete model start here -->
+<div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="deleteModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+      <div class="modal-content">
+          <div class="modal-header bg-danger">
+              <h5 class="modal-title text-white " id="deleteModalLabel">Delete Net Banking</h5>
+              <button type="button" class="close text-white" data-dismiss="modal" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+              </button>
+          </div>
+          <div class="modal-body">
+              <div class="mb-3 text-center">
+                  <div class="d-flex justify-content-center mb-3">
+                      <img src="../../static/triangle-exclamation-solid.svg" width="120" height="70" alt="">
+                  </div>
+                  <form action="{% url 'net_delete_all'  %}" method="post">
+                      {% csrf_token %}
+                      <p id="deleteMessage">Are you sure you want to delete <strong><span id="selectedCount"></span></strong> records?</p>
+                      <input type="hidden" id="selected_ids_input" name="selected_ids">
+              </div>
+              <div class="d-flex justify-content-center">
+                  <button type="submit" class="btn btn-danger m-1" id="confirmDelete">Yes</button>
+                  <button type="button" class="btn btn-secondary m-1" data-dismiss="modal">No</button>
+              </div>
+              </form>
+          </div>
+
+      </div>
+  </div>
+</div>
+
+
+{% for i in net %}
+
+<div class="modal fade" id="DeleteNetBanking{{forloop.counter}}" tabindex="-1" role="dialog" aria-labelledby="DeleteNetBanking"
+  aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header bg-danger">
+        <h5 class="modal-title text-white">Delete Net Banking</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true" class="text-white">&times;</span>
+        </button>
+      </div>
+      <form action="{% url 'net_delete' i.id %}" method="post">
+        {% csrf_token %}
+        <div class="modal-body">
+          <div class="mb-3 text-center">
+            <div class="d-flex justify-content-center mb-3">
+
+              <img src="../../static/triangle-exclamation-solid.svg" width="120" height="70" alt="">
+            </div>
+            Are you sure you want to delete {{i.netbanking_name}} ?
+          </div>
+        </div>
+        <div class="mb-3 d-flex justify-content-center">
+          <button type="submit" class="btn btn-danger m-1">Yes</button>
+          <button type="button" class="btn btn-secondary m-1" data-dismiss="modal" aria-label="Close">
+            No
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+{% endfor %}
+
+<!-- Delete model end here -->
+
+<!-- Upload model  -->
+
+<div class="modal fade" id="UploadNetBanking" tabindex="-1" role="dialog" aria-labelledby="Uploadnetbanking"
+  aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header bg-dark">
+        <h5 class="modal-title text-white">Upload File</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true" class="text-whte">&times;</span>
+        </button>
+      </div>
+      <form action="{% url 'net_import' %}" method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        <div class="modal-body">
+          <input type="file" name="net_file" id="input-file-now" class="dropify" />
+          <div id="csvPreview"></div>
+        </div>
+        <div class="mb-3 d-flex justify-content-center">
+          <button type="submit" class="btn btn-primary m-1">Submit</button>
+          <button type="button" class="btn btn-secondary m-1" data-dismiss="modal" aria-label="Close">
+            Close
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+<!-- Upload model end here -->
+
+{% endblock %}
+
+{% block scripts %}
+<!-- script here -->
+
+<script>
+  $(document).ready(function () {
+
+    //for ifsc code
+    jQuery.validator.addMethod("ifscCode", function(value, element) {
+      // Regular expression for Indian IFSC code format
+      var ifscRegex = /^[A-Z]{4}0[A-Z0-9]{6}$/;
+      return this.optional(element) || ifscRegex.test(value);
+    }, "Please enter a valid Indian IFSC code");  jQuery.validator.addMethod("ifscCode", function(value, element) {
+      // Regular expression for Indian IFSC code format
+      var ifscRegex = /^[A-Z]{4}0[A-Z0-9]{6}$/;
+      return this.optional(element) || ifscRegex.test(value);
+    }, "Please enter a valid Indian IFSC code");
+
+
+
+
+   //validationf for special charector 
+    $.validator.addMethod("noSpecialChars", function(value, element) {
+        return this.optional(element)||/^[a-zA-Z\s]+$/.test(value); 
+    }, "Special characters and Number are not allowed.");
+    //no numbers
+    $.validator.addMethod("lettersonly", function (value, element) {
+            return this.optional(element)||!/\d/.test(value);
+        }, "Numbers are not allowed .");
+    
+    $.validator.addMethod("selectRequried", function (value,elemrnt){
+        return value !== "" && value !== null && value !== "0";
+    },
+       "Please Select an Option"
+    );
+    $.validator.addMethod('conformAccountNumberLength', function (value, element) {
+    var accountNumberLength = $('#AccountNumber').val().length;
+    return this.optional(element) || value.length === accountNumberLength;
+    }, 'Account did not match.');
+
+    $.validator.addMethod("noSpace", function(value, element) {
+      return !(/^\s|\s$|\s{2,}/.test(value));
+  }, "No excessive or leading/trailing spaces");
+
+
+
+    $("#Createnetbanking").validate({
+      rules: {
+          Accountname: {
+              minlength: 3,
+              noSpecialChars: true,
+              required: true,
+              noSpace:true
+          },
+          Accountnumber: {
+              minlength: 8,
+              maxlength: 17,
+              digits: true,
+              required: true,
+              noSpace:true
+          },
+          IFSCode: {
+              required: true,
+              minlength: 8,
+              maxlength:11,
+              noSpace:true
+          },
+          Accounttype: {
+              selectRequried: true,
+              noSpace:true
+          },
+          Bankname: {
+              required: true,
+              minlength: 3,
+              maxlength:50,
+              noSpecialChars: true,
+              noSpace:true
+          },
+          Branchname: {
+              required: true,
+              minlength: 3,
+              maxlength:50,
+              noSpecialChars: true,
+              noSpace:true
+          },
+      },
+      messages: {
+          Accountname: {
+              required: "Please Enter account name",
+              minlength: "Minimum of 3 characters",
+          },
+          Accountnumber: {
+              required: "Please Enter account number",
+              digits: "account number should be in digits",
+              minlength:"Please Enter valid account number",
+              maxlength:"Please Enter valid account number",
+          },
+          IFSCode: {
+              required: "Please Enter IFS Code",
+          },
+          Accounttype: {
+              selectRequried: "Please Select account type",
+          },
+          Bankname: {
+              required: "Please Enter bank name",
+              minlength: "Minimum of 3 characters",
+              maxlength: "Maximum of 50 characters",
+          },
+          Branchname: {
+              required: "Please Enter branch name",
+              minlength: "Minimum of 3 characters",
+              maxlength: "Maximum of 50 characters",
+          },
+      },
+      submitHandler: function(form) {
+          form.submit();
+      },
+  });
+  
+
+    $(".EditNetBanking").each(function(){
+        $(this).validate({
+            rules: {
+            accountname: {
+                minlength: 3,
+                noSpecialChars: true ,
+                noNumbers: true,
+                noSpace:true
+            },
+            accountnumber: {
+                required: true,
+                minlength: 8,
+                maxlength: 17,
+                digit: true,
+                noSpace:true
+                
+            },
+            ifscode: {
+                required: true,
+                minlength: 8,
+                maxlength: 11,
+                noSpace:true
+            },
+            accounttype: {
+                selectRequried: true,
+                
+            },
+            bankname: {
+                required: true,
+                minlength: 3,
+                maxlength: 50,
+                noSpace:true,
+                noSpecialChars: true ,
+            },
+            branchname: {
+                required: true,
+                minlength: 3,
+                maxlength: 50,
+                noSpecialChars: true ,
+                noSpace:true
+            },
+        },
+        messages: {
+            accountname: {
+                required: "Please Enter accountname",
+                minlength: "Minimum of 3 characters",
+            },
+            accountnumber: {
+                required: "Please Enter accountnumber",
+                minlength: "Please Enter valid account number",
+                maxlength: "Please Enter valid account number",
+                digit: "account number should be in digits",
+            },
+            ifscode: {
+                required: "Please enter ifscode",
+                minlength: 'Ifscode should be at least 11 digits',
+                maxlength: 'Ifscode must be 11 digits',
+            },
+            accounttype: {
+                selectRequried: "Please Select accounttype",
+            },
+            bankname: {
+                required: "Please Enter bankname",
+                minlength: "Minimum of 3 characters",
+                maxlength: "Maximum of 50 characters",
+            },
+            branchname: {
+                required: "Please Enter branchname",
+                minlength: "Minimum of 3 characters",
+                maxlength: "Maximum of 50 characters",
+            },
+
+        },
+        submitHandler: function (form) {
+            form.submit();
+        },
+
+        });
+   });
+});
+</script>
+<script>
+  function validateUploadForm(form) {
+    $(form).find('#input-file-now').on('change', function () {
+      var file = this.files[0];
+      var fileExt = file.name.split('.').pop().toLowerCase();
+
+      if (fileExt === 'csv') {
+        $(form).find('button[type="submit"]').prop('disabled', false);
+        $(form).find('#input-file-now').html('');
+      } else {
+        $(form).find('button[type="submit"]').prop('disabled', true);
+        $(form).find('#csvPreview').html('<span style="color: red;">Only CSV files are allowed.</span>');
+      }
+    });
+
+    $(form).on('submit', function (e) {
+      var file = $(form).find('#input-file-now')[0].files[0];
+
+      if (!file) {
+        e.preventDefault();
+        $(form).find('#csvPreview').html('<span style="color: red;">Please select a csv file.</span>');
+      }
+    });
+  }
+
+  $('#UploadNetBanking').on('shown.bs.modal', function () {
+    validateUploadForm($(this).find('form'));
+  });
+</script>
+<!---Delete Script-->
+<script>
+  // Function to update the "Select All" checkbox status
+  function updateSelectAllCheckbox() {
+    var selectAllCheckbox = document.getElementById('selectAll');
+    var rowCheckboxes = document.querySelectorAll('.row-checkbox');
+    var allChecked = true;
+
+    rowCheckboxes.forEach(function (checkbox) {
+      if (!checkbox.checked) {
+        allChecked = false;
+      }
+    });
+
+    selectAllCheckbox.checked = allChecked;
+    updateSelectedRowsList(); // Update selected rows list when "Select All" checkbox is clicked
+  }
+
+  // Function to update the selected rows list and toggle delete button visibility
+  function updateSelectedRowsList() {
+    var selectedRowsList = document.getElementById('selectedRowsList');
+    var selectedIdsInput = document.getElementById('selected_ids_input');
+    var deleteButton = document.getElementById('deleteButton');
+
+    var selectedRows = document.querySelectorAll('.row-checkbox:checked');
+    var selectedCount = selectedRows.length;
+
+    if (selectedCount > 1) {
+      deleteButton.style.display = 'block'; // Show delete button if more than one row is selected
+    } else {
+      deleteButton.style.display = 'none'; // Hide delete button if only one row or none is selected
+    }
+
+    var selectedIds = [];
+    selectedRows.forEach(function (row) {
+      var courseId = row.dataset.courseId;
+      selectedIds.push(courseId);
+    });
+
+    // Set the value of the hidden input field to the selected IDs
+    selectedIdsInput.value = selectedIds.join(',');
+
+    // Update the delete modal message with the selected count
+    document.getElementById('deleteMessage').textContent = "Are you sure you want to delete " + selectedCount + " records?";
+  }
+
+  // Event listener for checkbox change
+  document.querySelectorAll('.row-checkbox').forEach(function (checkbox) {
+    checkbox.addEventListener('change', function () {
+      updateSelectedRowsList();
+      updateSelectAllCheckbox();
+    });
+  });
+
+  // Event listener for select all checkbox change
+  document.getElementById('selectAll').addEventListener('change', function () {
+    var isChecked = this.checked;
+    document.querySelectorAll('.row-checkbox').forEach(function (checkbox) {
+      checkbox.checked = isChecked;
+    });
+    updateSelectedRowsList();
+  });
+
+  // Initially update delete button visibility
+  updateSelectedRowsList();
+
+  // Event listener for delete button click
+  document.getElementById('confirmDelete').addEventListener('click', function () {
+    // Perform delete action here
+    // For now, let's just close the modal
+    $('#deleteModal').modal('hide');
+  });
+</script>
+
+{% endblock %}

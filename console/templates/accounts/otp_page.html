@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>{% block title %}QTLineone | OTP {% endblock %} </title>
+     <!-- bootstrap css -->
+	 <link rel="stylesheet" href="../../static/css/bootstrap.min.css" type="text/css">
+	 <link rel="icon" href="../../static/images/logo/qt_instance.png" type="image/x-icon">
+
+	 
+	 <link rel="stylesheet" href="../../static/dist/css/font-awesome.min.css"  type="text/css">
+    <link rel="stylesheet" href="../../static/dist/css/animate.css"  type="text/css">
+    <link rel="stylesheet" href="../../static/dist/css/dripicons.css"  type="text/css">
+    <link rel="stylesheet" href="../../static/dist/css/glyphicons.css"  type="text/css">
+    <link rel="stylesheet" href="../../static/dist/css/ionicons.min.css"  type="text/css">
+    <link rel="stylesheet" href="../../static/dist/css/lightgallery.css"  type="text/css">
+    <link rel="stylesheet" href="../../static/dist/css/linea-icon.css"  type="text/css">
+    <link rel="stylesheet" href="../../static/dist/css/material-design-iconic-font.min.css"  type="text/css">
+    <link rel="stylesheet" href="../../static/dist/css/pe-icon-7-stroke.css"  type="text/css">
+    <link rel="stylesheet" href="../../static/dist/css/simple-line-icons.css"  type="text/css">
+    <link rel="stylesheet" href="../../static/dist/css/themify-icons.css"  type="text/css">
+	<style>
+		.form-control.error {
+		  border: 3px solid red;
+		  background-image: url('../../static/circle-xmark-regular.svg');
+		  background-repeat: no-repeat;
+		  background-position: right 5px center;
+		  background-size: 20px;
+		  padding-right: 30px;
+		}
+	  
+		label.error {
+		  color: red;
+		  font-size: 14px;
+		  margin-top: 3px;
+		}
+	  
+		.form-control.valid {
+		  border: 3px solid green;
+		  background-image: url('../../static/check-solid.svg');
+		  background-repeat: no-repeat;
+		  background-position: right 5px center;
+		  background-size: 20px;
+		  padding-right: 30px;
+	  
+		}
+	  </style>
+
+</head>
+<body>
+	<div class="hk-pg-wrapper pt-3">
+		<!-- Container -->
+		<div class="container ">
+			<div class="row">
+				<div class="col-md-6 offset-md-3">
+					<div class="card shadow">
+						<div class="card-body">
+							<div class="d-flex justify-content-center mb-3"><img src="../static/images/logo/Quality_thought_logo.png" alt=""></div>
+
+							<h3 class="text-center mt-3">OTP Verfication</h3>
+					<p class="text-center mb-3 ">You will get a OTP via SMS or Call</p>
+					{% if messages %}
+                            {% for message in messages %}
+                              {% if message.tags == "error" %}
+                                <div class="h-25 alert alert-danger alert-dismissible fade show mt-2 h-25 text-center" role="alert">{{ message }}</div>
+                              {% elif message.tags == "success" %}
+                                <div class="h-25 alert alert-success alert-dismissible fade show mt-2 h-25 text-center" role="alert">{{ message }}</div>
+                                {% else %}
+                               <div class="h-25 alert alert-info alert-dismissible fade show mt-2 h-25 text-center" role="alert">{{ message }}</div>
+                               {% endif %}
+                              {% endfor %}
+                            {% endif %}
+					<form method="post" action="{% url 'otp_page' %}" id="otpvalidate">
+						{% csrf_token %}
+						<div class="form-group">
+							<label for="otp">Enter OTP:</label>
+							<input type="text" class="form-control" id="otp" name="otp" >
+							<span class="d-inline-block mt-2">{{error}}</span>
+						</div>
+					
+						<button type="submit" class="btn btn-primary btn-block mt-3">Verify OTP</button>
+						
+					</form>
+					<div class="d-flex justify-content-end mt-2">
+						<p>Did not receive the OTP ?</p> &nbsp;<a href="{% url 'register_resend_otp' %}" class=""> Resend</a>
+
+					</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	<script src="
+https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="
+https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.5/jquery.validate.js"></script>
+
+<script>
+	$(document).ready(function(){
+		$('#otpvalidate').validate({
+			rules:{
+				otp:{
+					required: true,
+				},
+				
+
+			},
+			messages:{
+				otp:{
+					required: 'Enter OTP'
+				},
+				
+			},
+			submitHandler: function (form) {
+				form.submit();
+			  },
+		})
+	})
+</script>
+</body>
+</html>

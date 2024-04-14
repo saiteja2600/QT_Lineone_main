@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Receipt | {{ recipt.token_id }}</title>
+</head>
+<body>
+
+<div style="display: flex; justify-content: center; align-items: center; min-height: 100vh;">
+  <div style="border: 1px solid #dee2e6; border-radius: 0.25rem; box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);">
+    <div style="background-color: #343a40; color: #fff; padding: 0.75rem 1.25rem; border-top-left-radius: 0.25rem; border-top-right-radius: 0.25rem;">
+      <h5 style="margin: 0;">Receipt</h5>
+    </div>
+    <div style="padding: 1.25rem;">
+      <table style="width: 100%; border-collapse: collapse;">
+        <tr>
+          <th style="padding: 0.75rem; text-align: left; background-color: #f8f9fa; border-bottom: 1px solid #dee2e6;">Token</th>
+          <td style="padding: 0.75rem; border-bottom: 1px solid #dee2e6;"><b>{{ recipt.token_id }}</b></td>
+        </tr>
+        <tr>
+          <th style="padding: 0.75rem; text-align: left; background-color: #f8f9fa; border-bottom: 1px solid #dee2e6;">First Name</th>
+          <td style="padding: 0.75rem; border-bottom: 1px solid #dee2e6;">{{ recipt.first_name }}</td>
+        </tr>
+        <tr>
+          <th style="padding: 0.75rem; text-align: left; background-color: #f8f9fa; border-bottom: 1px solid #dee2e6;">Last Name</th>
+          <td style="padding: 0.75rem; border-bottom: 1px solid #dee2e6;">{{ recipt.last_name }}</td>
+        </tr>
+        <tr>
+          <th style="padding: 0.75rem; text-align: left; background-color: #f8f9fa; border-bottom: 1px solid #dee2e6;">Mobile Number</th>
+          <td style="padding: 0.75rem; border-bottom: 1px solid #dee2e6;">{{ recipt.mobile_number }}</td>
+        </tr>
+        <tr>
+          <th style="padding: 0.75rem; text-align: left; background-color: #f8f9fa; border-bottom: 1px solid #dee2e6;">Email</th>
+          <td style="padding: 0.75rem; border-bottom: 1px solid #dee2e6;">{{ recipt.email }}</td>
+        </tr>
+        <tr>
+          <th style="padding: 0.75rem; text-align: left; background-color: #f8f9fa; border-bottom: 1px solid #dee2e6;">Course Name</th>
+          <td style="padding: 0.75rem; border-bottom: 1px solid #dee2e6;">{{ recipt.course_name }}</td>
+        </tr>
+        <tr>
+          <th style="padding: 0.75rem; text-align: left; background-color: #f8f9fa; border-bottom: 1px solid #dee2e6;">Branch Name</th>
+          <td style="padding: 0.75rem; border-bottom: 1px solid #dee2e6;">{{ recipt.branch_name }}</td>
+        </tr>
+        <tr>
+          <th style="padding: 0.75rem; text-align: left; background-color: #f8f9fa; border-bottom: 1px solid #dee2e6;">Training Type</th>
+          <td style="padding: 0.75rem; border-bottom: 1px solid #dee2e6;">{{ recipt.training_type }}</td>
+        </tr>
+        <tr>
+          <th style="padding: 0.75rem; text-align: left; background-color: #f8f9fa; border-bottom: 1px solid #dee2e6;">Referral Source</th>
+          <td style="padding: 0.75rem; border-bottom: 1px solid #dee2e6;">{{ recipt.lead_type }}</td>
+        </tr>
+      </table>
+    </div>
+  </div>
+</div>
+</body>
+</html>

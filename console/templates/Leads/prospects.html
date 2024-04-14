@@ -1,0 +1,1226 @@
+{% extends 'base/base.html' %} 
+{% block title %}QTLineone | Prospects{% endblock %}
+{% block style %}
+<style>
+  
+</style>
+
+{% endblock %}
+{% block breadCrum %}
+
+
+
+{% endblock %} 
+{% block profile %}
+
+<div class="row">
+  <div class="col-xl-12 pa-0">
+      <div class="profile-cover-wrap overlay-wrap">
+          <div class="profile-cover-img" style="background-image:url('../../static/dist/img/bg2.jpg')"></div>
+          <div class="bg-overlay bg-trans-dark-60"></div>
+          <div class="container profile-cover-content py-50">
+              <div class="hk-row"> 
+                  <div class="col-lg-4">
+                      <div class="media align-items-center">
+                          <div class="media-img-wrap  d-flex">
+                              <div class="avatar">
+                                  <img src="../../static/dist/img/avatar1.jpg" alt="user" class="avatar-img rounded-circle">
+                              </div>
+                          </div>
+                          <div class="media-body">
+                              <div class="text-white text-capitalize display-6 mb-5 font-weight-400">{{request.session.admin_user.full_name}}</div>
+                              <div class="font-14 text-white">
+                                  <span class="mr-5">
+                                      <span class="font-weight-bold pr-5">JOINING DATE:</span>
+                                      <span class="mr-5">12/03/24</span>
+                                  </span>
+                                  <span>
+                                      <span class="font-weight-bold pr-5">Department:</span>
+                                      <span>Python Department</span>
+                                  </span>
+                                  
+                              </div>
+                          </div>
+                      </div>
+                  </div>
+                 
+                  <div class="col-lg-8">
+                      <div class="container mt-3 ml-md-100">
+                                                          <div class="row">
+                                                              <!-- Enquiries Card -->
+                      <div class="col-md-3">
+                          <div class="stats-card p-2 mb-3 text-white" style="border-radius: 8px; box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); background-color: rgba(23, 163, 184, 0.479);">
+                              <h5 class="stats-title  text-white"><i class="fa fa-microphone text-dark" aria-hidden="true"></i> Enquiries</h5>
+                              <div class="stats-number ml-25">{{ leads_count }}</div>
+                          </div>
+                      </div>
+
+                      <!-- Follow-ups Card -->
+                      <div class="col-md-3">
+                          <div class="stats-card p-2 mb-3 text-dark" style="border-radius: 8px; box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); background-color: rgba(107, 111, 231, 0.458);">
+                              <h5 class="stats-title  text-white"><i class="fa fa-retweet text-dark" aria-hidden="true"></i> Follow-ups</h5>
+                              <div class="stats-number text-white ml-30">{{ other_count }}</div>
+                          </div>
+                      </div>
+
+                      <!-- Admissions Card -->
+                      <div class="col-md-3">
+                          <div class="stats-card p-2 mb-3 text-white" style="border-radius: 8px; box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); background-color: rgba(235, 115, 137, 0.468);">
+                              <h5 class="stats-title  text-white"><i class="fa fa-user text-dark" aria-hidden="true"></i> Admissions</h5>
+                              <div class="stats-number ml-30">{{ admissions_count }}</div>
+                          </div>
+                      </div>
+                      <div class="col-md-3">
+                          <div id="latestEnquiries" class="notification-card" class="stats-card p-2 mb-3 text-white" style="border-radius: 8px; box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); background-color: rgba(235, 115, 137, 0.468);">
+                             
+                          </div>
+                      </div>
+                      <div >
+                          <!-- Dynamically filled with latest enquiries -->
+                      </div>
+                      
+                          </div>
+                      </div>
+                  </div>
+                  
+                  
+              </div>
+          </div>
+      </div>
+      
+      <div class="bg-white shadow-bottom">
+          <div class="container">
+              <ul class="nav nav-light nav-tabs" role="tablist">
+                  <li class="nav-item">
+                      <a class="d-flex h-60p align-items-center nav-link {% if active_tab == 'lead_prospects' %}active{% endif %}" href="{% url 'lead_prospects' %}">Prospects</a>
+                  </li>
+                  <li class="nav-item">
+                      <a class="d-flex h-60p align-items-center nav-link {% if active_tab == 'leads' %}active{% endif %}" href="{% url 'leads' %}">Leads</a>
+                  </li>
+                  <li class="nav-item">
+                      <a class="d-flex h-60p align-items-center nav-link {% if active_tab == 'mql' %}active{% endif %}" href="{% url 'mql' %}">MQL</a>
+                  </li>
+                  <li class="nav-item">
+                      <a class="d-flex h-60p align-items-center nav-link {% if active_tab == 'sql' %}active{% endif %}" href="{% url 'sql' %}">SQL</a>
+                  </li>
+                  <li class="nav-item">
+                      <a class="d-flex h-60p align-items-center nav-link {% if active_tab == 'request_discounts' %}active{% endif %}" href="{% url 'request_discounts' %}">Request Discounts</a>
+                  </li>
+                  <li class="nav-item">
+                      <a class="d-flex h-60p align-items-center nav-link {% if active_tab == 'opportunity' %}active{% endif %}" href="{% url 'opportunity' %}">Opportunity</a>
+                  </li>
+                  <li class="nav-item">
+                      <a class="d-flex h-60p align-items-center nav-link {% if active_tab == 'admission' %}active{% endif %}" href="{% url 'admission' %}">Admissions</a>
+                  </li>
+                  <li class="nav-item">
+                      <a class="d-flex h-60p align-items-center nav-link {% if active_tab == 'spam' %}active{% endif %}" href="{% url 'spam' %}">Spam List</a>
+                  </li>
+                  
+
+                  <!-- Add other tabs with similar logic -->
+              </ul>
+          </div>
+      </div>
+      
+</div>
+<!-- /Row -->
+</div>
+
+{% endblock %}
+
+
+{% block content %}
+
+
+
+
+{% if messages %}
+ {% for message in messages %}
+   {% if message.tags == "error" %}
+     <div class="h-25 alert alert-danger alert-dismissible fade show mt-2 h-25 text-center" role="alert">{{ message }}</div>
+   {% elif message.tags == "success" %}
+     <div class="h-25 alert alert-success alert-dismissible fade show mt-2 h-25 text-center" role="alert">{{ message }}</div>
+     {% else %}
+    <div class="h-25 alert alert-info alert-dismissible fade show mt-2 h-25 text-center" role="alert">{{ message }}</div>
+               {% endif %}
+   {% endfor %}
+ {% endif %}
+
+<section class="hk-sec-wrapper">
+  <div class="row">
+    <div class="col">
+      <button
+      type="button"
+      class="btn btn-primary mr-2 mb-3"
+      data-toggle="modal"
+      data-target="#addnew"
+    >
+    <i class="glyphicon glyphicon-plus"></i> New Enquiry
+    </button>
+    <button type="button" class="btn btn-success mr-2 mb-3"><i class="glyphicon glyphicon-export"></i> Export</button>
+    <button
+      type="button"
+      class="btn btn-secondary mr-2 mb-3"
+      data-toggle="modal"
+      data-target="#UploadCourse"
+    >
+    <i class="glyphicon glyphicon-import"></i> Import
+    </button>
+    </div>
+  
+    <div class="button_operations  col-auto ml-auto p-0"  id="button_operations">
+        
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-sm">
+      <div class=" table-wrap">
+        <table
+        id="datable_1"
+        class="table table-hover w-100 display pb-30 table-bordered">
+        <thead class="bg-dark">
+          <tr>
+            <!-- <th class="text-white" for="">
+              <label for="checkAll" class="text-white" >All</label>
+              <input type="checkbox" class="form-check-input text-center" id="checkAll">
+          </th> -->
+            <th class="text-white">Token ID</th>
+            <th class="text-white">Student Name</th>
+            <th class="text-white">Mobile No</th>
+            <th class="text-white">Email</th>
+            <!-- <th class="text-white">Enquiry Taken By</th> -->
+            <th class="text-white">Course</th>
+            <th class="text-white">Training Type</th>
+            <th class="text-white">Lead stage</th>
+            <th class="text-white">Lead Source</th>
+            <th class="text-white">Token Generated Date</th>
+            <!-- <th class="text-white">Branch Name</th> -->
+            <th class="text-white">Action</th>
+            
+           
+            
+                          
+            
+          </tr>
+        </thead>
+        <tbody>
+          {% for i in prospects %}
+         <tr>
+         
+        <!-- <td><input type="checkbox" class="row-checkbox" data-id="{{i.id}}"></td> -->
+         <td>{{i.token_id}}</td>
+         <td>{{i.first_name}} {{i.last_name}}</td>
+         <td>{{i.mobile_number}}</td>
+         <td>{{i.email}}</td>
+         <!-- <td>{{i.enquiry_taken_by}}</td> -->
+         <td>{{i.course_name}}</td>
+         <td>{{i.training_type}}</td>
+         <td>
+          {% if  i.lead_stage%}
+          {{i.lead_stage}}
+          {% else %}
+          Not Assigned
+          {% endif %}
+
+         </td>
+         <td>{{i.lead_type}}</td>
+         <td>{{i.token_generated_date}}</td>
+         <td><a href="{% url 'mark_as_lead' i.id %}" class="btn btn-dark mr-2"><i class="fa fa-rocket"></i></a>
+         </td>
+         <!-- <td>{{i.branch_name}}</td> -->
+         
+         
+         </tr>
+         {% endfor %}
+         
+        </tbody>
+      </table>
+       
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Lead stage model start here -->
+{% for i in prospects %}
+
+<div
+  class="modal fade"
+  id="Democourse{{i.id}}"
+  tabindex="-1"
+  role="dialog"
+  aria-labelledby="CreateCourse"
+  aria-hidden="true"
+>
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header bg-dark">
+        <h5 class="modal-title text-white">Lead Stage</h5>
+        <button
+          type="button"
+          class="close"
+          data-dismiss="modal"
+          aria-label="Close"
+        >
+          <span aria-hidden="true" class="text-white">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form action="{% url 'lead_stage' i.id %}" method="post"  class="leadstageValid">
+          {% csrf_token %}
+          <div class="mb-3">
+            <label for="leadstage" class="form-label">Lead Stage<span class="text-danger">*</span></label>
+            <select id="leadstage" class="form-select form-control" name="leadstage">
+              <option selected disabled>Select Lead Stage</option>
+              <option>Call back</option>
+              <option>Not Responding</option>
+              <option>will attend demo</option>
+              <option>stay hold</option>
+            </select>
+          </div>
+          <div class="modal-footer d-flex justify-content-center">
+            <button type="submit" class="btn btn-primary">Submit</button>
+            <button type="reset" class="btn btn-secondary">Reset</button>
+          </div>
+        </form>
+      </div>
+     
+    </div>
+  </div>
+</div>
+
+{% endfor %}
+<!-- Create model end here -->
+
+
+<!-- addnew model start here -->
+
+<div
+  class="modal fade"
+  id="addnew"
+  tabindex="-1"
+  role="dialog"
+  aria-labelledby="addnew"
+  aria-hidden="true"
+>
+  <div class="modal-dialog modal-lg modal-dialog-scrollable" role="document">
+    <div class="modal-content">
+      <div class="modal-header bg-dark">
+        <h5 class="modal-title text-white">Enquiry Form</h5>
+        <button
+          type="button"
+          class="close"
+          data-dismiss="modal"
+          aria-label="Close"
+        >
+          <span aria-hidden="true" class="text-white">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form id="enquiryForm" method="post" action="{% url 'submit_enquiry' %}" class="row ">
+          {% csrf_token %}
+          <div class="mb-3 col-md-6">
+            <label for="" class="form-label"
+              >First Name <span class="text-danger">*</span></label
+            >
+            <input type="text" name="first_name" class="form-control" />
+          </div>
+          <div class="mb-3 col-md-6">
+            <label for="" class="form-label"
+              >Last Name <span class="text-danger">*</span></label
+            >
+            <input type="text" name="last_name" class="form-control" />
+          </div>
+          <div class="mb-3 col-md-6">
+            <label for="" class="form-label"
+              >Phone Number <span class="text-danger">*</span></label
+            >
+            <input
+              type="text"
+              name="mobile_number"
+              class="form-control"
+            />
+          </div>
+          <div class="mb-3 col-md-6">
+            <label for="" class="form-label"
+              >Email <span class="text-danger">*</span></label
+            >
+            <input type="email" name="email" class="form-control" />
+          </div>
+          <div class="col-md-6 mb-3">
+            <label for="branch_name" class="form-label">Branch Name <span class="text-danger">*</span></label>
+            <select id="branch_name" class="form-select form-control" name="branch_name">
+              <option value="" selected disabled>Select Your Course</option>
+              {% for i in  Branches %}
+                <option value="{{i.id}}">{{i.branch_name}}</option>
+              {% endfor %}
+            </select>
+            
+          </div>
+          <div class="col-md-6 mb-3">
+            <label for="course_name" class="form-label">Course <span class="text-danger">*</span></label>
+            <select id="course_name" class="form-select form-control" name="course_name">
+              <option value="" selected disabled>Select Your Course</option>
+              {% for i in  courses %}
+                <option value="{{i.id}}">{{i.course_name}}</option>
+              {% endfor %}
+            </select>
+            
+          </div>
+          
+          <div class="col-md-6 mb-3">
+            <label for="training_type" class="form-label">Training Type <span class="text-danger">*</span></label>
+            <select id="training_type" class="form-select form-control" name="training_type">
+              <option value="" selected disabled>Select Your Training Type</option>
+              {% for i in  training_types %}
+                <option value="{{i.id}}">{{i.TrainingTypeName}}</option>
+              {% endfor %}
+            </select>
+            
+          </div>
+          <div class="col-md-6 mb-3">
+            <label for="lead_source" class="form-label">lead source <span class="text-danger">*</span></label>
+            <select id="lead_source" class="form-select form-control" name="lead_source">
+              <option value="" selected disabled>Select Your lead  Source</option>
+              {% for i in  prospect_types %}
+                <option value="{{i.id}}">{{i.prospect_type}}</option>
+              {% endfor %}
+            </select>
+            
+          </div>
+       
+      
+        
+          <div class="modal-footer d-flex justify-content-center col-md-12">
+            <button type="submit" id="submitButton" class="btn btn-primary" >Submit</button>
+
+            <button type="reset" class="btn btn-secondary">Reset</button>
+          </div>
+        </form>
+
+      </div>
+      
+    </div>
+  </div>
+</div>
+
+<!-- add new model end here -->
+
+<!-- otp model start here -->
+
+<div
+  class="modal fade"
+  id="otp"
+  tabindex="-1"
+  role="dialog"
+  aria-labelledby="otp"
+  aria-hidden="true"
+>
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header bg-dark">
+        <h5 class="modal-title text-white">OTP Verification</h5>
+        <button
+          type="button"
+          class="close"
+          data-dismiss="modal"
+          aria-label="Close"
+        >
+          <span aria-hidden="true" class="text-white">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form method="post" action="{% url 'enquiry_verify_otp' %}" id="otpForm">
+          {% csrf_token %}
+          <div class="form-group">
+              <label for="otp">Enter OTP:</label>
+              <input type="text" class="form-control" id="otp" name="otp" required>
+              <span class="d-inline-block mt-2">{{error}}</span>
+          </div>
+         
+          <button type="submit" class="btn btn-dark btn-block mt-3">Verify OTP</button>
+      </form>
+      </div>
+      
+       
+      </div>
+    </div>
+  </div>
+
+
+<!-- Delete model end here -->
+
+<!-- Upload model  -->
+
+<div
+  class="modal fade"
+  id="UploadCourse"
+  tabindex="-1"
+  role="dialog"
+  aria-labelledby="UploadCourse"
+  aria-hidden="true"
+>
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header bg-dark">
+        <h5 class="modal-title text-white">Upload File</h5>
+        <button
+          type="button"
+          class="close"
+          data-dismiss="modal"
+          aria-label="Close"
+        >
+          <span aria-hidden="true" class="text-whte">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form action="" id="importValid">
+          <input type="file" id="input-file-now" class="dropify" />
+          <div id="file-error" style="display:none; color: red;" class="text-center mb-3"></div>
+
+          <div class="modal-footer d-flex justify-content-center">
+            <button type="submit" class="btn btn-primary">Submit</button>
+            <button
+              type="button"
+              class="btn btn-secondary"
+              data-dismiss="modal"
+              aria-label="Close"
+            >
+              Close
+            </button>
+          </div>
+        </form>
+      </div>
+     
+    </div>
+  </div>
+</div>
+
+
+<!-- Upload model end here -->
+
+<!-- lead modal -->
+<!--Admission Modal -->
+
+{% for i in prospects %}
+<div class="modal fade" id="sumbitmodal{{i.id}}" tabindex="-1" role="dialog" aria-labelledby="sumbitmodal{{i.id}}" aria-hidden="true">
+  <div class="modal-dialog modal-lg modal-dialog-scrollable" role="document">
+      <div class="modal-content">
+          <div class="modal-header bg-dark">
+              <h5 class="modal-title text-white">Admission Form</h5>
+              <button type="button" class="close text-white" data-dismiss="modal" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+              </button>
+          </div>
+          
+          <div class="modal-body ">
+              <form action="" class="row g-3 admissionValid" method="post">
+                {% csrf_token %}
+              
+                <div class="col-md-6 mb-3">
+                  <label for="Tokenid" class="form-label">Token Id <span>*</span></label>
+                  <input type="text" class="form-control  bg-light text-secondary" id="Tokenid" value="{{i.token_id}}" disabled>
+                </div>
+                <div class="col-md-6 mb-3">
+                  <label for="studentname" class="form-label">Student Name<span>*</span></label>
+                  <input type="text" class="form-control  bg-light text-secondary" id="studentname" value="{{i.firstname}} {{i.lastname}}" disabled>
+                </div>
+                <div class="col-md-6 mb-3">
+                  <label for="mblno" class="form-label">Mobile No<span>*</span></label>
+                  <input type="tel" class="form-control  bg-light text-secondary" id="mblno" value="{{i.phone}}" disabled>
+                </div>
+                <div class="col-md-6 mb-3">
+                  <label for="email" class="form-label">Email<span>*</span></label>
+                  <input type="email" class="form-control  bg-light text-secondary" id="email" value="{{i.email}}" disabled>
+                </div>
+                <div class="col-md-4 mb-3">
+                  <label for="courseinput" class="form-label">Course<span>*</span></label>
+                  <input type="text" class="form-control  bg-light text-secondary" id="courseinput" value="{{i.course_interested_in}}" disabled>
+                </div>
+                <div class="col-md-4 mb-3">
+                  <label for="courseFaculty" class="form-label">Course Faculty<span>*</span></label>
+                  <input type="text" class="form-control  bg-light text-secondary" id="courseFaculty" value="{{i.course_faculty}}" disabled>
+                </div>
+                <div class="col-md-4 mb-3">
+                  <label for="plan" class="form-label">Plan<span class="text-danger">*</span></label>
+                  <select id="plan" class="form-select form-control" name="plan">
+                    <option selected disabled>Select the Plan</option>
+                    <option>JOIP</option>
+                    <option>Internship</option>
+                  </select>
+                  
+                </div>
+                <!--  -->
+                <div class="col-md-4 mb-3">
+                  <label for="courseFee" class="form-label">Course Fee<span >*</span></label>
+                  <input type="text" class="form-control  bg-light text-secondary" id="courseFee" value="{{i.course_fee}}" disabled>
+                </div>
+                <div class="col-md-4 mb-3">
+                  <label for="discount" class="form-label">Discount Fee<span class="text-danger">*</span></label>
+                  <input type="text" class="form-control" id="discount" value="" placeholder="Discount Fee (%)" name="discountFee">
+                </div>
+                <div class="col-md-4 mb-3">
+                  <label for="finalFee" class="form-label">Final Fee<span  class="text-danger">*</span></label>
+                  <input type="text" class="form-control text-secondary" id="finalFee" placeholder="Final Fee" readonly name="finalFee">
+
+                </div>
+                
+                <!--  -->
+
+                <div class="col-md-4 mb-3">
+                  <label for="trainingType" class="form-label">Training Type<span>*</span></label>
+                  <input type="text" class="form-control  bg-light text-secondary" id="trainingType" value="{{i.Training_type}}" disabled>
+                </div>
+                <div class="col-md-4 mb-3">
+                  <label for="branch" class="form-label">Branch<span>*</span></label>
+                  <input type="email" class="form-control  bg-light text-secondary" id="branch" value="{{i.branch_name}}" disabled>
+                </div>
+                <div class="col-md-4 mb-3">
+                  <label for="Leadsource" class="form-label">Lead Source<span>*</span></label>
+                  <input type="text" class="form-control  bg-light text-secondary" id="Leadsource" value="{{i.lead_source}}" disabled>
+                </div>
+                <div class="col-md-4 mb-3">
+                  <label for="batchno" class="form-label">Batch Number<span class="text-danger">*</span></label>
+                  <select id="batchno" class="form-select form-control" name="batchno">
+                    <option selected disabled>Select the Batch Number</option>
+                  <option>25</option>
+                  <option>24</option>
+                  <option>23</option>
+                  </select>
+                  
+                </div>
+                <div class="col-md-4 mb-3">
+                  <label for="admissionFee" class="form-label">Admission Fee<span class="text-danger">*</span></label>
+                  <input type="text" class="form-control text-secondary" id="admissionFee" name="admissionFee" placeholder="0.00">
+                </div>
+                <div class="col-md-4 mb-3">
+                  <label for="remainingfee" class="form-label">Remainingfee Fee<span class="text-danger">*</span></label>
+                  <input type="text" class="form-control text-secondary" id="remainingfee" name="remainingfee" placeholder="0.00" readonly>
+                </div>
+                <!-- payment details -->
+                <div class="col-md-6 mb-3">
+                  <label for="paymenttype" class="form-label">Mode of Payment<span class="text-danger">*</span></label>
+                  <select id="paymenttype{{i.id}}" class="form-select form-control" name="paymenttype" onchange="showPaymentFields('{{i.id}}')">
+
+                      <option selected disabled>Select Mode of Payment</option>
+                      <option value="UPI">UPI</option>
+                      <option value="Paytm">Paytm</option>
+                      <option value="Cash">Cash</option>
+                      <option value="BankTransfer">Bank Transfer</option>
+                  </select>
+              </div>
+              
+              <!-- UPI Details -->
+              <div class="col-md-6 mb-3 payment-details{{i.id}}" id="UPI{{i.id}}" style="display: none;">
+
+                  <label for="upiId" class="form-label">UPI ID<span class="text-danger">*</span></label>
+                  <input type="text" class="form-control text-secondary" id="upiId" name="upiId" placeholder="UPI ID">
+                  <div>
+                    <label for="upiTransactionId" class="form-label">Transaction Id<span class="text-danger">*</span></label>
+                    <input type="text" class="form-control text-secondary" id="upiTransactionId" name="upiTransactionId" placeholder="TransactionId">
+                  </div>
+                  
+              </div>
+              
+              <!-- Paytm Details -->
+              <div class="col-md-6 mb-3 payment-details{{i.id}}" id="Paytm{{i.id}}" style="display: none;">
+                  <label for="paytmNumber" class="form-label">Paytm Number<span class="text-danger">*</span></label>
+                  <input type="text" class="form-control text-secondary" id="paytmNumber" name="paytmNumber" placeholder="Paytm Number">
+                  <div>
+                    <label for="paytmTransactionId" class="form-label">Transaction Id<span class="text-danger">*</span></label>
+                    <input type="text" class="form-control text-secondary" id="paytmTransactionId" name="paytmTransactionId" placeholder="TransactionId">
+                  </div>
+              </div>
+              
+              <!-- Bank Transfer Details -->
+              <div class="col-md-6 mb-3 payment-details{{i.id}}" id="BankTransfer{{i.id}}" style="display: none;">
+                  <div>
+                    <label for="bankAccount" class="form-label">Bank Account Number<span class="text-danger">*</span></label>
+                    <input type="text" class="form-control text-secondary" id="bankAccount" name="bankAccount" placeholder="Bank Account Number">
+                  </div>
+                  <div>
+                    <label for="bankTransactionId" class="form-label">Transaction Id<span class="text-danger">*</span></label>
+                    <input type="text" class="form-control text-secondary" id="bankTransactionId" name="bankTransactionId" placeholder="TransactionId">
+                  </div>
+                  
+              </div>
+              
+                
+                <div class="modal-footer d-flex justify-content-center col-md-12 mb-3">
+                  <button type="submit" class="btn btn-primary">Submit</button>
+                  <button type="button" class="btn btn-secondary" data-dismiss="modal">Reset</button>
+                </div>
+              </form>
+          </div>
+          
+      </div>
+  </div>
+</div>
+{% endfor %}
+<!-- Modal -->
+{% endblock %}
+{% block scripts %}
+
+
+  <script>
+    $(document).ready(function() {
+
+      
+
+      // alert message container
+      setTimeout(function() {
+        $(".alert").fadeOut("slow", function() {
+            // This function is called after the fadeOut completes
+            $(this).remove(); // Removes the element from the DOM
+        });
+    }, 5000);
+
+    
+
+        // Function to update button operations
+        function updateButtonOperations() {
+            var selectedCount = $('.row-checkbox:checked').length;
+            var buttonsHtml = '';
+    
+            if (selectedCount >= 1) {
+              var prospectId = $('.row-checkbox:checked').data('id');
+                // When at least one checkbox is selected
+                buttonsHtml = `
+                <button class="btn btn-info mr-2 demo-details" data-target="#Democourse${prospectId}"><i class="fa fa-plus-circle"></i> Add Lead stage</button>
+                
+                    <button class="btn btn-primary mr-2 view-details" data-target="#sumbitmodal${prospectId}"><i class="fa fa-user"></i> Admission</button>
+                    <button class="btn btn-danger mr-2" id="openDeleteModal"><i class="fa fa-trash-o"></i> Delete</button>
+                `;
+                if(selectedCount > 1) {
+                    // When multiple checkboxes are selected, adjust the buttons accordingly
+                    buttonsHtml = `
+                        <button class="btn btn-dark mr-2"><i class="fa fa-envelope"></i> Email</button>
+                        <button class="btn btn-success mr-2"><i class="fa fa-phone"></i> WhatsApp</button>
+                        <button class="btn btn-info mr-2"><i class="fa fa-comments"></i> SMS</button>
+                        <button class="btn btn-danger mr-2"><i class="fa fa-trash-o"></i> Delete</button>
+                    `;
+                }
+            }
+    
+            $('#button_operations').html(buttonsHtml);
+        }
+
+        $('#button_operations').on('click', '#openDeleteModal', function() {
+        $('#DeleteCourse').modal('show');
+       });
+       $('#button_operations').on('click', '.view-details', function() {
+        var targetModal = $(this).data('target');
+        $(targetModal).modal('show');
+    });
+    
+        // Attach change event listener to checkboxes for row selection
+        $(document).on('change', '.row-checkbox', function() {
+            // Check if all checkboxes are selected
+            var allChecked = $('.row-checkbox').length === $('.row-checkbox:checked').length;
+            $('#checkAll').prop('checked', allChecked);
+            updateButtonOperations();
+        });
+    
+        // "Check All" functionality
+        $('#checkAll').change(function() {
+            $('.row-checkbox').prop('checked', this.checked);
+            updateButtonOperations();
+        });
+
+
+        $('#button_operations').on('click', '#openEditModal', function() {
+        $('#EditCourse').modal('show');
+        });
+
+        $('#button_operations').on('click', '.demo-details', function() {
+        var targetModal = $(this).data('target');
+        $(targetModal).modal('show');
+    });
+
+    
+  // discount fee
+  function updateFinalFee(modal) {
+    var courseFee = parseFloat(modal.find('#courseFee').val()) || 0;
+    var discount = parseFloat(modal.find('#discount').val()) || 0;
+
+    // Check if the discount is within the valid range of 1 to 100
+    if(discount >= 1 && discount <= 100) {
+        var discountAmount = (courseFee * discount) / 100;
+        var finalFee = courseFee - discountAmount;
+        modal.find('#finalFee').val(finalFee.toFixed(2));
+    } else {
+        // If the discount is not valid, you could choose to not update the final fee
+        // or set it back to the original course fee. Uncomment the line below as needed.
+        // modal.find('#finalFee').val('0'.toFixed(2));
+    }
+}
+
+// Event listener for changes in the discount input field within any modal
+$('.modal').on('input', '#discount', function() {
+    // Find the closest modal to the discount input field that triggered the event
+    var modal = $(this).closest('.modal');
+    updateFinalFee(modal);
+});
+
+
+     // admission Fee
+   // Updates the remaining fee, ensuring the admission fee is within a valid range
+   function updateRemainingFee(modal) {
+        var finalFee = parseFloat(modal.find('#finalFee').val()) || 0;
+        var admissionFee = parseFloat(modal.find('#admissionFee').val()) || 0;
+        
+        // Validate the admission fee to be within the range of 1000 to finalFee
+        if (admissionFee >= 1000 && admissionFee <= finalFee) {
+            var remainingFee = finalFee - admissionFee;
+            modal.find('#remainingfee').val(remainingFee.toFixed(2));
+        } else {
+            // Optionally, reset or mark the remaining fee as invalid if conditions are not met
+            // modal.find('#remainingfee').val("Invalid");
+        }
+    }
+ // Listen for changes in the Admission Fee input field within the current modal
+ $('.modal').on('input', '#admissionFee', function() {
+        var modal = $(this).closest('.modal');
+        updateRemainingFee(modal);
+    });
+    });
+
+    // for payment related functionality
+    function showPaymentFields(uniqueId) {
+    // Hide all payment detail fields initially
+    document.querySelectorAll('.payment-details' + uniqueId).forEach(function(element) {
+        element.style.display = 'none';
+    });
+
+    // Get selected payment type using the uniqueId
+    var paymentType = document.getElementById('paymenttype' + uniqueId).value;
+
+    // Show the fields related to the selected payment type
+    if (paymentType !== 'Select Mode of Payment') {
+        var selectedPaymentDiv = document.getElementById(paymentType + uniqueId);
+        if (selectedPaymentDiv) {
+            selectedPaymentDiv.style.display = 'block';
+        }
+    }
+}
+
+    </script>
+
+
+<!-- fileds validations -->
+    <script>
+      $(document).ready(function(){
+        $(".leadstageValid").each(function(){
+          $(this).validate({
+            rules: {
+              leadstage: {
+                      required: true,
+                      
+                  }
+              },
+              messages: {
+                leadstage: {
+                      required: "Please Select the Lead Stage.",
+                      
+                  }
+              },
+      
+              submitHandler: function (form) {
+              form.submit()
+              }
+            })
+         });
+      
+        })
+      
+      
+      </script>
+
+<!-- admission form validation -->
+<script>
+  $(document).ready(function() {
+      // Validate each form identified by the 'admissionValid' class
+      $(".admissionValid").each(function() {
+          $(this).validate({
+              // Ignore disabled fields
+              ignore: ":disabled",
+              rules: {
+                  // Assuming 'name' attributes are correctly set. Adjust as necessary.
+                  plan: "required",
+                  discountFee: {
+                      required: true,
+                      range: [1, 100]
+                      
+                  },
+                  admissionFee: {
+                    required: true,
+                    number: true,
+                    min: 1000,
+                    // Dynamically set the max based on the finalFee's value at the time of validation
+                    max: function() {
+                        var finalFeeVal = parseFloat($('#finalFee').val());
+                        if (!isNaN(finalFeeVal)) {
+                            return finalFeeVal;
+                        }
+                        // If finalFee is NaN, use this to force a validation error
+                        return -1; 
+                    }
+                },
+                  batchno: "required",
+                  paymenttype: "required",
+                  upiId: {
+                    required: function(element) {
+                        return true
+                    }
+                },
+                paytmNumber: {
+                    required: function(element) {
+                        return true
+                    }
+                },
+                bankAccount: {
+                    required: function(element) {
+                        return true
+                    }
+                },
+                bankTransactionId:"required",
+                paytmTransactionId:"required",
+                upiTransactionId:"required",
+                  // Add additional fields and rules here as needed
+              },
+              messages: {
+                  plan: "Please select a plan",
+                  discountFee: {
+                      required: "Please enter a discount fee",
+                      range: "Discount fee must be between 1% and 100%"
+                  },
+                  admissionFee: {
+                    required: "Admission fee is required",
+                    number: "Please enter a valid number for the admission fee",
+                    min: "Admission fee must be at least 1000",
+                    max: function() {
+                        var finalFeeVal = $('#finalFee').val();
+                        if (!finalFeeVal || isNaN(parseFloat(finalFeeVal))) {
+                            return "Please enter a valid discount before setting the admission fee.";
+                        }
+                        return "Admission fee cannot exceed the final fee";
+                    }
+                },
+                  batchno: "Please select a batch number",
+                  paymenttype: "Please select a mode of payment",
+                  upiId: "UPI ID is required",
+                paytmNumber: "Paytm number is required",
+                bankAccount: "Bank account number is required",
+                TransactionId: "Transaction ID is required",
+                bankTransactionId:"Transaction ID is required",
+                paytmTransactionId:"Transaction ID is required",
+                upiTransactionId:"Transaction ID is required",
+              },
+              submitHandler: function(form) {
+                  form.submit();
+              }
+          });
+      });
+  
+      // Function to show/hide payment details based on the selected payment type
+      window.showPaymentFields = function(uniqueId) {
+          $('.payment-details' + uniqueId).hide(); // Hide all payment detail fields initially
+          var paymentType = $('#paymenttype' + uniqueId).val(); // Get selected payment type
+          if (paymentType) {
+              $('#' + paymentType + uniqueId).show(); // Show the fields related to the selected payment type
+          }
+      }
+  });
+  </script>
+  
+
+<script>
+  $(document).ready(function () {
+
+
+    // Attach validation logic to the form's submit event
+$('#importValid').submit(function(e) {
+    var fileInput = $('#input-file-now');
+    var filePath = fileInput.val();
+    var allowedExtensions = /(\.csv)$/i;
+    var fileError = $('#file-error');
+
+    if(filePath === '') {
+        fileError.text('Please select a file.').show();
+        e.preventDefault(); // Prevent form submission
+    } else if(!allowedExtensions.exec(filePath)) {
+        fileError.text('Please upload a file with .csv extension.').show();
+        fileInput.val(''); // Clear the file input
+        e.preventDefault(); // Prevent form submission
+    } else {
+        fileError.hide();
+    }
+});
+
+// Optional: Hide error message when user attempts to change the file
+$('#input-file-now').change(function() {
+    $('#file-error').hide();
+});
+
+    // Adding a custom method for specific email validation
+    $.validator.addMethod("customEmail", function(value, element) {
+        // Regular expression for validating a specific domain in the email, e.g., Gmail
+        return this.optional(element) || /^[a-zA-Z0-9._%+-]+@gmail\.com$/i.test(value);
+    }, "Please enter a valid Email address.");
+
+    // Custom method for special character validation
+    $.validator.addMethod("noSpecialChars", function(value, element) {
+        return this.optional(element) || /^[a-zA-Z0-9\s]*$/.test(value);
+    }, "Special characters are not allowed.");
+
+
+    $.validator.addMethod("noNumbers", function(value, element) {
+    return this.optional(element) || !/\d/.test(value);
+}, "It Can not contain numbers.");
+    // Vendor Add/Edit Form Validation
+
+    // // create validation
+    // $("#enquiryForm").validate({
+    //     rules: {
+    //       first_name: {
+    //             required: true,
+    //             minlength: 3,
+    //             noSpecialChars: true,
+    //             noNumbers: true
+                
+                
+    //         },
+    //         last_name: {
+    //             required: true,
+    //             minlength: 3,
+    //             noSpecialChars: true,
+    //             noNumbers: true
+    //           },
+    //           mobile_number: {
+    //             required: true,
+    //             digits: true,
+    //             minlength: 10,
+    //             maxlength: 10
+    //         },
+    //         email: {
+    //             required: true,
+    //             customEmail: true  // Use the custom email validation method
+    //         },
+    //         course_name: "required",
+    //         training_type: "required",
+    //         lead_source: "required",
+    //         branch_name:"required",
+            
+    //     },
+    //     messages: {
+    //       first_name: {
+    //             required: "Please enter the First Name.",
+    //             minlength: "Name must be at least 3 characters."
+    //         },
+    //         last_name: {
+    //             required: "Please enter the First Name.",
+    //             minlength: "Name must be at least 3 characters."
+    //         },
+         
+    //         mobile_number: {
+    //             required: "Please enter your Mobile number",
+    //             digits: "Please enter only numbers",
+    //             minlength: "Enter valid Mobile Number",
+    //             maxlength: "Enter valid Mobile Number"
+    //         },
+    //         email: {
+    //             required: "Please enter your email address.",
+    //             customEmail: "Please enter a valid Email address (e.g., user@gmail.com)."
+    //         },
+    //         course_name: "Please Select a Course Name",
+    //         training_type: "Please Select a Training Type",
+    //         lead_source: " Please Select a lead Source",
+    //         branch_name:"Please Select a Branch name",
+    //     },
+    //     submitHandler: function (form) {
+    //     form.submit();
+    //   }
+    // });
+  })
+
+</script>
+  
+  <!-- scripts for alert and notifications -->
+
+  <script>
+    document.getElementById('enquiryForm').addEventListener('submit', function(e) {
+    e.preventDefault(); // Remove this line if you want the form to submit normally after playing the sound
+
+    var sound = document.getElementById('alertSound');
+    sound.play();
+
+    // Add your AJAX form submission logic here if not submitting traditionally
+});
+
+  </script>
+
+
+<script>
+  $(document).ready(function() {
+  // Client-side validation
+  $.validator.addMethod("noSpecialChars", function(value, element) {
+    return this.optional(element) || /^[a-zA-Z\s]+$/i.test(value);
+  }, "Special characters are not allowed.");
+
+  $.validator.addMethod("noNumbers", function(value, element) {
+    return this.optional(element) || /^[a-zA-Z\s]+$/i.test(value);
+  }, "Numbers are not allowed.");
+
+  $.validator.addMethod("customEmail", function(value, element) {
+    return this.optional(element) || /^[\w\.-]+@[\w\.-]+\.\w{2,4}$/i.test(value);
+  }, "Please enter a valid email address.");
+
+  $("#enquiryForm").validate({
+    
+    rules: {
+      first_name: {
+        required: true,
+        noSpecialChars: true
+      },
+      last_name: {
+        required: true,
+        noSpecialChars: true
+      },
+      mobile_number: {
+        required: true,
+        digits: true,
+        minlength: 10,
+        maxlength: 10
+      },
+      email: {
+        required: true,
+        customEmail: true
+      },
+      course_name: {
+        required: true
+      },
+      branch_name: {
+        required: true
+      },
+      training_type: {
+        required: true
+      },
+      lead_source: {
+        required: true
+      }
+    },
+    messages: {
+      first_name: {
+        required: "Please enter your first name"
+      },
+      last_name: {
+        required: "Please enter your last name"
+      },
+      mobile_number: {
+        required: "Please enter your mobile number",
+        digits: "Please enter a valid mobile number",
+        minlength: "Mobile number should be 10 digits",
+        maxlength: "Mobile number should be 10 digits"
+      },
+      email: {
+        required: "Please enter your email address"
+      },
+      course_name: {
+        required: "Please select a course"
+      },
+      branch_name: {
+        required: "Please select a branch"
+      },
+      training_type: {
+        required: "Please select a training type"
+      },
+      lead_source: {
+        required: "Please select a lead source"
+      }
+    },
+    
+    submitHandler: function(form, event) {
+      // Prevent the default form submission
+      event.preventDefault();
+      
+      // Retrieve the CSRF token from the form
+      var csrftoken = $('[name=csrfmiddlewaretoken]').val();
+      
+      // Serialize the form data
+      var formData = $(form).serialize();
+
+      // Perform the AJAX request
+      $.ajax({
+        type: 'POST',
+        url: $(form).attr('action'), // Use the form's action attribute
+        data: formData,
+        dataType: 'json', // Expect a JSON response
+        beforeSend: function(xhr) {
+          // Set the CSRF token header for the request
+          xhr.setRequestHeader('X-CSRFToken', csrftoken);
+        },
+        success: function(response) {
+          // Check the response for the otpSent key
+          if (response.otpSent) {
+            // If OTP was sent successfully, show the OTP modal and hide the enquiry form modal
+            $('#addnew').modal('hide'); // Assuming 'addnew' is the ID of your enquiry form modal
+            $('#otp').modal('show'); // Show the OTP modal
+          } else {
+            // Handle the case where OTP wasn't sent successfully
+            alert("Failed to send OTP. Please try again.");
+          }
+        },
+        error: function(xhr, status, error) {
+          // Handle any AJAX errors
+          console.error('AJAX Error: ' + error);
+          alert("An error occurred. Please try again later.");
+        }
+      });
+    }
+  });
+
+  $("#otpForm").on('submit', function(e) {
+    e.preventDefault();
+    var formData = $(this).serialize();
+    var csrftoken = $('[name=csrfmiddlewaretoken]').val(); // Get CSRF token
+
+    $.ajax({
+        type: 'POST',
+        url: $(this).attr('action'),
+        data: formData,
+        dataType: 'json',
+        beforeSend: function(xhr) {
+            xhr.setRequestHeader('X-CSRFToken', csrftoken); // Include CSRF token in request header
+        },
+        success: function(response) {
+            if (response.otpverification) {
+                // If there's a URL to redirect to, perform the redirection
+                if (response.redirectUrl) {
+                    window.location.href = response.redirectUrl;
+                } else {
+                    // Handle unexpected case where OTP verification is true but no redirect URL is provided
+                    console.error("OTP verified, but no redirect URL provided.");
+                    alert("Error: No redirect URL provided. Please contact support.");
+                }
+            } else {
+                // OTP verification failed, show message and optionally other logic
+                $('#otp').modal('hide');
+                $('#addnew').modal('show');
+                alert(response.message);
+            }
+        },
+        error: function(xhr, status, error) {
+            console.error('AJAX Error:', error);
+            alert("An error occurred. Please try again later.");
+        }
+    });
+});
+
+});
+</script>
+
+
+
+{% endblock %}
+

@@ -1,0 +1,1252 @@
+{% extends 'base/base.html' %}
+{% block title %}QTLineone | Courses {% endblock %}
+
+{% block breadCrum %}
+
+<!-- Breadcrumb -->
+<div class="hk-pg-header d-flex justify-content-between mb-0">
+  <h4 class="hk-pg-title m-3">Course Management</h4>
+  <nav aria-label="breadcrumb">
+    <ol class="breadcrumb bg-transparent mb-0">
+      <li class="breadcrumb-item"><a href="{% url 'dashboard' %}">Dashboard</a></li>
+      <li class="breadcrumb-item active" aria-current="page">Course Management</li>
+    </ol>
+  </nav>
+</div>
+<!-- /Breadcrumb -->
+{% endblock %} {% block content %}
+<!-- message here -->
+
+{% if messages %}
+{% for message in messages %}
+{% if message.tags == "error" %}
+<div class="h-25 alert alert-danger alert-dismissible fade show mt-2 h-25 text-center" role="alert">{{ message }}</div>
+{% elif message.tags == "success" %}
+<div class="h-25 alert alert-success alert-dismissible fade show mt-2 h-25 text-center" role="alert">{{ message }}</div>
+{% else %}
+<div class="h-25 alert alert-info alert-dismissible fade show mt-2 h-25 text-center" role="alert">{{ message }}</div>
+{% endif %}
+{% endfor %}
+{% endif %}
+
+
+<!-- message end here -->
+<section class="hk-sec-wrapper">
+  <div class="d-flex justify-content-between">
+    <div class="">
+      <button type="button" class="btn btn-primary mr-2 mb-3" data-toggle="modal" data-target="#CreateCourse">
+        <i class="glyphicon glyphicon-plus"></i> Create Course
+      </button>
+      <a href="{% url 'course_manage_export' %}" class="btn btn-success mr-2 mb-3"><i
+          class="glyphicon glyphicon-export"></i>
+        Export</a>
+      <button type="button" class="btn btn-secondary mr-2 mb-3" data-toggle="modal" data-target="#UploadCourseManage"><i
+          class="glyphicon glyphicon-import"></i> Import
+      </button>
+    </div>
+    <div>
+      <button type="button" class="btn btn-danger mr-2 mb-3" id="deleteButton" data-toggle="modal"
+        data-target="#deleteModal" style="display: none; ">
+        <i class="glyphicon glyphicon-trash"></i> Delete
+      </button>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-sm">
+      <div class="table-wrap">
+        <table id="datable_1" class="table table-hover w-100 display pb-30 table-bordered">
+          <thead class="bg-dark">
+            <tr>
+              <th class="text-white text-center"><input type="checkbox" id="selectAll"> All</th>
+              <th class="text-white">S.No</th>
+              <th class="text-white">Subject</th>
+              <th class="text-white">Course Name</th>
+              <th class="text-white">Specialization</th>
+              <th class="text-white">Course Duration</th>
+              <th class="text-white">Course Fee / Final Price</th>
+              <th class="text-white">Course Plan</th>
+              <th class="text-white text-center">Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for i in manage %}
+            <tr>
+              <td class="text-center"><input type="checkbox" class="row-checkbox" data-course-id="{{i.id}}"
+                data-course-name="{{i.course_title}}"></td>
+              <td>{{forloop.counter}}</td>
+              <td>{{i.course_title}}</td>
+              <td>{{i.course_name.course_name}}</td>
+              <td>{{i.specialization.specilalization_name}}</td>
+              <td>{{i.duration}} Days</td>
+              <td> ₹{{i.course_fee}} / ₹{{i.final_price}}</td>
+              <td>{{i.course_plan}}</td>
+              <td class="text-center">
+                <button class="btn btn-secondary m-1" data-toggle="modal" data-target="#ViewCourse{{forloop.counter}}">
+                  <i class="fa fa-eye"></i>
+                </button>
+                <button class="btn btn-primary m-1" data-toggle="modal" data-target="#EditCourse{{forloop.counter}}">
+                  <i class="fa fa-pencil"></i>
+                </button>
+                <button class="btn btn-danger m-1" data-toggle="modal" data-target="#DeleteCourse{{forloop.counter}}">
+                  <i class="fa fa-trash"></i>
+                </button>
+              </td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- create model start here -->
+
+<div class="modal fade" id="CreateCourse" tabindex="-1" role="dialog" aria-labelledby="CreateCourse" aria-hidden="true">
+  <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header bg-dark">
+        <h5 class="modal-title text-white">Create New Course</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true" class="text-white">&times;</span>
+        </button>
+      </div>
+      <form action="{% url 'course_manage' %}" method="post" id="course_add" enctype="multipart/form-data">
+        {% csrf_token %}
+        <div class="modal-body">
+          <div class="row">
+            <div class="col-sm-12 mb-3">
+              <label for="" class="form-label">Subject <span class="text-danger">*</span></label>
+              <input type="text" class="form-control" name="course_title" placeholder="Ex: Python Programming">
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-sm-12 col-md-6 col-lg-4 mb-3">
+              <label for="" class="form-label">Course Plan <span class="text-danger">*</span></label>
+              <select class="form-control custom-select" name="course_plan">
+                <option selected value="">Select Plan</option>
+                {% for i in plan %}
+                {% if i.status == "Active" %}
+                <option value="{{i.id}}">{{ i.plan_name }}</option>
+                {% endif %}
+                {% endfor %}
+              </select>
+            </div>
+            <div class="col-sm-12 col-md-6 col-lg-4 mb-3">
+              <label class="form-label">Course Name <span class="text-danger">*</span></label>
+              <select class="form-control custom-select id_course" name="course_name">
+                <option selected value="">Select Course</option>
+                {% for i in name %}
+                {% if i.status == "Active" %}
+                <option value="{{i.id}}">{{ i.course_name }}</option>
+                {% endif %}
+                {% endfor %}
+              </select>
+            </div>
+            <div class="col-sm-12 col-md-6 col-lg-4 mb-3">
+              <label class="form-label">Specialization <span class="text-danger">*</span></label>
+              <select class="form-control custom-select id_specialization" name="specialization">
+              </select>
+            </div>
+            <div class="col-sm-12 col-md-6 col-lg-4 mb-3">
+              <label for="" class="form-label">Branch <span class="text-danger">*</span></label>
+              <select class="form-control custom-select" name="branch">
+                <option selected value="">Select Branch</option>
+                {% for bran in branch_type %}
+                {% if bran.status == "Active" %}
+                <option value="{{bran.id}}">{{ bran.branch_name }}</option>
+                {% endif %}
+                {% endfor %}
+              </select>
+            </div>
+            <div class="col-sm-12 col-md-6 col-lg-4 mb-3">
+              <label for="" class="form-label">Batch Type <span class="text-danger">*</span></label>
+              <select class="form-control custom-select" name="batch_type">
+                <option selected value="">Select Batch Type</option>
+                {% for j in type %}
+                {% if j.status == "Active" %}
+                <option value="{{j.id}}">{{j.batchtype_name}}</option>
+                {% endif %}
+                {% endfor %}
+              </select>
+            </div>
+            <div class="col-sm-12 col-md-6 col-lg-4 mb-3">
+              <label for="" class="form-label">Teaching Faculty <span class="text-danger">*</span></label>
+              <select class="form-control custom-select" name="faculty">
+                <option selected value="">Select Faculty</option>
+                {% for f in faculty %}
+                {% if f.status == "Active" %}
+                <option value="{{f.id}}">{{ f.first_name }}</option>
+                {% endif %}
+                {% endfor %}
+              </select>
+            </div>
+            <!-- <div class="col-sm-12 col-md-6 mb-3">
+              <label for="" class="form-label">Course Starting Date <span class="text-danger">*</span></label>
+              <input id="start-date-input" class="form-control" type="date" name="startdate" />
+            </div>
+            <div class="col-sm-12 col-md-6 mb-3">
+              <label for="" class="form-label">Course Ending Date <span class="text-danger">*</span></label>
+              <input id="end-date-input" class="form-control" type="date" name="enddate" />
+            </div> -->
+          </div>
+          <div class="row">
+            <div class="col-sm-12 col-md-6 mb-3">
+              <label for="" class="form-label">Course Duration <span class="text-danger">*</span></label>
+              <input type="text" class="form-control" placeholder="Ex: 100 Days" name="duration">
+            </div>
+            <div class="col-sm-12 col-md-6 mb-3">
+              <label for="" class="form-label">Course Fee <span class="text-danger">*</span></label>
+              <input type="text" class="form-control" placeholder="Ex: 60000" id="fee" name="fee">
+            </div>
+            <div class="col-sm-12 col-md-6 mb-3">
+              <label for="" class="form-label">Discount % <span class="text-danger">*</span></label>
+              <input type="text" class="form-control" placeholder="Ex:10%" id="discount" name="discount">
+            </div>
+            <div class="col-sm-12 col-md-6 mb-3">
+              <label for="" class="form-label">Selling Price <span class="text-danger">*</span></label>
+              <input type="text" class="form-control" placeholder="Ex:10000" id="price" name="price">
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-sm-12 mb-3">
+              <label for="" class="form-label">Course Curriculum(pdf) <span class="text-danger">*</span></label>
+              <div class="fileinput fileinput-new input-group" data-provides="fileinput">
+                <div class="input-group-prepend">
+                  <span class="input-group-text">Upload</span>
+                </div>
+                <div class="form-control text-truncate" data-trigger="fileinput"><i
+                    class="glyphicon glyphicon-file fileinput-exists"></i> <span class="fileinput-filename"></span>
+                </div>
+                <span class="input-group-append">
+                  <span class=" btn btn-primary btn-file"><span class="fileinput-new">Select file</span><span
+                      class="fileinput-exists">Change</span>
+                    <input type="file" name="curriculum">
+                  </span>
+                  <a href="#" class="btn btn-secondary fileinput-exists" data-dismiss="fileinput">Remove</a>
+                </span>
+              </div>
+              <div id="file_cur"></div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-sm-12 col-md-6 mb-3">
+              <label for="" class="form-label">Course Image(jpeg/png) <span class="text-danger">*</span></label>
+              <div class="fileinput fileinput-new input-group" data-provides="fileinput">
+                <div class="input-group-prepend">
+                  <span class="input-group-text">Upload</span>
+                </div>
+                <div class="form-control text-truncate" data-trigger="fileinput"><i
+                    class="glyphicon glyphicon-file fileinput-exists"></i> <span class="fileinput-filename"></span>
+                </div>
+                <span class="input-group-append">
+                  <span class=" btn btn-primary btn-file"><span class="fileinput-new">Select file</span><span
+                      class="fileinput-exists">Change</span>
+                    <input type="file" name="image">
+                  </span>
+                  <a href="#" class="btn btn-secondary fileinput-exists" data-dismiss="fileinput">Remove</a>
+                </span>
+              </div>
+              <div id="file_image"></div>
+            </div>
+            <div class="col-sm-12 col-md-6 mb-3">
+              <label for="" class="form-label">Course Banner(jpeg/png) <span class="text-danger">*</span></label>
+              <div class="fileinput fileinput-new input-group" data-provides="fileinput">
+                <div class="input-group-prepend">
+                  <span class="input-group-text">Upload</span>
+                </div>
+                <div class="form-control text-truncate" data-trigger="fileinput"><i
+                    class="glyphicon glyphicon-file fileinput-exists"></i> <span class="fileinput-filename"></span>
+                </div>
+                <span class="input-group-append">
+                  <span class=" btn btn-primary btn-file"><span class="fileinput-new">Select file</span><span
+                      class="fileinput-exists">Change</span>
+                    <input type="file" name="banner" id="input-file">
+                  </span>
+                  <a href="#" class="btn btn-secondary fileinput-exists" data-dismiss="fileinput">Remove</a>
+                </span>
+              </div>
+              <div id="file_banner"></div>
+            </div>
+            <div class="col-sm-12 col-md-6 mb-3">
+              <label for="" class="form-label">Prerequisite(Software Required) <span
+                  class="text-danger">*</span></label>
+              <input type="text" class="form-control" name="soft">
+            </div>
+            <div class="col-sm-12 col-md-6 mb-3">
+              <label for="" class="form-label">Prerequisite(Hardware Required) <span
+                  class="text-danger">*</span></label>
+              <input type="text" class="form-control" name="hard">
+            </div>
+            <div class="col-sm-12 col-md-6 mb-3">
+              <label for="" class="form-label">Course Short Description</label>
+              <textarea class="form-control" name="short" rows="2"></textarea>
+            </div>
+            <div class="col-sm-12 col-md-6 mb-3">
+              <label for="" class="form-label">Course Long Description</label>
+              <textarea class="form-control" name="long" rows="2"></textarea>
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer d-flex justify-content-center">
+          <button type="submit" class="btn btn-primary">Submit</button>
+          <button type="reset" class="btn btn-secondary">Reset</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+<!-- Create model end here -->
+
+<!-- View Model Start Here -->
+{% for v in manage %}
+<div class="modal fade" id="ViewCourse{{forloop.counter}}" tabindex="-1" role="dialog" aria-labelledby="ViewCourse"
+  aria-hidden="true">
+  <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header bg-dark">
+        <h5 class="modal-title text-white">Course Details </h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true" class="text-white">&times;</span>
+        </button>
+      </div>
+      <form action="{% url 'manage_views' v.id %}" method="post" id="">
+        {% csrf_token %}
+        <div class="modal-body">
+          <table class="table-bordered" style="width: 100%;">
+            <tbody class="text-16 text-dark">
+              <tr>
+                <th class="p-2"><strong>Course Title</strong></th>
+                <td class="p-2">{{v.course_title}}</td>
+              </tr>
+              <tr>
+                <th class="p-2"><strong>Course Plan</strong></th>
+                <td class="p-2">{{v.course_plan}}</td>
+              </tr>
+              <tr>
+                <th class="p-2"><strong>Course Name</strong></th>
+                <td class="p-2">{{v.course_name}}</td>
+              </tr>
+              <tr>
+                <th class="p-2"><strong>Specialization</strong></th>
+                <td class="p-2">{{v.specialization}}</td>
+              </tr>
+              <tr>
+                <th class="p-2"><strong>Branch</strong> </th>
+                <td class="p-2">{{v.branch}}</td>
+              </tr>
+              <tr>
+                <th class="p-2"><strong> Batch Type</strong></th>
+                <td class="p-2">{{v.batch_type}}</td>
+              </tr>
+              <tr>
+                <th class="p-2"><strong>Teaching Faculty</strong></th>
+                <td class="p-2">{{v.teaching_faculty}}</td>
+              </tr>
+              <tr>
+                <th class="p-2"><strong>Course Duration</strong></th>
+                <td class="p-2">{{v.duration}} Days</td>
+              </tr>
+              <tr>
+                <th class="p-2"><strong>Course Fee</strong> </th>
+                <td class="p-2">₹{{v.course_fee}}</td>
+              </tr>
+              <tr>
+                <th class="p-2"><strong>Discount</strong> </th>
+                <td class="p-2">{{v.discount}}%</td>
+              </tr>
+              <tr>
+                <th class="p-2"><strong>Final Fee</strong> </th>
+                <td class="p-2">₹{{v.final_price}}</td>
+              </tr>
+              
+              <tr>
+                <th class="p-2"><strong>Course Image</strong></th>
+                <td class="p-2">
+                  {% if v.course_image %}
+                  <img src="{{v.course_image.url}}" width="100" height="100">
+                  {% endif %}
+                </td>                  
+              </tr>
+              <tr>
+                <th class="p-2"><strong>Course Banner</strong></th>
+                <td class="p-2">
+                  {% if v.course_banner %}
+                  <img src="{{v.course_banner.url}}" width="100" height="100">
+                  {% endif %}
+                </td>
+                  
+              </tr>
+              <tr>
+                <th class="p-2"><strong>Prerequisite (Software Required)</strong></th>
+                <th class="p-2">{{v.software}}</td>
+              </tr>
+              <tr>
+                <th class="p-2"><strong>Prerequisite (Hardware Required)</strong></th>
+                <td class="p-2">{{v.hardware}}</td>
+              </tr>
+              {% if v.short_description %}
+              <tr>
+                <th class="p-2"><strong>Course Short Description</strong></th>
+                <td class="p-2">{{v.short_description}}</td>
+              </tr>
+              {% endif %}
+              {% if v.long_description %}
+              <tr>
+                <th class="p-2"><strong>Course Long Description</strong></th>
+                <th class="p-2">{{v.long_description}}</td>
+              </tr>
+              {% endif %}
+            </tbody>
+          </table>
+        </div>
+        <div class="modal-footer d-flex justify-content-center">
+          <button type="submit" class="btn btn-success"><i class="fa fa-print"></i> Print</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+{% endfor %}
+
+<!-- View Model Ends Here -->
+
+<!-- Edit model start here -->
+{% for i in manage %}
+<div class="modal fade" id="EditCourse{{forloop.counter}}" tabindex="-1" role="dialog" aria-labelledby="EditCourse"
+  aria-hidden="true">
+  <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header bg-dark">
+        <h5 class="modal-title text-white">Edit Course</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true" class="text-white">&times;</span>
+        </button>
+      </div>
+      <form action="{% url 'course_manage_edit' i.id %}" method="post" class="editcourse" enctype="multipart/form-data">
+        {% csrf_token %}
+        <div class="modal-body">
+          <div class="row">
+            <div class="col-sm-12 mb-3">
+              <label for="" class="form-label">Subject <span class="text-danger">*</span></label>
+              <input type="text" class="form-control" value="{{i.course_title}}" name="editcourse_title">
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-sm-12 col-md-6 col-lg-4 mb-3">
+              <label for="" class="form-label">Course Plan <span class="text-danger">*</span></label>
+              <select class="form-control custom-select" name="editcourse_plan">
+                <option selected value="">Select Plan</option>
+                {% for j in plan %}
+                {% if j.status == 'Active' %}
+                <option value="{{j.id}}">{{j.plan_name}}</option>
+                {% endif %}
+                {% endfor %}
+              </select>
+            </div>
+            <div class="col-sm-12 col-md-6 col-lg-4 mb-3">
+              <label class="form-label">Course Name <span class="text-danger">*</span></label>
+              <select class="form-control custom-select id_course" name="editcourse_name">
+                <option selected value="">Select Name</option>
+                {% for j in name %}
+                {% if j.status == 'Active' %}
+                <option value="{{j.id}}">{{j.course_name}}</option>
+                {% endif %}
+                {% endfor %}
+              </select>
+            </div>
+            <div class="col-sm-12 col-md-6 col-lg-4 mb-3">
+              <label class="form-label">Specialization <span class="text-danger">*</span></label>
+              <select class="form-control custom-select id_specialization" name="editspecialization">
+              </select>
+            </div>
+            <div class="col-sm-12 col-md-6 col-lg-4 mb-3">
+              <label for="" class="form-label">Branch <span class="text-danger">*</span></label>
+              <select class="form-control custom-select" name="editbranch" value="{{i.branch}}">
+                <option selected value="">Select Branch</option>
+                {% for j in branch_type %}
+                {% if j.status == 'Active' %}
+                <option value="{{j.id}}">{{j.branch_name}}</option>
+                {% endif %}
+                {% endfor %}
+              </select>
+            </div>
+            <div class="col-sm-12 col-md-6 col-lg-4 mb-3">
+              <label for="" class="form-label">Batch Type <span class="text-danger">*</span></label>
+              <select class="form-control custom-select" name="editbatch_type">
+                <option selected value="">Select Batch Type</option>
+                {% for j in type %}
+                {% if j.status == 'Active' %}
+                <option value="{{j.id}}">{{j.batchtype_name}}</option>
+                {% endif %}
+                {% endfor %}
+              </select>
+            </div>
+            <div class="col-sm-12 col-md-6 col-lg-4 mb-3">
+              <label for="" class="form-label">Teaching Faculty <span class="text-danger">*</span></label>
+              <select class="form-control custom-select" name="editfaculty">
+                <option selected value="">Select Faculty</option>
+                {% for f in faculty %}
+                {% if f.status == 'Active' %}
+                <option value="{{f.id}}">{{ f.first_name }}</option>
+                {% endif %}
+                {% endfor %}
+              </select>
+            </div>
+            <!-- <div class="col-sm-12 col-md-6 mb-3">
+              <label for="" class="form-label">Course Starting Date <span class="text-danger">*</span></label>
+              <input id="start-date-edit" class="form-control" value="{{ i.start_date|date:'Y-m-d' }}" type="date"
+                name="editstartdate" />
+            </div>
+            <div class="col-sm-12 col-md-6 mb-3">
+              <label for="" class="form-label">Course Ending Date <span class="text-danger">*</span></label>
+              <input id="end-date-edit" class="form-control" value="{{ i.end_date|date:'Y-m-d' }}" type="date" name="editenddate" />
+            </div> -->
+          </div>
+          <div class="row">
+            <div class="col-sm-12 col-md-6 mb-3">
+              <label for="" class="form-label">Course Duration <span class="text-danger">*</span></label>
+              <input type="text" class="form-control" value="{{i.duration}}" name="editduration">
+            </div>
+            <div class="col-sm-12 col-md-6 mb-3">
+              <label for="" class="form-label">Course Fee <span class="text-danger">*</span></label>
+              <input type="text" class="form-control" value="{{i.course_fee}}" id="editfee" name="editfee">
+            </div>
+            <div class="col-sm-12 col-md-6 mb-3">
+              <label for="" class="form-label">Discount % <span class="text-danger">*</span></label>
+              <input type="text" class="form-control" value="{{i.discount}}" id="editdiscount" name="editdiscount">
+            </div>
+            <div class="col-sm-12 col-md-6 mb-3">
+              <label for="" class="form-label">Selling Price <span class="text-danger">*</span></label>
+              <input type="text" class="form-control" value="{{i.final_price}}" id="editprice" name="editprice">
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-sm-12 mb-3">
+              <label for="" class="form-label">Course Curriculum(pdf)<span class="text-danger">*</span></label>
+              <div class="fileinput fileinput-new input-group" data-provides="fileinput">
+
+                <div class="input-group-prepend">
+                  <span class="input-group-text">Upload</span>
+                </div>
+                <div class="form-control text-truncate" data-trigger="fileinput"><i
+                    class="glyphicon glyphicon-file fileinput-exists"></i> <span class="fileinput-filename"></span>
+                </div>
+                <span class="input-group-append">
+                  <span class=" btn btn-primary btn-file"><span class="fileinput-new">Select file</span><span
+                      class="fileinput-exists">Change</span>
+                    <input type="file" id="curr-edit" value="{{i.curriculum}}" name="editcurriculum">
+                  </span>
+                  <a href="#" class="btn btn-secondary fileinput-exists" data-dismiss="fileinput">Remove</a>
+                </span>
+              </div>
+              <div id="edit_cur"></div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-sm-12 col-md-6 mb-3">
+              <label for="" class="form-label">Course Image(jpeg/png) <span class="text-danger">*</span></label>
+              <div class="fileinput fileinput-new input-group" data-provides="fileinput">
+                <div class="input-group-prepend">
+                  <span class="input-group-text">Upload</span>
+                </div>
+                <div class="form-control text-truncate" data-trigger="fileinput"><i
+                    class="glyphicon glyphicon-file fileinput-exists"></i> <span class="fileinput-filename"></span>
+                </div>
+                <span class="input-group-append">
+                  <span class=" btn btn-primary btn-file"><span class="fileinput-new">Select file</span><span
+                      class="fileinput-exists">Change</span>
+                    <input type="file" class="edit-file" name="editimage">
+                  </span>
+                  <a href="#" class="btn btn-secondary fileinput-exists" data-dismiss="fileinput">Remove</a>
+                </span>
+              </div>
+              <div id="edit_image"></div>
+            </div>
+            <div class="col-sm-12 col-md-6 mb-3">
+              <label for="" class="form-label">Course Banner(jpeg/png) <span class="text-danger">*</span></label>
+              <div class="fileinput fileinput-new input-group" data-provides="fileinput">
+                <div class="input-group-prepend">
+                  <span class="input-group-text">Upload</span>
+                </div>
+                <div class="form-control text-truncate" data-trigger="fileinput"><i
+                    class="glyphicon glyphicon-file fileinput-exists"></i> <span class="fileinput-filename"></span>
+                </div>
+                <span class="input-group-append">
+                  <span class=" btn btn-primary btn-file"><span class="fileinput-new">Select file</span><span
+                      class="fileinput-exists">Change</span>
+                    <input type="file" class="edit-file" name="editbanner">
+                  </span>
+                  <a href="#" class="btn btn-secondary fileinput-exists" data-dismiss="fileinput">Remove</a>
+                </span>
+              </div>
+              <div id="edit_banner"></div>
+            </div>
+            <div class="col-sm-12 col-md-6 mb-3">
+              <label for="" class="form-label">Prerequisite(Software Required) <span
+                  class="text-danger">*</span></label>
+              <input type="text" class="form-control" value="{{i.software}}" name="editsoft">
+            </div>
+            <div class="col-sm-12 col-md-6 mb-3">
+              <label for="" class="form-label">Prerequisite(Hardware Required) <span
+                  class="text-danger">*</span></label>
+              <input type="text" class="form-control" value="{{i.hardware}}" name="edithard">
+            </div>
+            <div class="col-sm-12 col-md-6 mb-3">
+              <label for="" class="form-label">Course Short Description</label>
+              <textarea class="form-control" name="editshort" rows="2">{{i.short_description}}</textarea>
+            </div>
+            <div class="col-sm-12 col-md-6 mb-3">
+              <label for="" class="form-label">Course Long Description</label>
+              <textarea class="form-control" name="editlong" rows="2">{{i.long_description}}</textarea>
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer d-flex justify-content-center">
+          <button type="submit" class="btn btn-primary">Submit</button>
+          <button type="button" class="btn btn-secondary" data-dismiss="modal" aria-label="Close">Close</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+{% endfor %}
+
+<!-- Edit model end here -->
+
+<!-- Delete model start here -->
+
+<div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="deleteModalLabel"
+  aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header bg-danger">
+        <h5 class="modal-title text-white " id="deleteModalLabel">Delete Course Management</h5>
+        <button type="button" class="close text-white" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="mb-3 text-center">
+          <div class="d-flex justify-content-center mb-3">
+            <img src="../../static/triangle-exclamation-solid.svg" width="120" height="70" alt="">
+          </div>
+          <form action="{% url 'course_manage_all'  %}" method="post">
+            {% csrf_token %}
+          <p id="deleteMessage">Are you sure you want to delete <strong><span id="selectedCount"></span></strong>
+            records?</p>
+          <input type="hidden" id="selected_ids_input" name="selected_ids">
+        </div>
+        <div class="d-flex justify-content-center mb-3">
+          <button type="button" class="btn btn-secondary m-1" data-dismiss="modal">No</button>
+          <button type="submit" class="btn btn-danger m-1" id="confirmDelete">Yes</button>
+        </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+{% for j in manage %}
+<div class="modal fade" id="DeleteCourse{{forloop.counter}}" tabindex="-1" role="dialog"
+  aria-labelledby="DeleteDepartment" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <form action="{% url 'course_manage_delete' j.id %}" method="post">
+        {% csrf_token %}
+        <div class="modal-header bg-danger">
+          <h5 class="modal-title text-white">Delete Course</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true" class="text-white">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <div class="mb-3 text-center">
+            <div class="d-flex justify-content-center mb-3">
+              <img src="../../static/triangle-exclamation-solid.svg" width="120" height="70" alt="">
+            </div>
+            Are you sure you want to delete {{j.course_title}} Details ?
+          </div>
+        </div>
+        <div class="modal-footer d-flex justify-content-center">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal" aria-label="Close">
+            No
+          </button>
+          <button type="submit" class="btn btn-danger">Yes</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+{% endfor %}
+
+<!-- Delete model end here -->
+
+<!-- Upload model  -->
+
+<div class="modal fade" id="UploadCourseManage" tabindex="-1" role="dialog" aria-labelledby="UploadCourseManage"
+  aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header bg-dark">
+        <h5 class="modal-title text-white">Upload File</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true" class="text-whte">&times;</span>
+        </button>
+      </div>
+      <form action="{% url 'course_manage_import' %}" method="post" id="uploadfile" enctype="multipart/form-data">
+        {% csrf_token %}
+        <div class="modal-body">
+          <input type="file" name="import_file" accept=".csv" id="input-file-now" class="dropify" />
+          <div id="csvPreview"></div>
+        </div>
+        <div class="modal-footer d-flex justify-content-center">
+          <button type="submit" class="btn btn-primary">Submit</button>
+          <button type="button" class="btn btn-secondary" data-dismiss="modal" aria-label="Close"> Close
+          </button>
+      </form>
+    </div>
+  </div>
+</div>
+
+<!-- Upload model end here -->
+
+{% endblock %}
+
+{% block scripts %}
+
+
+<script>
+  $(document).ready(function () {
+    //validationf for special charector 
+    $.validator.addMethod("noSpecialChars", function (value, element) {
+      return /^[a-zA-Z0-9\s]*$/.test(value);
+    }, "Special characters are not allowed.");
+
+    $.validator.addMethod("nodigits", function (value, element) {
+      return /^[0-9]+(\.[0-9]+)?$/.test(value);
+    }, "Alphabets and special characters are not allowed.");
+    //no numbers
+    $.validator.addMethod("noNumbers", function (value, element) {
+      return !/\d/.test(value);
+    }, "Numbers are not allowed.");
+    $.validator.addMethod("selectRequired", function (value, element) {
+      return value !== "" && value !== null && value !== "0";
+    },);
+    $.validator.addMethod("pdfOnly", function (value, element) {
+      // Check if the file extension is pdf
+      return this.optional(element) || /\.(pdf)$/i.test(value);
+    }, "Please select a PDF file.");
+
+    $.validator.addMethod("imageFileType", function (value, element) {
+      return this.optional(element) || /^.*\.(jpg|jpeg|png)$/i.test(value);
+    }, "Please select a valid JPG or PNG or JPEG image file.");
+
+    var today = new Date().toISOString().split('T')[0];
+    $("#start-date-input").attr("min", today);
+
+    $('#start-date-input').on('change', function () {
+      var startDate = $(this).val();
+      if (startDate) {
+        $('#end-date-input').prop('disabled', false);
+        $('#end-date-input').attr('min', startDate);
+      } else {
+        $('#end-date-input').prop('disabled', true);
+      }
+    });
+
+    // for final price
+    $('#fee, #discount').on('input', function () {
+      var fee = parseFloat($('#fee').val()) || 0;
+      var discount = parseFloat($('#discount').val()) || 0;
+      var finalPrice = fee - (fee * (discount / 100));
+      $('#price').val(finalPrice.toFixed(2));
+    });
+
+    // less than 100 validation
+    $.validator.addMethod("lessThan100", function (value, element) {
+      return parseInt(value) < 100;
+    }, "Discount must be less than 100.");
+
+
+    $.validator.addMethod("noSpace", function (value, element) {
+      return !(/^\s|\s$|\s{2,}/.test(value));
+    }, "No excessive or leading/trailing spaces");
+
+
+    $.validator.setDefaults({
+      errorPlacement: function (error, element) {
+        if (element.attr("name") === "curriculum") {
+          error.appendTo('#file_cur');
+        } else if (element.attr("name") === "image") {
+          error.appendTo('#file_image');
+        }
+        else if (element.attr("name") === "banner") {
+          error.appendTo('#file_banner');
+        }
+        else { error.insertAfter(element); }
+      }
+    });
+
+    $("#course_add").validate({
+      rules: {
+        course_title: {
+          required: true,
+          minlength: 3,
+          noSpecialChars: true,
+          noNumbers: true,
+          noSpace: true,
+        },
+        course_plan: {
+          selectRequired: true,
+        },
+        course_name: {
+          selectRequired: true,
+        },
+        specialization: {
+          selectRequired: true,
+        },
+        faculty: {
+          selectRequired: true,
+        },
+        batch_type: {
+          selectRequired: true,
+        },
+        startdate: {
+          required: true,
+        },
+        enddate: {
+          required: true,
+        },
+        duration: {
+          required: true,
+          // noSpecialChars: true,
+          digits:true,
+          noSpace: true,
+        },
+        fee: {
+          required: true,
+          nodigits: true,
+
+        },
+        discount: {
+          required: true,
+          lessThan100: true,
+          digits:true,
+          // pattern: /^\d{1,2}%$/,
+        },
+        price: {
+          required: true,
+          nodigits: true,
+        },
+        branch: {
+          selectRequired: true,
+        },
+        soft: {
+          required: true,
+          noSpace:true,
+        },
+        hard: {
+          required: true,
+          noSpace:true,
+        },
+        curriculum: {
+          required: true,
+          accept: 'application/pdf',
+        },
+        image: {
+          required: true,
+          accept: 'image/png, image/jpeg',
+        },
+        banner: {
+          required: true,
+          accept: 'image/png, image/jpeg',
+        }
+      },
+      messages: {
+        course_title: {
+          required: "Please Enter Course Title",
+          minlength: "Minimum of 3 characters",
+        },
+        course_plan: {
+          selectRequired: "Please Select Course Plan",
+        },
+        course_name: {
+          selectRequired: "Please Select Course Name",
+        },
+        specialization: {
+          selectRequired: "Please Select Specialization",
+        },
+        faculty: {
+          selectRequired: "Please Select Faculty",
+        },
+        batch_type: {
+          selectRequired: "Please Select Batch Type",
+        },
+        startdate: {
+          required: "Please Select Starting Date",
+        },
+        enddate: {
+          required: "Please Select Ending Date",
+        },
+        duration: {
+          required: "Please Enter Duration in Days ",
+          digits:"Alphabets and special characters are not allowed",
+        },
+        fee: {
+          required: "Please Enter Course Fee",
+        },
+        discount: {
+          required: "Please Enter Discount",
+          lessThan100: "Discount must be less than 100",
+          // pattern: "Please enter a valid percentage (e.g., 10%)",
+          digits:'Alphabets and special characters are not allowed',
+        },
+        price: {
+          required: "Please Enter Final Price",
+        },
+        branch: {
+          selectRequired: "Please Select Branch",
+        },
+        soft: {
+          required: "Please Enter Software Requirement",
+        },
+        hard: {
+          required: "Please Enter Hardware Requirement",
+        },
+        curriculum: {
+          required: "Please Select Curriculum",
+          accept: 'only PDF files are allowed',
+        },
+        image: {
+          required: "Please Select Image",
+          accept: 'only PNG, JPEG files are allowed',
+        },
+        banner: {
+          required: 'Please Select Banner Image',
+          accept: 'only PNG, JPEG files are allowed',
+        }
+      },
+      submitHandler: function (form) {
+        form.submit();
+      },
+    });
+  });
+</script>
+
+<script>
+  $(document).ready(function () {
+    $.validator.addMethod("noSpecialChars", function (value, element) {
+      return /^[a-zA-Z0-9\s]*$/.test(value);
+    }, "Special characters are not allowed.");
+    $.validator.addMethod("nodigits", function (value, element) {
+      return /^[0-9]+(\.[0-9]+)?$/.test(value);
+    }, "Alphabets and special characters are not allowed.");
+    //no numbers
+    $.validator.addMethod("noNumbers", function (value, element) {
+      return !/\d/.test(value);
+    }, "Numbers are not allowed.");
+    $.validator.addMethod("selectRequired", function (value, element) {
+      return value !== "" && value !== null && value !== "0";
+    },);
+
+    $.validator.setDefaults({
+      errorPlacement: function (error, element) {
+        if (element.attr("name") === "editcurriculum") {
+          error.appendTo('#edit_cur');
+        } else if (element.attr("name") === "editimage") {
+          error.appendTo('#edit_image');
+        }
+        else if (element.attr("name") === "editbanner") {
+          error.appendTo('#edit_banner');
+        }
+        else { error.insertAfter(element); }
+      }
+    });
+
+    var today = new Date().toISOString().split('T')[0];
+    $("#start-date-edit").attr("min", today);
+
+    $('#start-date-edit').on('change', function () {
+      var startDate = $(this).val();
+      if (startDate) {
+        $('#end-date-edit').prop('disabled', false);
+        $('#end-date-edit').attr('min', startDate);
+      } else {
+        $('#end-date-edit').prop('disabled', true);
+      }
+    });
+
+    $('#editfee, #editdiscount').on('input', function () {
+      var fee = parseFloat($('#editfee').val()) || 0;
+      var discount = parseFloat($('#editdiscount').val()) || 0;
+      var finalPrice = fee - (fee * (discount / 100));
+      $('#editprice').val(finalPrice.toFixed(2));
+    });
+
+    // less than 100 validation
+    $.validator.addMethod("lessThan100", function (value, element) {
+      return parseInt(value) < 100;
+    }, "Discount must be less than 100.");
+
+
+    $.validator.addMethod("noSpace", function (value, element) {
+      return !(/^\s|\s$|\s{2,}/.test(value));
+    }, "No excessive or leading/trailing spaces");
+
+
+
+    $(".editcourse").each(function () {
+      $(this).validate({
+        rules: {
+          editcourse_title: {
+            required: true,
+            minlength: 3,
+            noSpecialChars: true,
+            noNumbers: true,
+            noSpace: true,
+          },
+          editcourse_plan: {
+            selectRequired: true,
+          },
+          editcourse_name: {
+            selectRequired: true,
+          },
+          editspecialization: {
+            selectRequired: true,
+          },
+          editfaculty: {
+            selectRequired: true,
+          },
+          editbatch_type: {
+            selectRequired: true,
+          },
+          editduration: {
+            required: true,
+            // noSpecialChars: true,
+            digits:true,
+            noSpace: true,
+          },
+          editfee: {
+            required: true,
+            nodigits: true,
+          },
+          editdiscount: {
+            required: true,
+            lessThan100: true,
+            digits:true,
+          },
+          editprice: {
+            required: true,
+            nodigits: true,
+          },
+          editbranch: {
+            selectRequired: true,
+          },
+          editsoft: {
+            required: true,
+            noSpace:true,
+          },
+          edithard: {
+            required: true,
+            noSpace:true,
+          },
+          editcurriculum: {
+            required: true,
+            accept: 'application/pdf',
+          },
+          editimage: {
+            required: true,
+            accept: 'image/png, image/jpeg',
+          },
+          editbanner: {
+            required: true,
+            accept: 'image/png, image/jpeg',
+          }
+        },
+        messages: {
+          editcourse_title: {
+            required: "Please Enter Course Title",
+            minlength: "Minimum of 3 characters",
+          },
+          editcourse_plan: {
+            selectRequired: "Please Select Course Plan",
+          },
+          editcourse_name: {
+            selectRequired: "Please Select Course Name",
+          },
+          editspecialization: {
+            selectRequired: "Please Select Specialization",
+          },
+          editfaculty: {
+            selectRequired: "Please Select Faculty",
+          },
+          editbatch_type: {
+            selectRequired: "Please Select Batch Type",
+          },
+          editstartdate: {
+            required: "Please Select Starting Date",
+          },
+          editenddate: {
+            required: "Please Select Ending Date",
+          },
+          editduration: {
+            required: "Please Enter Duration in Days ",
+            digits:'Alphabets and special characters are not allowed',
+          },
+          editfee: {
+            required: "Please Enter Course Fee",
+          },
+          editdiscount: {
+            required: "Please Enter Discount",
+            lessThan100: "Discount must be less than 100",
+            digits:'Alphabets and special characters are not allowed',
+          },
+          editprice: {
+            required: "Please Enter Offer Price",
+          },
+          editbranch: {
+            selectRequired: "Please Select Branch",
+          },
+          editsoft: {
+            required: "Please Enter Software Requirement",
+          },
+          edithard: {
+            required: "Please Enter Hardware Requirement",
+          },
+          editcurriculum: {
+            required: 'Please Select Curriculum',
+            accept: 'only PDF files are allowed',
+          },
+          editimage: {
+            required: "Please Select Image",
+            accept: 'only PNG, JPEG files are allowed',
+          },
+          editbanner: {
+            required: 'Please Select Banner Image',
+            accept: 'only PNG, JPEG files are allowed',
+          }
+        },
+        submitHandler: function (form) {
+          form.submit();
+        },
+      });
+    });
+
+
+
+  })
+</script>
+
+<!-- upload file script starts -->
+<script>
+  function validateUploadForm(form) {
+    $(form).find('#input-file-now').on('change', function () {
+      var file = this.files[0];
+      var fileExt = file.name.split('.').pop().toLowerCase();
+
+      if (fileExt === 'csv') {
+        $(form).find('button[type="submit"]').prop('disabled', false);
+        $(form).find('#input-file-now').html('');
+      } else {
+        $(form).find('button[type="submit"]').prop('disabled', true);
+        $(form).find('#csvPreview').html('<span style="color: red;">Only CSV files are allowed.</span>');
+      }
+    });
+
+    $(form).on('submit', function (e) {
+      var file = $(form).find('#input-file-now')[0].files[0];
+
+      if (!file) {
+        e.preventDefault();
+        $(form).find('#csvPreview').html('<span style="color: red;">Please select a csv file.</span>');
+      }
+    });
+  }
+
+  $('#UploadCourseManage').on('shown.bs.modal', function () {
+    validateUploadForm($(this).find('form'));
+  });
+</script>
+
+<!-- upload file ends here -->
+
+<!---Delete Script-->
+<script>
+  // Function to update the "Select All" checkbox status
+  function updateSelectAllCheckbox() {
+    var selectAllCheckbox = document.getElementById('selectAll');
+    var rowCheckboxes = document.querySelectorAll('.row-checkbox');
+    var allChecked = true;
+
+    rowCheckboxes.forEach(function (checkbox) {
+      if (!checkbox.checked) {
+        allChecked = false;
+      }
+    });
+
+    selectAllCheckbox.checked = allChecked;
+    updateSelectedRowsList(); // Update selected rows list when "Select All" checkbox is clicked
+  }
+
+  // Function to update the selected rows list and toggle delete button visibility
+  function updateSelectedRowsList() {
+    var selectedRowsList = document.getElementById('selectedRowsList');
+    var selectedIdsInput = document.getElementById('selected_ids_input');
+    var deleteButton = document.getElementById('deleteButton');
+
+    var selectedRows = document.querySelectorAll('.row-checkbox:checked');
+    var selectedCount = selectedRows.length;
+
+    if (selectedCount > 1) {
+      deleteButton.style.display = 'block'; // Show delete button if more than one row is selected
+    } else {
+      deleteButton.style.display = 'none'; // Hide delete button if only one row or none is selected
+    }
+
+    var selectedIds = [];
+    selectedRows.forEach(function (row) {
+      var courseId = row.dataset.courseId;
+      selectedIds.push(courseId);
+    });
+
+    // Set the value of the hidden input field to the selected IDs
+    selectedIdsInput.value = selectedIds.join(',');
+
+    // Update the delete modal message with the selected count
+    document.getElementById('deleteMessage').textContent = "Are you sure you want to delete " + selectedCount + " records?";
+  }
+
+  // Event listener for checkbox change
+  document.querySelectorAll('.row-checkbox').forEach(function (checkbox) {
+    checkbox.addEventListener('change', function () {
+      updateSelectedRowsList();
+      updateSelectAllCheckbox();
+    });
+  });
+
+  // Event listener for select all checkbox change
+  document.getElementById('selectAll').addEventListener('change', function () {
+    var isChecked = this.checked;
+    document.querySelectorAll('.row-checkbox').forEach(function (checkbox) {
+      checkbox.checked = isChecked;
+    });
+    updateSelectedRowsList();
+  });
+
+  // Initially update delete button visibility
+  updateSelectedRowsList();
+
+  // Event listener for delete button click
+  document.getElementById('confirmDelete').addEventListener('click', function () {
+    // Perform delete action here
+    // For now, let's just close the modal
+    $('#deleteModal').modal('hide');
+  });
+</script>
+
+
+{% endblock %}

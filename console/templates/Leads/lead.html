@@ -1,0 +1,1190 @@
+{% extends 'base/base.html' %} 
+{% block title %}QTLineone | Prospects{% endblock %}
+{% block style %}
+
+<style>
+  /* Custom Tooltip Styles */
+/* Custom Tooltip Styles */
+.tooltip-inner {
+    /* Tooltip text color and background */
+    color: #fff; /* White text color */
+    background-color: #b68ed5 !important; /* Dark background */
+
+    /* Padding and font */
+    padding: 8px 15px;
+    font-size: 14px;
+    font-family: Arial, sans-serif;
+
+    /* Borders and rounded corners */
+    border: 1px solid #b68ed5 !important; /* Slight border */
+    border-radius: 4px;
+}
+
+/* Tooltip arrow color */
+.tooltip.bs-tooltip-top .arrow::before, .tooltip.bs-tooltip-auto[x-placement^="top"] .arrow::before {
+    border-top-color: #b68ed5 !important; /* Top arrow */
+}
+
+.tooltip.bs-tooltip-right .arrow::before, .tooltip.bs-tooltip-auto[x-placement^="right"] .arrow::before {
+    border-right-color: #b68ed5 !important /* Right arrow */
+}
+
+.tooltip.bs-tooltip-bottom .arrow::before, .tooltip.bs-tooltip-auto[x-placement^="bottom"] .arrow::before {
+    border-bottom-color: #b68ed5 !important /* Bottom arrow */
+}
+
+.tooltip.bs-tooltip-left .arrow::before, .tooltip.bs-tooltip-auto[x-placement^="left"] .arrow::before {
+    border-left-color: #b68ed5 !important; /* Left arrow */
+}
+
+</style>
+{% endblock %}
+{% block breadCrum %}
+
+
+{% endblock %} 
+
+
+
+{% block profile %}
+<div class="row">
+  <div class="col-xl-12 pa-0">
+      <div class="profile-cover-wrap overlay-wrap">
+          <div class="profile-cover-img" style="background-image:url('../../static/dist/img/bg2.jpg')"></div>
+          <div class="bg-overlay bg-trans-dark-60"></div>
+          <div class="container profile-cover-content py-50">
+              <div class="hk-row"> 
+                  <div class="col-lg-4">
+                      <div class="media align-items-center">
+                          <div class="media-img-wrap  d-flex">
+                              <div class="avatar">
+                                  <img src="../../static/dist/img/avatar1.jpg" alt="user" class="avatar-img rounded-circle">
+                              </div>
+                          </div>
+                          <div class="media-body">
+                              <div class="text-white text-capitalize display-6 mb-5 font-weight-400">{{request.session.admin_user.full_name}}</div>
+                              <div class="font-14 text-white">
+                                  <span class="mr-5">
+                                      <span class="font-weight-bold pr-5">JOINING DATE:</span>
+                                      <span class="mr-5">12/03/24</span>
+                                  </span>
+                                  <span>
+                                      <span class="font-weight-bold pr-5">Department:</span>
+                                      <span>Python Department</span>
+                                  </span>
+                                  
+                              </div>
+                          </div>
+                      </div>
+                  </div>
+                 
+                  <div class="col-lg-8">
+                      <div class="container mt-3 ml-md-100">
+                                                          <div class="row">
+                                                              <!-- Enquiries Card -->
+                      <div class="col-md-3">
+                          <div class="stats-card p-2 mb-3 text-white" style="border-radius: 8px; box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); background-color: rgba(23, 163, 184, 0.479);">
+                              <h5 class="stats-title  text-white"><i class="fa fa-microphone text-dark" aria-hidden="true"></i> Enquiries</h5>
+                              <div class="stats-number ml-25">{{ leads_count }}</div>
+                          </div>
+                      </div>
+
+                      <!-- Follow-ups Card -->
+                      <div class="col-md-3">
+                          <div class="stats-card p-2 mb-3 text-dark" style="border-radius: 8px; box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); background-color: rgba(107, 111, 231, 0.458);">
+                              <h5 class="stats-title  text-white"><i class="fa fa-retweet text-dark" aria-hidden="true"></i> Follow-ups</h5>
+                              <div class="stats-number text-white ml-30">{{ other_count }}</div>
+                          </div>
+                      </div>
+
+                      <!-- Admissions Card -->
+                      <div class="col-md-3">
+                          <div class="stats-card p-2 mb-3 text-white" style="border-radius: 8px; box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); background-color: rgba(235, 115, 137, 0.468);">
+                              <h5 class="stats-title  text-white"><i class="fa fa-user text-dark" aria-hidden="true"></i> Admissions</h5>
+                              <div class="stats-number ml-30">{{ admissions_count }}</div>
+                          </div>
+                      </div>
+                      <div class="col-md-3">
+                          <div id="latestEnquiries" class="notification-card" class="stats-card p-2 mb-3 text-white" style="border-radius: 8px; box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); background-color: rgba(235, 115, 137, 0.468);">
+                             
+                          </div>
+                      </div>
+                      <div >
+                          <!-- Dynamically filled with latest enquiries -->
+                      </div>
+                      
+                          </div>
+                      </div>
+                  </div>
+                  
+                  
+              </div>
+          </div>
+      </div>
+      
+      <div class="bg-white shadow-bottom">
+          <div class="container">
+              <ul class="nav nav-light nav-tabs" role="tablist">
+                  <li class="nav-item">
+                      <a class="d-flex h-60p align-items-center nav-link {% if active_tab == 'lead_prospects' %}active{% endif %}" href="{% url 'lead_prospects' %}">Prospects</a>
+                  </li>
+                  <li class="nav-item">
+                      <a class="d-flex h-60p align-items-center nav-link {% if active_tab == 'leads' %}active{% endif %}" href="{% url 'leads' %}">Leads</a>
+                  </li>
+                  <li class="nav-item">
+                      <a class="d-flex h-60p align-items-center nav-link {% if active_tab == 'mql' %}active{% endif %}" href="{% url 'mql' %}">MQL</a>
+                  </li>
+                  <li class="nav-item">
+                      <a class="d-flex h-60p align-items-center nav-link {% if active_tab == 'sql' %}active{% endif %}" href="{% url 'sql' %}">SQL</a>
+                  </li>
+                  <li class="nav-item">
+                      <a class="d-flex h-60p align-items-center nav-link {% if active_tab == 'request_discounts' %}active{% endif %}" href="{% url 'request_discounts' %}">Request Discounts</a>
+                  </li>
+                  <li class="nav-item">
+                      <a class="d-flex h-60p align-items-center nav-link {% if active_tab == 'opportunity' %}active{% endif %}" href="{% url 'opportunity' %}">Opportunity</a>
+                  </li>
+                  <li class="nav-item">
+                      <a class="d-flex h-60p align-items-center nav-link {% if active_tab == 'admission' %}active{% endif %}" href="{% url 'admission' %}">Admissions</a>
+                  </li>
+                  <li class="nav-item">
+                      <a class="d-flex h-60p align-items-center nav-link {% if active_tab == 'spam' %}active{% endif %}" href="{% url 'spam' %}">Spam List</a>
+                  </li>
+                  
+
+                  <!-- Add other tabs with similar logic -->
+              </ul>
+          </div>
+      </div>
+      
+</div>
+<!-- /Row -->
+</div>
+
+{% endblock %}
+
+
+{% block content %}
+
+<!-- <div class="button_operations d-flex justify-content-end"  id="button_operations">
+  
+</div> -->
+
+{% if messages %}
+ {% for message in messages %}
+   {% if message.tags == "error" %}
+     <div class="h-25 alert alert-danger alert-dismissible fade show mt-2 h-25 text-center" role="alert">{{ message }}</div>
+   {% elif message.tags == "success" %}
+     <div class="h-25 alert alert-success alert-dismissible fade show mt-2 h-25 text-center" role="alert">{{ message }}</div>
+     {% else %}
+    <div class="h-25 alert alert-info alert-dismissible fade show mt-2 h-25 text-center" role="alert">{{ message }}</div>
+               {% endif %}
+   {% endfor %}
+ {% endif %}
+
+<section class="hk-sec-wrapper">
+    <div class="row">
+        <div class="col">
+          
+        </div>
+      
+        <div class="button_operations   col-auto ml-auto p-0 mb-3"  id="button_operations">
+            
+        </div>
+      </div>
+
+
+  <div class="row">
+    <div class="col-sm">
+      <div class=" table-wrap">
+        <table
+        id="datable_1"
+        class="table table-hover w-100 display pb-30 table-bordered">
+        <thead class="bg-dark">
+          <tr>
+            <th class="text-white  text-center">
+              <p class="mr-5">All<input type="checkbox" class="form-check-input" style="margin-left:3px; margin-right: 20px;" id="checkAll"></p>
+              
+          </th>
+            <th class="text-white">Token ID</th>
+            <th class="text-white">Student Name</th>
+            <th class="text-white">Mobile No</th>
+            <th class="text-white">Email</th>
+            <th class="text-white">Course</th>
+            <th class="text-white">Training Type</th>
+            <th class="text-white">Lead Source</th>
+            <th class="text-white">Lead Stage</th>
+            <!-- <th class="text-white">Branch Name</th> -->
+            
+           
+            
+                          
+            
+          </tr>
+        </thead>
+        <tbody>
+          {% for i in leads %}
+          <tr>
+          
+          <td><input type="checkbox" class="row-checkbox" data-id="{{i.id}}"></td>
+          <td>
+            <span data-toggle="tooltip" data-html="true" title="Name: Veerasimha Reddy<br>ID: {{i.token_id}}<br>Department: {{i.course_interested_in}}">
+              {{i.token_id}}
+            </span>
+          </td>
+          <td>{{i.firstname}} {{i.lastname}}</td>
+          <td>{{i.phone}}</td>
+          <td>{{i.email}}</td>
+          <td>{{i.course_interested_in}}</td>
+          <!-- <td>{{i.course_faculty}}</td> -->
+          <!-- <td>{{i.course_fee}}</td> -->
+          <td>{{i.Training_type}}</td>
+          <td>{{i.lead_source}}</td>
+          <td>{{i.lead_stage}}</td>
+          
+          <!-- <td>{{i.branch_name}}</td> -->
+          
+          </tr>
+          {% endfor %}
+         
+        </tbody>
+      </table>
+       
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- create model start here -->
+
+<div
+  class="modal fade"
+  id="CreateCourse"
+  tabindex="-1"
+  role="dialog"
+  aria-labelledby="CreateCourse"
+  aria-hidden="true"
+>
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header bg-dark">
+        <h5 class="modal-title text-white">Create New Course</h5>
+        <button
+          type="button"
+          class="close"
+          data-dismiss="modal"
+          aria-label="Close"
+        >
+          <span aria-hidden="true" class="text-white">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form action="">
+          <div class="mb-3">
+            <label for="" class="form-label"
+              >Course Name <span class="text-danger">*</span></label
+            >
+            <input
+              type="text"
+              placeholder="Ex: Python, Java"
+              class="form-control"
+            />
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer d-flex justify-content-center">
+        <button type="button" class="btn btn-primary">Submit</button>
+        <button type="reset" class="btn btn-secondary">Reset</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Create model end here -->
+<!-- Lead stage model start here -->
+{% for i in leads %}
+
+<div
+  class="modal fade"
+  id="Democourse{{i.id}}"
+  tabindex="-1"
+  role="dialog"
+  aria-labelledby="CreateCourse"
+  aria-hidden="true"
+>
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header bg-dark">
+        <h5 class="modal-title text-white">Lead Stage</h5>
+        <button
+          type="button"
+          class="close"
+          data-dismiss="modal"
+          aria-label="Close">
+           <span aria-hidden="true" class="text-white">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form action="{% url 'lead_stage' i.id %}" method="post"  class="leadstageValid">
+          {% csrf_token %}
+          <div class="mb-3">
+            <label for="leadstage" class="form-label">Lead Stage <span class="text-danger">*</span></label>
+            <select id="leadstage" class="form-select form-control" name="leadstage">
+              <option selected disabled>Select Lead Stage</option>
+              {% for i in lead_stage %}
+              <option value="{{i.Leadstage_name}}" >{{i.Leadstage_name}}</option>
+              {% endfor %}
+              
+            </select>
+          </div>
+          <div class="modal-footer d-flex justify-content-center">
+            <button type="submit" class="btn btn-primary">Submit</button>
+            <button type="reset" class="btn btn-secondary">Reset</button>
+          </div>
+        </form>
+      </div>
+     
+    </div>
+  </div>
+</div>
+
+{% endfor %}
+<!-- Edit model start here -->
+
+<div
+  class="modal fade"
+  id="EditCourse"
+  tabindex="-1"
+  role="dialog"
+  aria-labelledby="EditCourse"
+  aria-hidden="true"
+>
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header bg-dark">
+        <h5 class="modal-title text-white">Edit Course</h5>
+        <button
+          type="button"
+          class="close"
+          data-dismiss="modal"
+          aria-label="Close"
+        >
+          <span aria-hidden="true" class="text-white">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form action="">
+          <div class="mb-3">
+            <label for="" class="form-label"
+              >Course Name <span class="text-danger">*</span></label
+            >
+            <input
+              type="text"
+              placeholder="Ex: Python, Java"
+              class="form-control"
+            />
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer d-flex justify-content-center">
+        <button type="button" class="btn btn-primary">Submit</button>
+        <button
+          type="button"
+          class="btn btn-secondary"
+          data-dismiss="modal"
+          aria-label="Close"
+        >
+          Close
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Edit model end here -->
+
+<!-- spam model start here -->
+{% for i in leads %}
+
+<div
+  class="modal fade"
+  id="spam{{i.id}}"
+  tabindex="-1"
+  role="dialog"
+  aria-labelledby="spam{{i.id}}"
+  aria-hidden="true"
+>
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header bg-danger">
+        <h5 class="modal-title text-white">Mark As Spam</h5>
+        <button
+          type="button"
+          class="close"
+          data-dismiss="modal"
+          aria-label="Close"
+        >
+          <span aria-hidden="true" class="text-white">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form action="{% url 'mark_as_spam' i.id %}" method="post">
+          {% csrf_token %}
+          <div class="mb-3 text-center">
+            <div class="d-flex justify-content-center mb-3">
+
+              <img src="../../static/triangle-exclamation-solid.svg" width="120" height="70" alt="">
+            </div>
+            
+          Are you sure want to mark this data as spam?
+          </div>
+          <div class="modal-footer d-flex justify-content-center">
+            <button type="submit" class="btn btn-danger">Yes</button>
+            <button
+              type="button"
+              class="btn btn-secondary"
+              data-dismiss="modal"
+              aria-label="Close"
+            >
+              No
+            </button>
+            
+          </div>
+        </form>
+      </div>
+      
+      
+    </div>
+  </div>
+</div>
+
+{% endfor %}
+<!-- spam model end here -->
+
+
+<!-- lead modal -->
+ <!-- Modal -->
+ {% for i in leads %}
+ <div class="modal fade" id="submitmodal{{i.id}}" tabindex="-1" role="dialog" aria-labelledby="submitmodal{{i.id}}" aria-hidden="true">
+  <div class="modal-dialog modal-lg modal-dialog-scrollable" role="document">
+      <div class="modal-content">
+          <div class="modal-header bg-dark">
+              <h5 class="modal-title text-white">Marketing Qualified Lead</h5>
+              <button type="button" class="close text-white" data-dismiss="modal" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+              </button>
+          </div>
+          
+          <div class="modal-body ">
+            <form action="{% url 'submit_to_mql' i.id %}" method="post" class="row g-3 mqlForm">
+
+                {%  csrf_token %}
+              
+                <div class="col-md-6 mb-3">
+                  <label for="Tokenid" class="form-label">Token Id <span class="text-danger">*</span></label>
+                  <input type="text" class="form-control  bg-light text-secondary" id="Tokenid" value="{{i.token_id}}" disabled>
+                </div>
+                <div class="col-md-6 mb-3">
+                  <label for="studentname" class="form-label">Student Name <span class="text-danger">*</span></label>
+                  <input type="text" class="form-control  bg-light text-secondary" id="studentname" value="{{i.firstname}} {{i.lastname}}" disabled>
+                </div>
+                <div class="col-md-6 mb-3">
+                  <label for="mblno" class="form-label">Mobile No <span class="text-danger">*</span></label>
+                  <input type="tel" class="form-control  bg-light text-secondary" id="mblno" value="{{i.phone}}" disabled>
+                </div>
+                <div class="col-md-6 mb-3">
+                  <label for="email" class="form-label">Email <span class="text-danger">*</span></label>
+                  <input type="email" class="form-control  bg-light text-secondary" id="email" value="{{i.email}}" disabled>
+                </div>
+                <div class="col-md-6 mb-3">
+                  <label for="courseinput" class="form-label">Course <span class="text-danger">*</span></label>
+                  <input type="text" class="form-control  bg-light text-secondary" id="courseinput" value="{{i.course_interested_in}}" disabled>
+                </div>
+                <div class="col-md-6 mb-3">
+                  <label for="courseFaculty" class="form-label">Course Faculty <span class="text-danger">*</span></label>
+                  <!-- <input type="text" class="form-control  bg-light text-secondary" id="courseFaculty" value="{{i.course_faculty}}" disabled> -->
+                  <select id="courseFaculty" class="form-select form-control" name="courseFaculty">
+                    <option selected disabled>Select the Course Faculty </option>
+                    <option>Adullah</option>
+                    <option>RamPrasad</option>
+                    <option>Raj</option>
+                  </select>
+                </div>
+                <div class="col-md-4 mb-3">
+                  <label for="trainingType" class="form-label">Training Type <span class="text-danger">*</span></label>
+                  <input type="text" class="form-control  bg-light text-secondary" id="trainingType" value="{{i.Training_type}}" disabled>
+                </div>
+                <div class="col-md-4 mb-3">
+                  <label for="branch" class="form-label">Branch <span class="text-danger">*</span></label>
+                  <input type="email" class="form-control  bg-light text-secondary" id="branch" value="{{i.branch_name}}" disabled>
+                </div>
+                <div class="col-md-4 mb-3">
+                  <label for="Leadsource" class="form-label">Lead Source <span class="text-danger">*</span></label>
+                  <input type="text" class="form-control  bg-light text-secondary" id="Leadsource" value="{{i.lead_source}}" disabled>
+                </div>
+                
+                <div class="col-md-6 mb-3">
+                  <label for="leadType" class="form-label">Lead Type <span class="text-danger">*</span></label>
+                  <select id="leadType" class="form-select form-control" name="leadType">
+                    <option selected disabled>Select Lead Type</option>
+                    <option>warm</option>
+                    <option>cold</option>
+                  </select>
+                </div>
+                <div class="col-md-6 mb-3">
+                  <label for="demodate" class="form-label">Schedule Demo <span class="text-danger">*</span></label>
+                  <select id="demodate" class="form-select form-control" name="demodate">
+                    <option selected disabled>Select Demo Date</option>
+                    <option>2024-03-23</option>
+                    <option>2024-03-24</option>
+                    <option>2024-03-26</option>
+                    <option>2024-03-27</option>
+                  </select>
+                </div>
+                <div class="col-md-12 mb-3">
+                  <label for="Leaddescription" class="form-label">Lead Description <span class="text-danger">*</span></label>
+                
+                  <textarea name="Leaddescription" class="form-control text-secondary" id="Leaddescription" cols="30" rows="3" placeholder="Enter Your Feedback here"></textarea>
+                </div>
+
+                <div class="modal-footer d-flex justify-content-center col-md-12 mb-3">
+                  <button type="submit" class="btn btn-primary">Submit</button>
+                  <button type="reset" class="btn btn-secondary" >Reset</button>
+                </div>
+              </form>
+          </div>
+          
+      </div>
+  </div>
+</div>
+<!-- Modal -->
+{% endfor %}
+
+<!-- admission modal -->
+<!-- Modal -->
+{% for i in leads %}
+<div class="modal fade" id="sumbit_admissoinmodal{{i.id}}" tabindex="-1" role="dialog" aria-labelledby="sumbit_admissoinmodal{{i.id}}" aria-hidden="true">
+  <div class="modal-dialog modal-lg modal-dialog-scrollable" role="document">
+      <div class="modal-content">
+          <div class="modal-header bg-dark">
+              <h5 class="modal-title text-white">Admission Form</h5>
+              <button type="button" class="close text-white" data-dismiss="modal" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+              </button>
+          </div>
+          
+          <div class="modal-body ">
+            
+<form action="{% url 'submit_admission' i.id %}" class="row g-3 admissionValid" method="post">
+              {% csrf_token %}
+            
+              <div class="col-md-6 mb-3">
+                <label for="Tokenid" class="form-label">Token Id <span class="text-danger">*</span></label>
+                <input type="text" class="form-control  bg-light text-secondary" id="Tokenid" value="{{i.token_id}}" disabled>
+              </div>
+              <div class="col-md-6 mb-3">
+                <label for="studentname" class="form-label">Student Name <span class="text-danger">*</span></label>
+                <input type="text" class="form-control  bg-light text-secondary" id="studentname" value="{{i.firstname}} {{i.lastname}}" disabled>
+              </div>
+              <div class="col-md-6 mb-3">
+                <label for="mblno" class="form-label">Mobile No <span class="text-danger">*</span></label>
+                <input type="tel" class="form-control  bg-light text-secondary" id="mblno" value="{{i.phone}}" disabled>
+              </div>
+              <div class="col-md-6 mb-3">
+                <label for="email" class="form-label">Email <span class="text-danger">*</span></label>
+                <input type="email" class="form-control  bg-light text-secondary" id="email" value="{{i.email}}" disabled>
+              </div>
+              <div class="col-md-6 mb-3">
+                <label for="courseinput" class="form-label">Course <span class="text-danger">*</span></label>
+                <input type="text" class="form-control  bg-light text-secondary" id="courseinput" value="{{i.course_interested_in}}" disabled>
+              </div>
+              <div class="col-md-6 mb-3">
+                <label for="courseFaculty" class="form-label">Course Faculty <span class="text-danger">*</span></label>
+                <!-- <input type="text" class="form-control  bg-light text-secondary" id="courseFaculty" value="{{i.course_faculty}}" disabled> -->
+                <select id="courseFaculty" class="form-select form-control" name="courseFaculty">
+                  <option selected disabled>Select the Course Faculty </option>
+                  <option>Adullah</option>
+                  <option>RamPrasad</option>
+                  <option>Raj</option>
+                </select>
+              </div>
+              <div class="col-md-6 mb-3">
+                <label for="plan" class="form-label">Plan <span class="text-danger">*</span></label>
+                <select id="plan" name="plan" class="form-select form-control">
+
+                  <option selected disabled>Select the Plan</option>
+                  <option>JOIP</option>
+                  <option>Internship</option>
+                </select>
+                
+              </div>
+              <div class="col-md-6 mb-3">
+                <label for="demodate" class="form-label">Attended Demo On <span class="text-danger">*</span></label>
+               
+                <input type="text" class="form-control  bg-light text-secondary" id="demodate" value="{{i.demo_date |default:'Not Attend'}}" name="demodate" disabled>
+               
+              </div>
+              <!--  -->
+              <div class="col-md-4 mb-3">
+                <label for="courseFee" class="form-label">Course Fee <span class="text-danger">*</span></label>
+                <input type="number" step="0.01"  class="form-control  bg-light text-secondary" id="courseFee" value=""  name="courseFee" >
+              </div>
+              <div class="col-md-4 mb-3">
+                <label for="discount" class="form-label">Discount Fee <span class="text-danger">*</span></label>
+                <input type="number"   class="form-control" id="discount" value="" placeholder="Discount Fee (%)" name="discountFee">
+              </div>
+              <div class="col-md-4 mb-3">
+                <label for="finalFee" class="form-label">Final Fee <span  class="text-danger">*</span></label>
+                <input type="number" step="0.01"  class="form-control text-secondary" id="finalFee" placeholder="Final Fee" readonly name="finalFee">
+
+              </div>
+              
+              <!--  -->
+
+              <div class="col-md-4 mb-3">
+                <label for="trainingType" class="form-label">Training Type <span class="text-danger">*</span></label>
+                <input type="text" class="form-control  bg-light text-secondary" id="trainingType" value="{{i.Training_type}}" disabled>
+              </div>
+              <div class="col-md-4 mb-3">
+                <label for="branch" class="form-label">Branch <span class="text-danger">*</span></label>
+                <input type="email" class="form-control  bg-light text-secondary" id="branch" value="{{i.branch_name}}" disabled>
+              </div>
+              <div class="col-md-4 mb-3">
+                <label for="Leadsource" class="form-label">Lead Source <span class="text-danger">*</span></label>
+                <input type="text" class="form-control  bg-light text-secondary" id="Leadsource" value="{{i.lead_source}}" disabled>
+              </div>
+              <div class="col-md-4 mb-3">
+                <label for="batchno" class="form-label">Batch Number <span class="text-danger">*</span></label>
+                <select id="batchno" class="form-select form-control" name="batchno">
+                  <option selected disabled>Select the Batch Number</option>
+                  <option>25</option>
+                  <option>24</option>
+                  <option>23</option>
+                </select>
+                
+              </div>
+              <div class="col-md-4 mb-3">
+                <label for="admissionFee" class="form-label">Admission Fee <span class="text-danger">*</span></label>
+                <input type="number" step="0.01"  class="form-control text-secondary" id="admissionFee" name="admissionFee" placeholder="0.00">
+              </div>
+              <div class="col-md-4 mb-3">
+                <label for="remainingfee" class="form-label">Remainingfee Fee <span class="text-danger">*</span></label>
+                <input type="number" step="0.01"  class="form-control text-secondary" id="remainingfee" name="remainingfee" placeholder="0.00" readonly>
+              </div>
+              <!-- payment details -->
+              <div class="col-md-6 mb-3">
+                <label for="paymenttype" class="form-label">Mode of Payment <span class="text-danger">*</span></label>
+                <select id="paymenttype{{i.id}}" class="form-select form-control" name="paymenttype" onchange="showPaymentFields('{{i.id}}')">
+
+                    <option selected disabled>Select Mode of Payment</option>
+                    <option value="UPI">UPI</option>
+                    <option value="Paytm">Paytm</option>
+                    <option value="Cash">Cash</option>
+                    <option value="BankTransfer">Bank Transfer</option>
+                </select>
+            </div>
+            
+            <!-- UPI Details -->
+            <div class="col-md-6 mb-3 payment-details{{i.id}}" id="UPI{{i.id}}" style="display: none;">
+
+                <label for="upiId" class="form-label">UPI ID <span class="text-danger">*</span></label>
+                <input type="text" class="form-control text-secondary" id="upiId" name="upiId" placeholder="UPI ID">
+                <div>
+                  <label for="upiTransactionId" class="form-label">Transaction Id <span class="text-danger">*</span></label>
+                  <input type="text" class="form-control text-secondary" id="upiTransactionId" name="upiTransactionId" placeholder="TransactionId">
+                </div>
+                
+            </div>
+            
+            <!-- Paytm Details -->
+            <div class="col-md-6 mb-3 payment-details{{i.id}}" id="Paytm{{i.id}}" style="display: none;">
+                <label for="paytmNumber" class="form-label">Paytm Number <span class="text-danger">*</span></label>
+                <input type="text" class="form-control text-secondary" id="paytmNumber" name="paytmNumber" placeholder="Paytm Number">
+                <div>
+                  <label for="paytmTransactionId" class="form-label">Transaction Id <span class="text-danger">*</span></label>
+                  <input type="text" class="form-control text-secondary" id="paytmTransactionId" name="paytmTransactionId" placeholder="TransactionId">
+                </div>
+            </div>
+            
+            <!-- Bank Transfer Details -->
+            <div class="col-md-6 mb-3 payment-details{{i.id}}" id="BankTransfer{{i.id}}" style="display: none;">
+                <div>
+                  <label for="bankAccount" class="form-label">Bank Account Number <span class="text-danger">*</span></label>
+                  <input type="text" class="form-control text-secondary" id="bankAccount" name="bankAccount" placeholder="Bank Account Number">
+                </div>
+                <div>
+                  <label for="bankTransactionId" class="form-label">Transaction Id <span class="text-danger">*</span></label>
+                  <input type="text" class="form-control text-secondary" id="bankTransactionId" name="bankTransactionId" placeholder="TransactionId">
+                </div>
+                
+            </div>
+            
+              
+              <div class="modal-footer d-flex justify-content-center col-md-12 mb-3">
+                <button type="submit" class="btn btn-primary">Submit</button>
+                <button type="reset" class="btn btn-secondary" >Reset</button>
+              </div>
+            </form>
+          </div>
+          
+      </div>
+  </div>
+</div>
+{% endfor %}
+<!-- Modal -->
+
+<!-- Spam Confirmation Modal -->
+<div class="modal fade" id="confirmSpamModal" tabindex="-1" role="dialog" aria-labelledby="confirmSpamModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header bg-danger">
+        <h5 class="modal-title text-white"  id="confirmSpamModalLabel">Mark As Spam</h5>
+        <button
+          type="button"
+          class="close"
+          data-dismiss="modal"
+          aria-label="Close"
+        >
+          <span aria-hidden="true" class="text-white">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form action="{% url 'multiple_mark_as_spam' %}" method="post">
+          {% csrf_token %}
+          <div class="mb-3 text-center">
+            <div class="d-flex justify-content-center mb-3">
+
+              <img src="../../static/triangle-exclamation-solid.svg" width="120" height="70" alt="">
+            </div>
+            
+            Are you sure you want to mark the selected leads as spam?
+            <div id="selectedLeadsContainer"></div>
+          </div>
+          <div class="modal-footer d-flex justify-content-center">
+            <button type="submit" class="btn btn-danger">Yes</button>
+            <button
+              type="button"
+              class="btn btn-secondary"
+              data-dismiss="modal"
+              aria-label="Close"
+            >
+              No
+            </button>
+            
+          </div>
+        </form>
+        
+      </div>
+    
+    </div>
+  </div>
+</div>
+
+
+
+
+{% endblock %}
+{% block scripts %}
+
+
+  
+
+
+<script>
+
+
+
+  
+    $(document).ready(function() {
+       // alert message container
+       setTimeout(function() {
+        $(".alert").fadeOut("slow", function() {
+            // This function is called after the fadeOut completes
+            $(this).remove(); // Removes the element from the DOM
+        });
+    }, 5000);
+
+      $('[data-toggle="tooltip"]').tooltip(); // Initializes all tooltips
+    // Function to update button operations
+    function updateButtonOperations() {
+        var selectedCount = $('.row-checkbox:checked').length;
+        var buttonsHtml = '';
+
+        if (selectedCount >= 1) {
+            // When at least one checkbox is selected
+            var prospectId = $('.row-checkbox:checked').data('id');
+            buttonsHtml = `
+                <button class="btn btn-info mr-2 demo-details" data-target="#Democourse${prospectId}"><i class="fa fa-plus-circle"></i> Add Lead stage</button>
+                <button class="btn btn-dark mr-2 view-details" data-target="#submitmodal${prospectId}"><i class="fa fa-send-o"></i> Send To MQL</button>
+                <button class="btn btn-primary mr-2 view-admission" data-target="#sumbit_admissoinmodal${prospectId}"><i class="fa fa-user"></i> Admission</button>
+                <button class="btn btn-danger mr-2 view-spam" data-target="#spam${prospectId}"><i class="fa fa-info-circle"></i> Spam</button>
+            `;
+            if(selectedCount > 1) {
+                // When multiple checkboxes are selected, adjust the buttons accordingly
+                buttonsHtml = `
+                <button class="btn btn-dark mr-2"><i class="fa fa-envelope"></i> Email</button>
+                        <button class="btn btn-success mr-2"><i class="fa fa-phone"></i> WhatsApp</button>
+                        <button class="btn btn-info mr-2"><i class="fa fa-comments"></i> SMS</button>
+                        <button class="btn btn-danger mr-2 view-spam-all" data-target="#confirmSpamModal"><i class="fa fa-info-circle"></i> Spam</button>
+                `;
+            }
+        }
+
+        $('#button_operations').html(buttonsHtml);
+    }
+
+    
+
+    // Use event delegation for dynamically added "Edit" and "Delete" buttons
+    $('#button_operations').on('click', '#openEditModal', function() {
+        $('#EditCourse').modal('show');
+    });
+
+  
+
+    // $('#button_operations').on('click', '#opensendModal', function() {
+    //     $('#sumbitmodal${prospectId}').modal('show');
+    // });
+    $('#button_operations').on('click', '.view-details', function() {
+        var targetModal = $(this).data('target');
+        $(targetModal).modal('show');
+    });
+    $('#button_operations').on('click', '.view-admission', function() {
+        var targetModal = $(this).data('target');
+        $(targetModal).modal('show');
+    });
+    
+    $('#button_operations').on('click', '.demo-details', function() {
+        var targetModal = $(this).data('target');
+        $(targetModal).modal('show');
+    });
+    $('#button_operations').on('click', '.view-spam', function() {
+        var targetModal = $(this).data('target');
+        $(targetModal).modal('show');
+    });
+
+    $('#button_operations').on('click', '.view-spam-all', function() {
+      var selectedIds = $('.row-checkbox:checked').map(function() {
+            return $(this).data('id');
+        }).get();
+        
+        var container = $('#selectedLeadsContainer');
+        container.empty(); // Clear previous inputs
+
+        // Create hidden inputs for each selected ID and append to the container
+        $.each(selectedIds, function(index, id) {
+            $('<input>').attr({
+                type: 'hidden',
+                name: 'selected_ids[]',
+                value: id
+            }).appendTo(container);
+        });
+        var targetModal = $(this).data('target');
+        $(targetModal).modal('show');
+    });
+
+
+    // Attach change event listener to checkboxes for row selection
+    $(document).on('change', '.row-checkbox', function() {
+        // Check if all checkboxes are selected
+        var allChecked = $('.row-checkbox').length === $('.row-checkbox:checked').length;
+        $('#checkAll').prop('checked', allChecked);
+        updateButtonOperations();
+    });
+  
+    // "Check All" functionality
+    $('#checkAll').change(function() {
+        $('.row-checkbox').prop('checked', this.checked);
+        updateButtonOperations();
+    });
+});
+
+  // discount fee
+// discount fee
+function updateFinalFee(modal) {
+    var courseFee = parseFloat(modal.find('#courseFee').val()) || 0;
+    var discountInput = modal.find('#discount').val();
+    var discount = parseFloat(discountInput) || 0;
+
+    if (discountInput === "") {
+        // If the discount field is empty, clear the final fee field
+        modal.find('#finalFee').val('');
+    } else if (discount >= 1 && discount <= 100) {
+        // If the discount is within the valid range, calculate the discounted final fee
+        var discountAmount = (courseFee * discount) / 100;
+        var finalFee = courseFee - discountAmount;
+        modal.find('#finalFee').val(finalFee.toFixed(2));
+    } else {
+        // If the discount is not within the valid range, you could choose to not update the final fee
+        // or set it back to the original course fee. Uncomment the line below as needed.
+        // modal.find('#finalFee').val(courseFee.toFixed(2));
+    }
+}
+
+// Event listener for changes in the discount input field within any modal
+$('.modal').on('input', '#discount', function() {
+    // Find the closest modal to the discount input field that triggered the event
+    var modal = $(this).closest('.modal');
+    updateFinalFee(modal);
+});
+
+
+     // admission Fee
+   // Updates the remaining fee, ensuring the admission fee is within a valid range
+ // Updates the remaining fee, ensuring the admission fee is within a valid range
+function updateRemainingFee(modal) {
+    var finalFee = parseFloat(modal.find('#finalFee').val()) || 0;
+    var admissionFeeInput = modal.find('#admissionFee').val();
+    var admissionFee = parseFloat(admissionFeeInput) || 0;
+
+    if (admissionFeeInput === "") {
+        // If the admission fee field is empty, clear the remaining fee field
+        modal.find('#remainingfee').val('');
+    } else if (admissionFee >= 1000 && admissionFee <= finalFee) {
+        // If the admission fee is within the valid range, calculate the remaining fee
+        var remainingFee = finalFee - admissionFee;
+        modal.find('#remainingfee').val(remainingFee.toFixed(2));
+    } else {
+        // Optionally, reset or mark the remaining fee as invalid if conditions are not met
+        // modal.find('#remainingfee').val("Invalid");
+    }
+}
+
+// Listen for changes in the Admission Fee input field within the current modal
+$('.modal').on('input', '#admissionFee', function() {
+    var modal = $(this).closest('.modal');
+    updateRemainingFee(modal);
+});
+
+   
+
+    // for payment related functionality
+    function showPaymentFields(uniqueId) {
+    // Hide all payment detail fields initially
+    document.querySelectorAll('.payment-details' + uniqueId).forEach(function(element) {
+        element.style.display = 'none';
+    });
+
+    // Get selected payment type using the uniqueId
+    var paymentType = document.getElementById('paymenttype' + uniqueId).value;
+
+    // Show the fields related to the selected payment type
+    if (paymentType !== 'Select Mode of Payment') {
+        var selectedPaymentDiv = document.getElementById(paymentType + uniqueId);
+        if (selectedPaymentDiv) {
+            selectedPaymentDiv.style.display = 'block';
+        }
+    }
+}
+
+    </script>
+
+<!-- mql form validation -->
+
+<!-- fileds validations -->
+<script>
+$(document).ready(function(){
+  $(".mqlForm").each(function(){
+    $(this).validate({
+      ignore: [], // This line tells the validator not to ignore any fields
+      rules: {
+        leadType: {
+          required: true,
+        },
+        demodate: {
+          required: true, // Ensure this is structured as an object for consistency
+        },
+        Leaddescription:{
+          required:true,
+        },
+        courseFaculty:{
+          required:true
+        }
+        // Add other field rules here as necessary
+      },
+      messages: {
+        leadType: {
+          required: "Please select the Lead Type.",
+        },
+        demodate: "Please select the Demo Date",
+        Leaddescription:"Please provide a description",
+        courseFaculty:"Please select the Course Faculty",
+        // Add other field messages here as necessary
+      },
+      submitHandler: function (form) {
+        console.log("Form is valid and being submitted", form);
+        form.submit();
+      }
+    });
+  });
+});
+
+  
+  
+  </script>
+    
+
+<!-- admission form validation -->
+<script>
+  $(document).ready(function() {
+      // Validate each form identified by the 'admissionValid' class
+      $(".admissionValid").each(function() {
+          $(this).validate({
+              // Ignore disabled fields
+              ignore: ":disabled",
+              rules: {
+                  // Assuming 'name' attributes are correctly set. Adjust as necessary.
+                  plan: "required",
+                  discountFee: {
+                      required: true,
+                      range: [1, 20]
+                      
+                  },
+                  admissionFee: {
+                    required: true,
+                    number: true,
+                    min: 1000,
+                    // Dynamically set the max based on the finalFee's value at the time of validation
+                    max: function() {
+                        var finalFeeVal = parseFloat($('#finalFee').val());
+                        if (!isNaN(finalFeeVal)) {
+                            return finalFeeVal;
+                        }
+                        // If finalFee is NaN, use this to force a validation error
+                        return -1; 
+                    }
+                },
+                  batchno: "required",
+                  paymenttype: "required",
+                //     upiId: {
+                //     required: function(element) {
+                //         return true
+                //     }
+                // },
+                // paytmNumber: {
+                //     required: function(element) {
+                //         return true
+                //     }
+                // },
+                // bankAccount: {
+                //     required: function(element) {
+                //         return true
+                //     }
+                // },
+                // bankTransactionId:"required",
+                // paytmTransactionId:"required",
+                // upiTransactionId:"required",
+                  // Add additional fields and rules here as needed
+              },
+              messages: {
+                  plan: "Please select a plan",
+                  discountFee: {
+                      required: "Please enter a discount fee",
+                      range: "Discount fee must be between 1% and 100%"
+                  },
+                  admissionFee: {
+                    required: "Admission fee is required",
+                    number: "Please enter a valid number for the admission fee",
+                    min: "Admission fee must be at least 1000",
+                    max: function() {
+                        var finalFeeVal = $('#finalFee').val();
+                        if (!finalFeeVal || isNaN(parseFloat(finalFeeVal))) {
+                            return "Please enter a valid discount before setting the admission fee.";
+                        }
+                        return "Admission fee cannot exceed the final fee";
+                    }
+                },
+                  batchno: "Please select a batch number",
+                  paymenttype: "Please select a mode of payment",
+                //   upiId: "UPI ID is required",
+                // paytmNumber: "Paytm number is required",
+                // bankAccount: "Bank account number is required",
+                // TransactionId: "Transaction ID is required",
+                // bankTransactionId:"Transaction ID is required",
+                // paytmTransactionId:"Transaction ID is required",
+                // upiTransactionId:"Transaction ID is required",
+              },
+              submitHandler: function(form) {
+                  form.submit();
+              }
+          });
+      });
+  
+      // Function to show/hide payment details based on the selected payment type
+      window.showPaymentFields = function(uniqueId) {
+          $('.payment-details' + uniqueId).hide(); // Hide all payment detail fields initially
+          var paymentType = $('#paymenttype' + uniqueId).val(); // Get selected payment type
+          if (paymentType) {
+              $('#' + paymentType + uniqueId).show(); // Show the fields related to the selected payment type
+          }
+      }
+  });
+  </script>
+
+  <!-- Lead stage validation -->
+  
+<!-- fileds validations -->
+<script>
+  $(document).ready(function(){
+    $(".leadstageValid").each(function(){
+      $(this).validate({
+        rules: {
+          leadstage: {
+                  required: true,
+                  
+              }
+          },
+          messages: {
+            leadstage: {
+                  required: "Please Select the Lead Stage.",
+                  
+              }
+          },
+  
+          submitHandler: function (form) {
+          form.submit()
+          }
+        })
+     });
+  
+    })
+  
+  
+  </script>
+<!-- for multiple spam list -->
+<script>
+  $(document).ready(function() {
+    // Button to open confirmation modal
+    $('.view-spam-all').click(function() {
+        var selectedIds = $('.row-checkbox:checked').map(function() {
+            return $(this).data('id');
+        }).get();
+        
+        if (selectedIds.length) {
+          
+            
+            // Confirm spam action
+            $('#confirmSpam').click(function() {
+                $.ajax({
+                    url: '/multiple_mark_as_spam/',
+                    method: 'POST',
+                    data: {
+                        'csrfmiddlewaretoken': $('input[name=csrfmiddlewaretoken]').val(),
+                        'selectedIds': selectedIds,
+                    },
+                    success: function() {
+                        $('#confirmSpamModal').modal('hide');
+                        // Reload or update UI accordingly
+                        location.reload(); // Simple page reload for demonstration
+                    }
+                });
+            });
+        }
+    });
+});
+
+</script>
+
+
+  
+  
+{% endblock %}

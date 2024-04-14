@@ -1,0 +1,669 @@
+{% extends 'base/base.html' %} 
+{% block title %}QTLineone | Leads{% endblock %}
+{% block style %}
+
+{% endblock %}
+{% block breadCrum %}
+ 
+<!-- Breadcrumb -->
+<!-- Breadcrumb -->
+<!-- <div class="d-flex justify-content-between align-items-center m-3">
+  <h4 class="mb-0">Leads</h4>
+  <nav class="hk-breadcrumb" aria-label="breadcrumb">
+    <ol class="breadcrumb breadcrumb-light bg-transparent mb-0">
+      <li class="breadcrumb-item"><a href="{% url 'dashboard' %}">Dashboard</a></li>
+      <li class="breadcrumb-item active" aria-current="page">Lead Manager | Leads</li>
+    </ol>
+  </nav>
+</div> -->
+<!-- <div class="d-flex justify-content-between align-items-center m-3">
+  <h4 class="mb-0 hk-pg-title m-3 dynamic-title">Leads</h4>
+  <nav class="hk-breadcrumb" aria-label="breadcrumb">
+    <ol class="breadcrumb breadcrumb-light bg-transparent mb-0">
+      <li class="breadcrumb-item"><a href="{% url 'dashboard' %}">Dashboard</a></li>
+      <li class="breadcrumb-item active" aria-current="page">Lead Manager | Leads</li>
+    </ol>
+  </nav>
+</div> -->
+<div class="hk-pg-header d-flex justify-content-between mb-0">
+  
+  <h4 class="mb-0 hk-pg-title m-3 dynamic-title">Leads</h4>
+  <nav aria-label="breadcrumb">
+    <ol class="breadcrumb breadcrumb-light bg-transparent mb-0">
+      <li class="breadcrumb-item"><a href="{% url 'dashboard' %}">Dashboard</a></li>
+      <li class="breadcrumb-item active" aria-current="page">Lead Manager | Leads</li>
+    </ol>
+  </nav>
+</div>
+
+<!-- /Breadcrumb -->
+<!-- /Breadcrumb -->
+{% endblock %} 
+
+
+{% block content %}
+<div class="container-fluid"> <!-- Ensure the button group spans the full width -->
+  <div class="row"> <!-- Bootstrap row -->
+    <div class="col"> <!-- Bootstrap column -->
+      <div id="button_operations" class="btn-group d-flex" role="group" aria-label="Table operations"> <!-- Flex container for buttons -->
+        <button class="btn btn-primary flex-grow-1 table-operation" data-table="#leads_table" data-title="Leads">Leads</button>
+        <button class="btn btn-secondary flex-grow-1 table-operation" data-table="#mql_table" data-title="MQL">MQL</button>
+        <button class="btn btn-info flex-grow-1 table-operation" data-table="#sql_table" data-title="SQL" >SQL</button>
+        <button class="btn btn-warning flex-grow-1 table-operation" data-table="#opportunity_table" data-title="Opportunity">Opportunity</button>
+        <button class="btn btn-success flex-grow-1 table-operation" data-table="#admissions_table" data-title="Admission">Admissions</button>
+        <button class="btn btn-danger flex-grow-1 table-operation" data-table="#spam_table" data-title="Spam List">Spam List</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+<section class="hk-sec-wrapper">
+  
+
+  <div  id="leads_table" class="table-container row">
+    <div class="col-sm">
+      <div class="table-responsive table-wrap">
+        <table
+          id="datable_1"
+          class="table table-hover  w-100 display pb-30 table-bordered"
+        >
+          <thead class="bg-dark">
+            <tr>
+              <!-- <th class="text-white">Due Date</th> -->
+              <th class="text-white">Enquiry ID</th>
+              <th class="text-white">Student Name</th>
+              <th class="text-white">Mobile No</th>
+              <th class="text-white">Email</th>
+              <!-- <th class="text-white">District</th> -->
+              <!-- <th class="text-white">Enquiry Taken By</th> -->
+              <th class="text-white">Course Package</th>
+              <th class="text-white">Lead Stage</th>
+              <th class="text-white">Sub Source</th>
+              <th class="text-white">Lead Source</th>
+              <th class="text-white">Status</th>
+              <!-- <th class="text-white">
+                check box
+              </th> -->
+                            
+              
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+            <!-- <td class="">21-Apr-2024</td> -->
+            <td class="">1038</td>
+            <td class="">Thumma saivardhan</td>
+            <td class="">9700613002</td>
+            <td class="">thummasaivardhan@gmail.com</td>
+            <!-- <td class="">warangal</td> -->
+            <!-- <td class="">Rama</td> -->
+            <td class="">Full stack python</td>
+            <td class="">Fresh Lead</td>
+            <td class="">Outgoing call</td>
+            <td class="">Website Forms</td>
+            <td class="badge badge-warning badge-pill m-2" >Not Admitted</td>
+            <!-- <td class=""><input type="checkbox" class="row-checkbox" name="" id=""></td> -->
+          </tr>
+          <tr>
+            <!-- <td class="">21-Apr-2024</td> -->
+            <td class="">1038</td>
+            <td class="">Thumma saivardhan</td>
+            <td class="">9700613002</td>
+            <td class="">thummasaivardhan@gmail.com</td>
+            <!-- <td class="">warangal</td> -->
+            <!-- <td class="">Rama</td> -->
+            <td class="">Full stack python</td>
+            <td class="">Fresh Lead</td>
+            <td class="">Outgoing call</td>
+            <td class="">Website Forms</td>
+            <td class="badge badge-warning badge-pill m-2" >Not Admitted</td>
+            <!-- <td class=""><input type="checkbox" class="row-checkbox" name="" id=""></td> -->
+          </tr>
+          <tr>
+            <!-- <td class="">21-Apr-2024</td> -->
+            <td class="">1038</td>
+            <td class="">Thumma saivardhan</td>
+            <td class="">9700613002</td>
+            <td class="">thummasaivardhan@gmail.com</td>
+            <!-- <td class="">warangal</td> -->
+            <!-- <td class="">Rama</td> -->
+            <td class="">Full stack python</td>
+            <td class="">Fresh Lead</td>
+            <td class="">Outgoing call</td>
+            <td class="">Website Forms</td>
+            <td class="badge badge-warning badge-pill m-2" >Not Admitted</td>
+            <!-- <td class=""><input type="checkbox" class="row-checkbox" name="" id=""></td> -->
+          </tr>
+          <tr>
+            <!-- <td class="">21-Apr-2024</td> -->
+            <td class="">1038</td>
+            <td class="">Thumma saivardhan</td>
+            <td class="">9700613002</td>
+            <td class="">thummasaivardhan@gmail.com</td>
+            <!-- <td class="">warangal</td> -->
+            <!-- <td class="">Rama</td> -->
+            <td class="">Full stack python</td>
+            <td class="">Fresh Lead</td>
+            <td class="">Outgoing call</td>
+            <td class="">Website Forms</td>
+            <td class="badge badge-warning badge-pill m-2" >Not Admitted</td>
+            <!-- <td class=""><input type="checkbox" class="row-checkbox" name="" id=""></td> -->
+          </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+   <div id="mql_table" class="table-container row" style="display:none;">
+    <div class="col-sm">
+      <div class="table-responsive table-wrap">
+        <table
+          id="datable_1"
+          class="table table-hover w-100 display pb-30 table-bordered"
+        >
+          <thead class="bg-dark">
+            <tr>
+              <th class="text-white">Course</th>
+              <th class="text-white">Status</th>
+              <th class="text-white">Action</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Python</td>
+              <td class="text-center"><span class="text-success">Active</span></td>
+              <td class="text-center">
+                <button
+                  class="btn btn-primary m-1"
+                  data-toggle="modal"
+                  data-target="#EditCourse"
+                >
+                  <i class="fa fa-pencil"></i>
+                </button>
+                <button
+                  class="btn btn-danger m-1"
+                  data-toggle="modal"
+                  data-target="#DeleteCourse"
+                >
+                  <i class="fa fa-trash"></i>
+                </button>
+              </td>
+            </tr>
+            <tr>
+              <td>Java</td>
+              <td class="text-center"><span class="text-danger">Deactive</span></td>
+              <td class="text-center">
+                <button
+                  class="btn btn-primary m-1"
+                  data-toggle="modal"
+                  data-target="#EditCourse"
+                >
+                  <i class="fa fa-pencil"></i>
+                </button>
+                <button
+                  class="btn btn-danger m-1"
+                  data-toggle="modal"
+                  data-target="#DeleteCourse"
+                >
+                  <i class="fa fa-trash"></i>
+                </button>
+              </td>
+            </tr>
+            <tr>
+              <td>Testing</td>
+              <td class="text-center"><span class="text-success">Active</span></td>
+              <td class="text-center">
+                <button
+                  class="btn btn-primary m-1"
+                  data-toggle="modal"
+                  data-target="#EditCourse"
+                >
+                  <i class="fa fa-pencil"></i>
+                </button>
+                <button
+                  class="btn btn-danger"
+                  data-toggle="modal"
+                  data-target="#DeleteCourse"
+                >
+                  <i class="fa fa-trash"></i>
+                </button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+
+  <div  id="sql_table" class="table-container row" style="display:none;">
+    <div class="col-sm">
+      <div class="table-responsive table-wrap">
+        <table
+          id="datable_1"
+          class="table table-hover  w-100 display pb-30 table-bordered"
+        >
+          <thead class="bg-dark">
+            <tr>
+              <!-- <th class="text-white">Due Date</th> -->
+              <th class="text-white">Enquiry ID</th>
+              <th class="text-white">Student Name</th>
+              <th class="text-white">Mobile No</th>
+              <th class="text-white">Email</th>
+              <!-- <th class="text-white">District</th> -->
+              <!-- <th class="text-white">Enquiry Taken By</th> -->
+              <th class="text-white">Course Package</th>
+              <th class="text-white">Lead Stage</th>
+              <th class="text-white">Sub Source</th>
+              <th class="text-white">Lead Source</th>
+              <th class="text-white">Status</th>
+              <!-- <th class="text-white">
+                check box
+              </th> -->
+                            
+              
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+            <!-- <td class="">21-Apr-2024</td> -->
+            <td class="">1038</td>
+            <td class="">Thumma chaitanya</td>
+            <td class="">9700613002</td>
+            <td class="">thummasaivardhan@gmail.com</td>
+            <!-- <td class="">warangal</td> -->
+            <!-- <td class="">Rama</td> -->
+            <td class="">Full stack python</td>
+            <td class="">Fresh Lead</td>
+            <td class="">Outgoing call</td>
+            <td class="">Website Forms</td>
+            <td class="badge badge-warning badge-pill m-2" >Not Admitted</td>
+            <!-- <td class=""><input type="checkbox" class="row-checkbox" name="" id=""></td> -->
+          </tr>
+          <tr>
+            <!-- <td class="">21-Apr-2024</td> -->
+            <td class="">1038</td>
+            <td class="">Thumma saivardhan</td>
+            <td class="">9700613002</td>
+            <td class="">thummasaivardhan@gmail.com</td>
+            <!-- <td class="">warangal</td> -->
+            <!-- <td class="">Rama</td> -->
+            <td class="">Full stack python</td>
+            <td class="">Fresh Lead</td>
+            <td class="">Outgoing call</td>
+            <td class="">Website Forms</td>
+            <td class="badge badge-warning badge-pill m-2" >Not Admitted</td>
+            <!-- <td class=""><input type="checkbox" class="row-checkbox" name="" id=""></td> -->
+          </tr>
+          <tr>
+            <!-- <td class="">21-Apr-2024</td> -->
+            <td class="">1038</td>
+            <td class="">Thumma saivardhan</td>
+            <td class="">9700613002</td>
+            <td class="">thummasaivardhan@gmail.com</td>
+            <!-- <td class="">warangal</td> -->
+            <!-- <td class="">Rama</td> -->
+            <td class="">Full stack python</td>
+            <td class="">Fresh Lead</td>
+            <td class="">Outgoing call</td>
+            <td class="">Website Forms</td>
+            <td class="badge badge-warning badge-pill m-2" >Not Admitted</td>
+            <!-- <td class=""><input type="checkbox" class="row-checkbox" name="" id=""></td> -->
+          </tr>
+          <tr>
+            <!-- <td class="">21-Apr-2024</td> -->
+            <td class="">1038</td>
+            <td class="">Thumma saivardhan</td>
+            <td class="">9700613002</td>
+            <td class="">thummasaivardhan@gmail.com</td>
+            <!-- <td class="">warangal</td> -->
+            <!-- <td class="">Rama</td> -->
+            <td class="">Full stack python</td>
+            <td class="">Fresh Lead</td>
+            <td class="">Outgoing call</td>
+            <td class="">Website Forms</td>
+            <td class="badge badge-warning badge-pill m-2" >Not Admitted</td>
+            <!-- <td class=""><input type="checkbox" class="row-checkbox" name="" id=""></td> -->
+          </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <div id="opportunity_table" class="table-container row" style="display:none;">
+    <div class="col-sm">
+      <div class="table-responsive table-wrap">
+        <table
+          id="datable_1"
+          class="table table-hover  w-100 display pb-30 table-bordered"
+        >
+          <thead class="bg-dark">
+            <tr>
+              <!-- <th class="text-white">Due Date</th> -->
+              <th class="text-white">Enquiry ID</th>
+              <th class="text-white">Student Name</th>
+              <th class="text-white">Mobile No</th>
+              <th class="text-white">Email</th>
+              <!-- <th class="text-white">District</th> -->
+              <!-- <th class="text-white">Enquiry Taken By</th> -->
+              <th class="text-white">Course Package</th>
+              <th class="text-white">Lead Stage</th>
+              <th class="text-white">Sub Source</th>
+              <th class="text-white">Lead Source</th>
+              <th class="text-white">Status</th>
+              <!-- <th class="text-white">
+                check box
+              </th> -->
+                            
+              
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+            <!-- <td class="">21-Apr-2024</td> -->
+            <td class="">1038</td>
+            <td class="">Thumma kavitha</td>
+            <td class="">9700613002</td>
+            <td class="">thummasaivardhan@gmail.com</td>
+            <!-- <td class="">warangal</td> -->
+            <!-- <td class="">Rama</td> -->
+            <td class="">Full stack python</td>
+            <td class="">Fresh Lead</td>
+            <td class="">Outgoing call</td>
+            <td class="">Website Forms</td>
+            <td class="badge badge-warning badge-pill m-2" >Not Admitted</td>
+            <!-- <td class=""><input type="checkbox" class="row-checkbox" name="" id=""></td> -->
+          </tr>
+          <tr>
+            <!-- <td class="">21-Apr-2024</td> -->
+            <td class="">1038</td>
+            <td class="">Thumma saivardhan</td>
+            <td class="">9700613002</td>
+            <td class="">thummasaivardhan@gmail.com</td>
+            <!-- <td class="">warangal</td> -->
+            <!-- <td class="">Rama</td> -->
+            <td class="">Full stack python</td>
+            <td class="">Fresh Lead</td>
+            <td class="">Outgoing call</td>
+            <td class="">Website Forms</td>
+            <td class="badge badge-warning badge-pill m-2" >Not Admitted</td>
+            <!-- <td class=""><input type="checkbox" class="row-checkbox" name="" id=""></td> -->
+          </tr>
+          <tr>
+            <!-- <td class="">21-Apr-2024</td> -->
+            <td class="">1038</td>
+            <td class="">Thumma venkatesh</td>
+            <td class="">9700613002</td>
+            <td class="">thummasaivardhan@gmail.com</td>
+            <!-- <td class="">warangal</td> -->
+            <!-- <td class="">Rama</td> -->
+            <td class="">Full stack python</td>
+            <td class="">Fresh Lead</td>
+            <td class="">Outgoing call</td>
+            <td class="">Website Forms</td>
+            <td class="badge badge-warning badge-pill m-2" >Not Admitted</td>
+            <!-- <td class=""><input type="checkbox" class="row-checkbox" name="" id=""></td> -->
+          </tr>
+          <tr>
+            <!-- <td class="">21-Apr-2024</td> -->
+            <td class="">1038</td>
+            <td class="">Thumma saivardhan</td>
+            <td class="">9700613002</td>
+            <td class="">thummasaivardhan@gmail.com</td>
+            <!-- <td class="">warangal</td> -->
+            <!-- <td class="">Rama</td> -->
+            <td class="">Full stack python</td>
+            <td class="">Fresh Lead</td>
+            <td class="">Outgoing call</td>
+            <td class="">Website Forms</td>
+            <td class="badge badge-warning badge-pill m-2" >Not Admitted</td>
+            <!-- <td class=""><input type="checkbox" class="row-checkbox" name="" id=""></td> -->
+          </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <div id="admissions_table" class="table-container row" style="display:none;">
+    <div class="col-sm">
+      <div class="table-responsive table-wrap">
+        <table
+          id="datable_1"
+          class="table table-hover  w-100 display pb-30 table-bordered"
+        >
+          <thead class="bg-dark">
+            <tr>
+              <!-- <th class="text-white">Due Date</th> -->
+              <th class="text-white">Enquiry ID</th>
+              <th class="text-white">Student Name</th>
+              <th class="text-white">Mobile No</th>
+              <th class="text-white">Email</th>
+              <!-- <th class="text-white">District</th> -->
+              <!-- <th class="text-white">Enquiry Taken By</th> -->
+              <th class="text-white">Course Package</th>
+              <th class="text-white">Lead Stage</th>
+              <th class="text-white">Sub Source</th>
+              <th class="text-white">Lead Source</th>
+              <th class="text-white">Status</th>
+              <!-- <th class="text-white">
+                check box
+              </th> -->
+                            
+              
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+            <!-- <td class="">21-Apr-2024</td> -->
+            <td class="">1038</td>
+            <td class="">kodam manoj</td>
+            <td class="">9700613002</td>
+            <td class="">thummasaivardhan@gmail.com</td>
+            <!-- <td class="">warangal</td> -->
+            <!-- <td class="">Rama</td> -->
+            <td class="">Full stack python</td>
+            <td class="">Fresh Lead</td>
+            <td class="">Outgoing call</td>
+            <td class="">Website Forms</td>
+            <td class="badge badge-warning badge-pill m-2" >Not Admitted</td>
+            <!-- <td class=""><input type="checkbox" class="row-checkbox" name="" id=""></td> -->
+          </tr>
+          <tr>
+            <!-- <td class="">21-Apr-2024</td> -->
+            <td class="">1038</td>
+            <td class="">Thumma saivardhan</td>
+            <td class="">9700613002</td>
+            <td class="">thummasaivardhan@gmail.com</td>
+            <!-- <td class="">warangal</td> -->
+            <!-- <td class="">Rama</td> -->
+            <td class="">Full stack python</td>
+            <td class="">Fresh Lead</td>
+            <td class="">Outgoing call</td>
+            <td class="">Website Forms</td>
+            <td class="badge badge-warning badge-pill m-2" >Not Admitted</td>
+            <!-- <td class=""><input type="checkbox" class="row-checkbox" name="" id=""></td> -->
+          </tr>
+          <tr>
+            <!-- <td class="">21-Apr-2024</td> -->
+            <td class="">1038</td>
+            <td class="">Thumma saivardhan</td>
+            <td class="">9700613002</td>
+            <td class="">thummasaivardhan@gmail.com</td>
+            <!-- <td class="">warangal</td> -->
+            <!-- <td class="">Rama</td> -->
+            <td class="">Full stack python</td>
+            <td class="">Fresh Lead</td>
+            <td class="">Outgoing call</td>
+            <td class="">Website Forms</td>
+            <td class="badge badge-warning badge-pill m-2" >Not Admitted</td>
+            <!-- <td class=""><input type="checkbox" class="row-checkbox" name="" id=""></td> -->
+          </tr>
+          <tr>
+            <!-- <td class="">21-Apr-2024</td> -->
+            <td class="">1038</td>
+            <td class="">Thumma saivardhan</td>
+            <td class="">9700613002</td>
+            <td class="">thummasaivardhan@gmail.com</td>
+            <!-- <td class="">warangal</td> -->
+            <!-- <td class="">Rama</td> -->
+            <td class="">Full stack python</td>
+            <td class="">Fresh Lead</td>
+            <td class="">Outgoing call</td>
+            <td class="">Website Forms</td>
+            <td class="badge badge-warning badge-pill m-2" >Not Admitted</td>
+            <!-- <td class=""><input type="checkbox" class="row-checkbox" name="" id=""></td> -->
+          </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <div id="spam_table" class="table-container row" style="display:none;">
+    <div class="col-sm">
+      <div class=" table-wrap">
+        <table
+          id="datable_1"
+          class="table table-hover  table-responsive w-100 display pb-30 table-bordered"
+        >
+          <thead class="bg-dark">
+            <tr>
+              <!-- <th class="text-white">Due Date</th> -->
+              <th class="text-white">Enquiry ID</th>
+              <th class="text-white">Student Name</th>
+              <th class="text-white">Mobile No</th>
+              <th class="text-white">Email</th>
+              <!-- <th class="text-white">District</th> -->
+              <!-- <th class="text-white">Enquiry Taken By</th> -->
+              <th class="text-white">Course Package</th>
+              <th class="text-white">Lead Stage</th>
+              <th class="text-white">Sub Source</th>
+              <th class="text-white">Lead Source</th>
+              <th class="text-white">Status</th>
+              <!-- <th class="text-white">
+                check box
+              </th> -->
+                            
+              
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+            <!-- <td class="">21-Apr-2024</td> -->
+            <td class="">1038</td>
+            <td class="">kodam keerthana</td>
+            <td class="">9700613002</td>
+            <td class="">thummasaivardhan@gmail.com</td>
+            <!-- <td class="">warangal</td> -->
+            <!-- <td class="">Rama</td> -->
+            <td class="">Full stack python</td>
+            <td class="">Fresh Lead</td>
+            <td class="">Outgoing call</td>
+            <td class="">Website Forms</td>
+            <td class="badge badge-warning badge-pill m-2" >Not Admitted</td>
+            <!-- <td class=""><input type="checkbox" class="row-checkbox" name="" id=""></td> -->
+          </tr>
+          <tr>
+            <!-- <td class="">21-Apr-2024</td> -->
+            <td class="">1038</td>
+            <td class="">Thumma saivardhan</td>
+            <td class="">9700613002</td>
+            <td class="">thummasaivardhan@gmail.com</td>
+            <!-- <td class="">warangal</td> -->
+            <!-- <td class="">Rama</td> -->
+            <td class="">Full stack python</td>
+            <td class="">Fresh Lead</td>
+            <td class="">Outgoing call</td>
+            <td class="">Website Forms</td>
+            <td class="badge badge-warning badge-pill m-2" >Not Admitted</td>
+            <!-- <td class=""><input type="checkbox" class="row-checkbox" name="" id=""></td> -->
+          </tr>
+          <tr>
+            <!-- <td class="">21-Apr-2024</td> -->
+            <td class="">1038</td>
+            <td class="">Thumma saivardhan</td>
+            <td class="">9700613002</td>
+            <td class="">thummasaivardhan@gmail.com</td>
+            <!-- <td class="">warangal</td> -->
+            <!-- <td class="">Rama</td> -->
+            <td class="">Full stack python</td>
+            <td class="">Fresh Lead</td>
+            <td class="">Outgoing call</td>
+            <td class="">Website Forms</td>
+            <td class="badge badge-warning badge-pill m-2" >Not Admitted</td>
+            <!-- <td class=""><input type="checkbox" class="row-checkbox" name="" id=""></td> -->
+          </tr>
+          <tr>
+            <!-- <td class="">21-Apr-2024</td> -->
+            <td class="">1038</td>
+            <td class="">Thumma saivardhan</td>
+            <td class="">9700613002</td>
+            <td class="">thummasaivardhan@gmail.com</td>
+            <!-- <td class="">warangal</td> -->
+            <!-- <td class="">Rama</td> -->
+            <td class="">Full stack python</td>
+            <td class="">Fresh Lead</td>
+            <td class="">Outgoing call</td>
+            <td class="">Website Forms</td>
+            <td class="badge badge-warning badge-pill m-2" >Not Admitted</td>
+            <!-- <td class=""><input type="checkbox" class="row-checkbox" name="" id=""></td> -->
+          </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+
+{% endblock %}
+{% block scripts %}
+
+<!-- 
+ <script>
+  $(document).ready(function() {
+    $('#datable_1').DataTable({
+    destroy: true
+    // responsive: true
+    // add other options here
+  });
+  
+  });
+  </script> -->
+  
+
+<script>
+  $(document).ready(function() {
+
+
+    
+    // Initialize DataTables for all tables
+   
+    
+    // Button click event to show the corresponding table
+    $('.table-operation').on('click', function() {
+      var targetTable = $(this).data('table');
+      var titleText = $(this).data('title');
+      
+      // Hide all tables
+      $('.table-container').hide();
+      
+      // Show the selected table
+      $(targetTable).show();
+
+      // Update the title or any related content
+      $('.dynamic-title').text(titleText); 
+    });
+  });
+  </script> 
+
+
+  
+  
+{% endblock %}

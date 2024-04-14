@@ -1,0 +1,656 @@
+{% extends 'base/base.html' %} 
+{% block title %}QTLineone | Regulations{% endblock %} 
+{% block breadCrum %}
+<!-- Breadcrumb -->
+<div class="hk-pg-header d-flex justify-content-between mb-0">
+  <h4 class="hk-pg-title m-3">Regulations</h4>
+  <nav aria-label="breadcrumb">
+    <ol class="breadcrumb bg-transparent mb-0">
+      <li class="breadcrumb-item"><a href="{% url 'dashboard' %}">Dashboard</a></li>
+      <li class="breadcrumb-item"><a href="{% url 'settings' %}">Settings</a></li>
+      <li class="breadcrumb-item active" aria-current="page">Regulations</li>
+    </ol>
+  </nav>
+</div>
+<!-- /Breadcrumb -->
+
+{% endblock %} {% block content %}
+ <!-- message here -->
+
+ {% if messages %}
+ {% for message in messages %}
+   {% if message.tags == "error" %}
+     <div class="h-25 alert alert-danger alert-dismissible fade show mt-2 h-25 text-center" role="alert">{{ message }}</div>
+   {% elif message.tags == "success" %}
+     <div class="h-25 alert alert-success alert-dismissible fade show mt-2 h-25 text-center" role="alert">{{ message }}</div>
+     {% else %}
+    <div class="h-25 alert alert-info alert-dismissible fade show mt-2 h-25 text-center" role="alert">{{ message }}</div>
+    {% endif %}
+   {% endfor %}
+ {% endif %}
+
+<!-- message end here -->
+<section class="hk-sec-wrapper">
+  <div class="d-flex justify-content-between">
+
+    <div class="">
+      <button
+        type="button"
+        class="btn btn-primary mr-2 mb-3"
+        data-toggle="modal"
+        data-target="#CreateRegulation"
+      >
+      <i class="glyphicon glyphicon-plus"></i>  Create Regulation
+      </button>
+      <a href="{% url 'regulation_export' %}" class="btn btn-success mr-2 mb-3"><i class="glyphicon glyphicon-export"></i> Export</a>
+      <button
+        type="button"
+        class="btn btn-secondary mr-2 mb-3"
+        data-toggle="modal"
+        data-target="#UploadRegulation"
+      >
+      <i class="glyphicon glyphicon-import"></i>  Import
+      </button>
+    </div>
+
+    <div>
+      <button type="button" class="btn btn-danger mr-2 mb-3" id="deleteButton" data-toggle="modal"
+    data-target="#deleteModal" style="display: none; position: relative; top: 0px; ">
+    <i class="glyphicon glyphicon-trash"></i> Delete
+</button>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-sm">
+      <div class="table-wrap">
+        <table
+          id="datable_1"
+          class="table table-hover w-100 display pb-30 table-bordered"
+        >
+          <thead class="bg-dark">
+            <tr>
+              <th class="text-white text-center"><input type="checkbox" id="selectAll"> All</th>
+
+              <th class="text-white">S.No</th>
+              <th class="text-white">Courses</th>
+              <th class="text-white">Specializations</th>
+              <th class="text-white">Batch Number</th>
+              <th class="text-white text-center">Status</th>
+              <th class="text-white text-center">Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for reg in regulations %}
+            <tr>
+              <td class="text-center"><input type="checkbox" class="row-checkbox" data-course-id="{{reg.id}}"
+                data-course-name="{{reg.batch_number}}"></td>
+            
+              <td >{{forloop.counter}}</td>
+              <td >{{reg.course_id.course_name}}</td>
+              <td >{{reg.spec_id.specilalization_name}}</td>
+              <td>{{reg.batch_number}}</td>
+              <td class="text-center">
+                
+                {% if reg.status == 'Active' %}  
+                <a href="{% url 'regulations_status' reg.id %}"><span class="badge badge-success badge-pill">{{reg.status}}</span></a>
+              {% else %}
+                <a href="{% url 'regulations_status' reg.id %}"><span class="badge badge-danger badge-pill">{{reg.status}}</span></a>
+                {% endif %}
+              
+            
+            </td>
+              <td class="text-center">
+                <button
+                  class="btn btn-primary m-1"
+                  data-toggle="modal"
+                  data-target="#EditRegulation{{forloop.counter}}"
+                >
+                  <i class="fa fa-pencil"></i>
+                </button>
+                <button
+                  class="btn btn-danger m-1"
+                  data-toggle="modal"
+                  data-target="#DeleteRegulation{{forloop.counter}}"
+                >
+                  <i class="fa fa-trash"></i>
+                </button>
+              </td>
+            </tr>
+            {% endfor %}
+         
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+  <div id="exp"></div>
+</section>
+
+<!-- create model start here -->
+
+<div class="modal fade" id="CreateRegulation" tabindex="-1" role="dialog" aria-labelledby="CreateRegulation" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <form action="{% url 'regulations' %}" id="create_form" method="post">
+        {% csrf_token %}
+        <div class="modal-header bg-dark">
+          <h5 class="modal-title text-white">Create New Regulation</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true" class="text-white">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <div class="mb-3">
+            <label for="" id="start">Courses <span class="text-danger">*</span></label>
+            <select class="form-control custom-select" id="course-select" name="course_id">
+              <option value="">Select Your Course</option>
+              {% for course in courses %}
+              <option value="{{ course.id }}">{{ course.course_name }}</option>
+              {% endfor %}
+            </select>
+          </div>
+          <div class="mb-3">
+            <label for="" id="start">Specializations <span class="text-danger">*</span></label>
+            <select class="form-control custom-select" id="specialization-select" name="specialization_id" disabled>
+              <option value="">Select Your Specialization</option>
+            </select>
+          </div>
+          <div class="mb-3">
+            <label for="" id="start">Batch Number <span class="text-danger">*</span></label>
+            <input type="text" name="batch_number" id="batch_number" class="form-control" />
+          </div>
+        </div>
+        <div class="mb-3 d-flex justify-content-center">
+          <button type="submit" class="btn btn-primary m-1">Submit</button>
+          <button type="reset" class="btn btn-secondary m-1">Reset</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+<!-- Create model end here -->
+<!-- Edit model start here -->
+<!-- Edit Modals -->
+{% for reg in regulations %}
+<div class="modal fade" id="EditRegulation{{ forloop.counter }}" tabindex="-1" role="dialog" aria-labelledby="EditRegulation" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <form action="{% url 'regulation_update' reg.id %}" method="post" class="edit_form">
+        {% csrf_token %}
+        <div class="modal-header bg-dark">
+          <h5 class="modal-title text-white">Edit Regulation</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true" class="text-white">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <div class="mb-3">
+            <label for="" id="start">Courses <span class="text-danger">*</span></label>
+            <select class="form-control custom-select edit-course-select" name="edit_course_name" required>
+              <option value="">Select Your Course</option>
+              {% for course in courses %}
+          
+              <option value="{{ course.id }}">{{ course.course_name }}</option>
+        
+              {% endfor %}
+            </select>
+          </div>
+          <div class="mb-3">
+            <label for="" id="start">Specializations <span class="text-danger">*</span></label>
+            <select class="form-control custom-select edit-specialization-select" name="edit_specialization_name" required>
+              {% for specialization in reg.spec_id.specialization_set.all %}
+              {% if specialization.specilalization_name == reg.spec_id.specilalization_name %}
+              <option selected value="{{ specialization.id }}">{{ specialization.specilalization_name }}</option>
+              {% else %}
+              <option value="{{ specialization.id }}">{{ specialization.specilalization_name }}</option>
+              {% endif %}
+              {% endfor %}
+            </select>
+          </div>
+          <div class="mb-3">
+            <label for="" id="start">Batch Number <span class="text-danger">*</span></label>
+            <input type="text" name="edit_batch_num" id="batch_number" value="{{ reg.batch_number }}" class="form-control" required />
+          </div>
+        </div>
+        <div class="mb-3 d-flex justify-content-center">
+          <button type="submit" class="btn btn-primary m-1">Submit</button>
+          <button type="button" class="btn btn-secondary m-1" data-dismiss="modal" aria-label="Close">Close</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+{% endfor %}
+<!-- Edit model end here -->
+
+<!-- Delete model start here -->
+<div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="deleteModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+      <div class="modal-content">
+          <div class="modal-header bg-danger">
+              <h5 class="modal-title text-white " id="deleteModalLabel">Delete Regulation</h5>
+              <button type="button" class="close text-white" data-dismiss="modal" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+              </button>
+          </div>
+          <div class="modal-body">
+              <div class="mb-3 text-center">
+                  <div class="d-flex justify-content-center mb-3">
+                      <img src="../../static/triangle-exclamation-solid.svg" width="120" height="70" alt="">
+                  </div>
+                  <form action="{% url 'regulation_delete_all'  %}" method="post">
+                      {% csrf_token %}
+                      <p id="deleteMessage">Are you sure you want to delete <strong><span id="selectedCount"></span></strong> records?</p>
+                      <input type="hidden" id="selected_ids_input" name="selected_ids">
+              </div>
+              <div class="d-flex justify-content-center">
+                <button type="submit" class="btn btn-danger m-1" id="confirmDelete">Yes</button>
+                <button type="button" class="btn btn-secondary m-1" data-dismiss="modal">No</button>
+              </div>
+              </form>
+          </div>
+
+      </div>
+  </div>
+</div>
+{% for reg in regulations %}
+<div
+  class="modal fade"
+  id="DeleteRegulation{{forloop.counter}}"
+  tabindex="-1"
+  role="dialog"
+  aria-labelledby="DeleteRegulation"
+  aria-hidden="true"
+>
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <form action="{% url 'regulation_delete' reg.id %}" method="post">
+        {% csrf_token %}
+      <div class="modal-header bg-danger">
+        <h5 class="modal-title text-white">Delete Regulation</h5>
+        <button
+          type="button"
+          class="close"
+          data-dismiss="modal"
+          aria-label="Close"
+        >
+          <span aria-hidden="true" class="text-white">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+          <div class="mb-3 text-center">
+            <div class="d-flex justify-content-center mb-3">
+
+              <img src="../../static/triangle-exclamation-solid.svg" width="120" height="70" alt="">
+            </div>
+            Are you sure you want to delete Regulation for {{reg.batch_number}} ?
+          </div>
+        </div>
+        <div class="mb-3 d-flex justify-content-center">
+          <button type="submit" class="btn btn-danger m-1">Yes</button>
+          <button
+          type="button"
+          class="btn btn-secondary m-1"
+          data-dismiss="modal"
+          aria-label="Close"
+          >
+          No
+        </button>
+      </div>
+    </form>
+    </div>
+  </div>
+</div>
+{% endfor %}
+
+<!-- Delete model end here -->
+
+<!-- Upload model  -->
+
+<div
+  class="modal fade"
+  id="UploadRegulation"
+  tabindex="-1"
+  role="dialog"
+  aria-labelledby="UploadRegulation"
+  aria-hidden="true"
+>
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <form action="{% url 'regulation_import' %}" method="post"  enctype="multipart/form-data">
+        {% csrf_token %}
+      <div class="modal-header bg-dark">
+        <h5 class="modal-title text-white">Upload File</h5>
+        <button
+          type="button"
+          class="close"
+          data-dismiss="modal"
+          aria-label="Close"
+        >
+          <span aria-hidden="true" class="text-white">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+          <input type="file" name="regulation_file" id="input-file-now" class="dropify" />
+          <div id="error-file"></div>
+        </div>
+        <div class="mb-3 d-flex justify-content-center">
+          <button type="submit" class="btn btn-primary m-1">Submit</button>
+          <button
+          type="button"
+          class="btn btn-secondary m-1"
+          data-dismiss="modal"
+          aria-label="Close"
+          >
+          Close
+        </button>
+      </div>
+    </form>
+    </div>
+  </div>
+</div>
+
+<!-- Upload model end here -->
+
+{% endblock %}
+
+{% block scripts %}
+
+
+<script>
+  $(document).ready(function () {
+     //for creating training type
+    //validationf for special charector 
+    $.validator.addMethod("noSpecialChars", function (value, element) {
+      return /^[a-zA-Z0-9\s]*$/.test(value);
+    }, "Special characters are not allowed.");
+    //no numbers
+    $.validator.addMethod("noNumbers", function (value, element) {
+      return !/\d/.test(value);
+    }, "Numbers are not allowed in the department name.");
+    //
+    //
+
+
+    $.validator.addMethod("noSpace", function(value, element) {
+      return !(/^\s|\s$|\s{2,}/.test(value));
+  }, "No excessive or leading/trailing spaces");
+
+
+
+
+    $("#create_form").validate({
+      rules: {
+        course_id: {
+          required: true,
+        },
+        specialization_id: {
+          required: true,
+        },
+        batch_number: {
+          required: true,
+          noSpecialChars: true,
+          maxlength:50,
+          noSpace: true
+          
+        },
+      },
+      messages: {
+        course_id: {
+          required: "Please select course",
+        },
+        specialization_id: {
+          required: "Please select specialization",
+        },
+        batch_number: {
+          required: "Please enter batch number",
+          maxlength: "Batch number cannot exceed 50 characters"
+        },
+      },
+  
+      submitHandler: function (form) {
+        form.submit();
+      },
+    });
+  });
+</script>
+<script>
+
+  $(document).ready(function(){
+    $.validator.addMethod("noSpecialChars", function (value, element) {
+      return /^[a-zA-Z0-9\s]*$/.test(value);
+    }, "Special characters are not allowed.");
+
+
+
+    $.validator.addMethod("noSpace", function(value, element) {
+      return !(/^\s|\s$|\s{2,}/.test(value));
+  }, "No excessive or leading/trailing spaces");
+
+
+
+
+    $(".edit_form").each(function(){
+      $(this).validate({
+        rules:{
+          edit_course_name:{
+            required:true
+          },
+          edit_specialization_name:{
+            required:true
+          },
+          edit_batch_num:{
+            required:true,
+            noSpecialChars:true,
+            noSpace:true,
+            maxlength:50
+          }
+        },
+        messages:{
+          edit_course_name:{
+            required:"Please Select Course"
+          },
+          edit_specialization_name:{
+            required:"Please Select Specialization"
+          },
+          edit_batch_num:{
+            required:"Please Enter Batch Number",
+            maxlength:"Batch number cannot exceed 50 characters"
+          }
+        },
+
+        submitHandler:function(form){
+          form.submit();
+        }
+      })
+    })
+  })
+</script>
+<script>
+  function validateUploadForm(form) {
+    $(form).find('#input-file-now').on('change', function () {
+      var file = this.files[0];
+      var fileExt = file.name.split('.').pop().toLowerCase();
+
+      if (fileExt === 'csv') {
+        $(form).find('button[type="submit"]').prop('disabled', false);
+        $(form).find('#error-file').html('');
+      } else {
+        $(form).find('button[type="submit"]').prop('disabled', true);
+        $(form).find('#error-file').html('<span style="color: red;">Only CSV files are allowed.</span>');
+      }
+    });
+
+    $(form).on('submit', function (e) {
+      var file = $(form).find('#input-file-now')[0].files[0];
+
+      if (!file) {
+        e.preventDefault();
+        $(form).find('#error-file').html('<span style="color: red;">Please select a csv file.</span>');
+      }
+    });
+  }
+
+  $('#UploadRegulation').on('shown.bs.modal', function () {
+    validateUploadForm($(this).find('form'));
+  });
+</script>
+
+
+<!---Delete Script-->
+<script>
+  // Function to update the "Select All" checkbox status
+  function updateSelectAllCheckbox() {
+    var selectAllCheckbox = document.getElementById('selectAll');
+    var rowCheckboxes = document.querySelectorAll('.row-checkbox');
+    var allChecked = true;
+
+    rowCheckboxes.forEach(function (checkbox) {
+      if (!checkbox.checked) {
+        allChecked = false;
+      }
+    });
+
+    selectAllCheckbox.checked = allChecked;
+    updateSelectedRowsList(); // Update selected rows list when "Select All" checkbox is clicked
+  }
+
+  // Function to update the selected rows list and toggle delete button visibility
+  function updateSelectedRowsList() {
+    var selectedRowsList = document.getElementById('selectedRowsList');
+    var selectedIdsInput = document.getElementById('selected_ids_input');
+    var deleteButton = document.getElementById('deleteButton');
+
+    var selectedRows = document.querySelectorAll('.row-checkbox:checked');
+    var selectedCount = selectedRows.length;
+
+    if (selectedCount > 1) {
+      deleteButton.style.display = 'block'; // Show delete button if more than one row is selected
+    } else {
+      deleteButton.style.display = 'none'; // Hide delete button if only one row or none is selected
+    }
+
+    var selectedIds = [];
+    selectedRows.forEach(function (row) {
+      var courseId = row.dataset.courseId;
+      selectedIds.push(courseId);
+    });
+
+    // Set the value of the hidden input field to the selected IDs
+    selectedIdsInput.value = selectedIds.join(',');
+
+    // Update the delete modal message with the selected count
+    document.getElementById('deleteMessage').textContent = "Are you sure you want to delete " + selectedCount + " records?";
+  }
+
+  // Event listener for checkbox change
+  document.querySelectorAll('.row-checkbox').forEach(function (checkbox) {
+    checkbox.addEventListener('change', function () {
+      updateSelectedRowsList();
+      updateSelectAllCheckbox();
+    });
+  });
+
+  // Event listener for select all checkbox change
+  document.getElementById('selectAll').addEventListener('change', function () {
+    var isChecked = this.checked;
+    document.querySelectorAll('.row-checkbox').forEach(function (checkbox) {
+      checkbox.checked = isChecked;
+    });
+    updateSelectedRowsList();
+  });
+
+  // Initially update delete button visibility
+  updateSelectedRowsList();
+
+  // Event listener for delete button click
+  document.getElementById('confirmDelete').addEventListener('click', function () {
+    // Perform delete action here
+    // For now, let's just close the modal
+    $('#deleteModal').modal('hide');
+  });
+</script>
+
+<!-- for dropdown dependency -->
+
+<script>
+
+
+    $(document).ready(function() {
+      // Disable specialization dropdown initially for create modal
+      $('#specialization-select').prop('disabled', true);
+    
+      // Handle course change for create modal
+      $('#course-select').on('change', function() {
+        var courseId = $(this).val();
+        if (courseId) {
+          $.ajax({
+            url: '{% url "get_regulations" course_id=0 %}'.replace('0', courseId),
+            data: { 'course_id': courseId },
+            success: function(data) {
+              $('#specialization-select').prop('disabled', false);
+              $('#specialization-select').empty();
+              $('#specialization-select').append('<option value="">Select Your Specialization</option>');
+              $.each(data.specialization_data, function(index, specialization) {
+                $('#specialization-select').append('<option value="' + specialization.id + '">' + specialization.specilalization_name + '</option>');
+              });
+            },
+            error: function() {
+              alert('Error fetching specializations.');
+            }
+          });
+        } else {
+          $('#specialization-select').prop('disabled', true);
+          $('#specialization-select').empty();
+          $('#specialization-select').append('<option value="">Select Your Specialization</option>');
+        }
+      });
+    
+      // Disable specialization dropdown initially for edit modals
+      $('.edit-specialization-select').prop('disabled', true);
+    
+      // Handle course change for edit modals
+      $('.edit-course-select').on('change', function() {
+        var courseId = $(this).val();
+        var editSpecializationSelect = $(this).closest('.modal-content').find('.edit-specialization-select');
+    
+        if (courseId) {
+          $.ajax({
+            url: '{% url "get_regulations" course_id=0 %}'.replace('0', courseId),
+            data: { 'course_id': courseId },
+            success: function(data) {
+              editSpecializationSelect.prop('disabled', false);
+              editSpecializationSelect.empty();
+              editSpecializationSelect.append('<option value="">Select Your Specialization</option>');
+              $.each(data.specialization_data, function(index, specialization) {
+                editSpecializationSelect.append('<option value="' + specialization.id + '">' + specialization.specilalization_name + '</option>');
+              });
+            },
+            error: function() {
+              alert('Error fetching specializations.');
+            }
+          });
+        } else {
+          editSpecializationSelect.prop('disabled', true);
+          editSpecializationSelect.empty();
+          editSpecializationSelect.append('<option value="">Select Your Specialization</option>');
+        }
+      });
+    });
+
+</script>
+
+<!-- dropdown dependency for edit -->
+
+<script>
+  $(document).ready(function() {
+
+    new DataTable('#datable_1', {
+     responsive:true,
+      
+  } );
+  })
+</script>
+{% endblock %}

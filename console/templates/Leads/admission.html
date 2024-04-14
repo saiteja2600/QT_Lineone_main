@@ -1,0 +1,559 @@
+{% extends 'base/base.html' %} 
+{% block title %}QTLineone | Prospects{% endblock %}
+{% block style %}
+
+
+
+{% endblock %}
+{% block breadCrum %}
+
+
+{% endblock %} 
+
+{% block profile %}
+<div class="row">
+  <div class="col-xl-12 pa-0">
+      <div class="profile-cover-wrap overlay-wrap">
+          <div class="profile-cover-img" style="background-image:url('../../static/dist/img/bg2.jpg')"></div>
+          <div class="bg-overlay bg-trans-dark-60"></div>
+          <div class="container profile-cover-content py-50">
+              <div class="hk-row"> 
+                  <div class="col-lg-4">
+                      <div class="media align-items-center">
+                          <div class="media-img-wrap  d-flex">
+                              <div class="avatar">
+                                  <img src="../../static/dist/img/avatar1.jpg" alt="user" class="avatar-img rounded-circle">
+                              </div>
+                          </div>
+                          <div class="media-body">
+                              <div class="text-white text-capitalize display-6 mb-5 font-weight-400">{{request.session.admin_user.full_name}}</div>
+                              <div class="font-14 text-white">
+                                  <span class="mr-5">
+                                      <span class="font-weight-bold pr-5">JOINING DATE:</span>
+                                      <span class="mr-5">12/03/24</span>
+                                  </span>
+                                  <span>
+                                      <span class="font-weight-bold pr-5">Department:</span>
+                                      <span>Python Department</span>
+                                  </span>
+                                  
+                              </div>
+                          </div>
+                      </div>
+                  </div>
+                 
+                  <div class="col-lg-8">
+                      <div class="container mt-3 ml-md-100">
+                                                          <div class="row">
+                                                              <!-- Enquiries Card -->
+                      <div class="col-md-3">
+                          <div class="stats-card p-2 mb-3 text-white" style="border-radius: 8px; box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); background-color: rgba(23, 163, 184, 0.479);">
+                              <h5 class="stats-title  text-white"><i class="fa fa-microphone text-dark" aria-hidden="true"></i> Enquiries</h5>
+                              <div class="stats-number ml-25">{{ leads_count }}</div>
+                          </div>
+                      </div>
+
+                      <!-- Follow-ups Card -->
+                      <div class="col-md-3">
+                          <div class="stats-card p-2 mb-3 text-dark" style="border-radius: 8px; box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); background-color: rgba(107, 111, 231, 0.458);">
+                              <h5 class="stats-title  text-white"><i class="fa fa-retweet text-dark" aria-hidden="true"></i> Follow-ups</h5>
+                              <div class="stats-number text-white ml-30">{{ other_count }}</div>
+                          </div>
+                      </div>
+
+                      <!-- Admissions Card -->
+                      <div class="col-md-3">
+                          <div class="stats-card p-2 mb-3 text-white" style="border-radius: 8px; box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); background-color: rgba(235, 115, 137, 0.468);">
+                              <h5 class="stats-title  text-white"><i class="fa fa-user text-dark" aria-hidden="true"></i> Admissions</h5>
+                              <div class="stats-number ml-30">{{ admissions_count }}</div>
+                          </div>
+                      </div>
+                      <div class="col-md-3">
+                          <div id="latestEnquiries" class="notification-card" class="stats-card p-2 mb-3 text-white" style="border-radius: 8px; box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); background-color: rgba(235, 115, 137, 0.468);">
+                             
+                          </div>
+                      </div>
+                      <div >
+                          <!-- Dynamically filled with latest enquiries -->
+                      </div>
+                      
+                          </div>
+                      </div>
+                  </div>
+                  
+                  
+              </div>
+          </div>
+      </div>
+      
+      <div class="bg-white shadow-bottom">
+          <div class="container">
+              <ul class="nav nav-light nav-tabs" role="tablist">
+                  <li class="nav-item">
+                      <a class="d-flex h-60p align-items-center nav-link {% if active_tab == 'lead_prospects' %}active{% endif %}" href="{% url 'lead_prospects' %}">Prospects</a>
+                  </li>
+                  <li class="nav-item">
+                      <a class="d-flex h-60p align-items-center nav-link {% if active_tab == 'leads' %}active{% endif %}" href="{% url 'leads' %}">Leads</a>
+                  </li>
+                  <li class="nav-item">
+                      <a class="d-flex h-60p align-items-center nav-link {% if active_tab == 'mql' %}active{% endif %}" href="{% url 'mql' %}">MQL</a>
+                  </li>
+                  <li class="nav-item">
+                      <a class="d-flex h-60p align-items-center nav-link {% if active_tab == 'sql' %}active{% endif %}" href="{% url 'sql' %}">SQL</a>
+                  </li>
+                  <li class="nav-item">
+                      <a class="d-flex h-60p align-items-center nav-link {% if active_tab == 'request_discounts' %}active{% endif %}" href="{% url 'request_discounts' %}">Request Discounts</a>
+                  </li>
+                  <li class="nav-item">
+                      <a class="d-flex h-60p align-items-center nav-link {% if active_tab == 'opportunity' %}active{% endif %}" href="{% url 'opportunity' %}">Opportunity</a>
+                  </li>
+                  <li class="nav-item">
+                      <a class="d-flex h-60p align-items-center nav-link {% if active_tab == 'admission' %}active{% endif %}" href="{% url 'admission' %}">Admissions</a>
+                  </li>
+                  <li class="nav-item">
+                      <a class="d-flex h-60p align-items-center nav-link {% if active_tab == 'spam' %}active{% endif %}" href="{% url 'spam' %}">Spam List</a>
+                  </li>
+                  
+
+                  <!-- Add other tabs with similar logic -->
+              </ul>
+          </div>
+      </div>
+      
+</div>
+<!-- /Row -->
+</div>
+{% endblock %}
+
+
+{% block content %}
+
+{% if messages %}
+ {% for message in messages %}
+   {% if message.tags == "error" %}
+     <div class="h-25 alert alert-danger alert-dismissible fade show mt-2 h-25 text-center" role="alert">{{ message }}</div>
+   {% elif message.tags == "success" %}
+     <div class="h-25 alert alert-success alert-dismissible fade show mt-2 h-25 text-center" role="alert">{{ message }}</div>
+     {% else %}
+    <div class="h-25 alert alert-info alert-dismissible fade show mt-2 h-25 text-center" role="alert">{{ message }}</div>
+               {% endif %}
+   {% endfor %}
+ {% endif %}
+
+<section class="hk-sec-wrapper">
+    <div class="row">
+        <div class="col">
+          
+        </div>
+      
+        <div class="button_operations  col-auto ml-auto p-0 mb-3"  id="button_operations">
+            
+        </div>
+      </div>
+
+
+  <div class="row">
+    <div class="col-sm">
+      <div class=" table-wrap">
+        
+        <table
+        id="datable_1"
+        class="table table-hover w-100 display pb-30 table-bordered">
+      <thead class="bg-dark">
+        <tr>
+          <th class="text-white  text-center">
+            <p class="mr-5">All<input type="checkbox" class="form-check-input" style="margin-left:3px; margin-right: 20px;" id="checkAll"></p>
+            
+        </th>
+          <th class="text-white">Admission ID</th>
+          <th class="text-white">Student Name</th>
+          <th class="text-white">Mobile No</th>
+          <th class="text-white">Email</th>
+          <th class="text-white">Course</th>
+          <th class="text-white">Course Faculty</th>
+          <th class="text-white">Batch No</th>
+          <th class="text-white">Plan</th>
+          <th class="text-white">Joining Date</th>
+         
+          
+                        
+          
+        </tr>
+      </thead>
+        <tbody>
+          {% for i in leads %}
+          <tr>
+            
+            
+            
+          <td><input type="checkbox" class="row-checkbox" data-id="{{ i.id }}"></td>
+          <td>{{i.token_id}}</td>
+          <td>{{i.firstname}} {{i.lastname}}</td>
+          <td>{{i.phone}}</td>
+          <td>{{i.email}}</td>
+          <td>{{i.course_interested_in}}</td>
+          <td>{{i.course_faculty}}</td>
+          <td>{{i.plan}}</td>
+          <td>{{i.batch_no}}</td>
+          <td>{{i.joining_date}}</td>
+            
+            </tr>
+          {% endfor %}  
+        </tbody>
+      </table>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- create model start here -->
+
+<div
+  class="modal fade"
+  id="CreateCourse"
+  tabindex="-1"
+  role="dialog"
+  aria-labelledby="CreateCourse"
+  aria-hidden="true"
+>
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header bg-dark">
+        <h5 class="modal-title text-white">Create New Course</h5>
+        <button
+          type="button"
+          class="close"
+          data-dismiss="modal"
+          aria-label="Close"
+        >
+          <span aria-hidden="true" class="text-white">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form action="">
+          <div class="mb-3">
+            <label for="" class="form-label"
+              >Course Name <span class="text-danger">*</span></label
+            >
+            <input
+              type="text"
+              placeholder="Ex: Python, Java"
+              class="form-control"
+            />
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer d-flex justify-content-center">
+        <button type="button" class="btn btn-primary">Submit</button>
+        <button type="reset" class="btn btn-secondary">Reset</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Create model end here -->
+<!-- Edit model start here -->
+
+<div
+  class="modal fade"
+  id="EditCourse"
+  tabindex="-1"
+  role="dialog"
+  aria-labelledby="EditCourse"
+  aria-hidden="true"
+>
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header bg-dark">
+        <h5 class="modal-title text-white">Edit Course</h5>
+        <button
+          type="button"
+          class="close"
+          data-dismiss="modal"
+          aria-label="Close"
+        >
+          <span aria-hidden="true" class="text-white">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form action="">
+          <div class="mb-3">
+            <label for="" class="form-label"
+              >Course Name <span class="text-danger">*</span></label
+            >
+            <input
+              type="text"
+              placeholder="Ex: Python, Java"
+              class="form-control"
+            />
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer d-flex justify-content-center">
+        <button type="button" class="btn btn-primary">Submit</button>
+        <button
+          type="button"
+          class="btn btn-secondary"
+          data-dismiss="modal"
+          aria-label="Close"
+        >
+          Close
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Edit model end here -->
+
+<!-- Delete model start here -->
+
+<div
+  class="modal fade"
+  id="DeleteCourse"
+  tabindex="-1"
+  role="dialog"
+  aria-labelledby="DeleteCourse"
+  aria-hidden="true"
+>
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header bg-danger">
+        <h5 class="modal-title text-white">Delete Course</h5>
+        <button
+          type="button"
+          class="close"
+          data-dismiss="modal"
+          aria-label="Close"
+        >
+          <span aria-hidden="true" class="text-white">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form action="">
+          <div class="mb-3 text-center">
+            <div class="d-flex justify-content-center mb-3">
+
+              <img src="../../static/triangle-exclamation-solid.svg" width="120" height="70" alt="">
+            </div>
+            Are Your sure You want to delete Python Course ?
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer d-flex justify-content-center">
+        <button
+          type="button"
+          class="btn btn-secondary"
+          data-dismiss="modal"
+          aria-label="Close"
+        >
+          Close
+        </button>
+        <button type="button" class="btn btn-danger">Delete</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Delete model end here -->
+
+<!-- Upload model  -->
+
+<div
+  class="modal fade"
+  id="UploadCourse"
+  tabindex="-1"
+  role="dialog"
+  aria-labelledby="UploadCourse"
+  aria-hidden="true"
+>
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header bg-dark">
+        <h5 class="modal-title text-white">Upload File</h5>
+        <button
+          type="button"
+          class="close"
+          data-dismiss="modal"
+          aria-label="Close"
+        >
+          <span aria-hidden="true" class="text-whte">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form action="">
+          <input type="file" id="input-file-now" class="dropify" />
+        </form>
+      </div>
+      <div class="modal-footer d-flex justify-content-center">
+        <button type="button" class="btn btn-primary">Submit</button>
+        <button
+          type="button"
+          class="btn btn-secondary"
+          data-dismiss="modal"
+          aria-label="Close"
+        >
+          Close
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Upload model end here -->
+
+
+{% for i in leads %}
+
+<div class="modal fade" id="ViewReciept{{i.id}}" tabindex="-1" role="dialog" aria-labelledby="ViewDemo" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header bg-dark">
+                <h5 class="modal-title text-white">Admission Form</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true" class="text-white">&times;</span>
+                </button>
+            </div>
+            <form action="" method="post" id="">
+                {% csrf_token %}
+                <div class="modal-body">
+                    <table class="table-bordered" style="width: 100%;">
+                        <tbody class="text-16 ">
+                          <tr>
+                            <th class="p-2"><strong>Admission Id</strong></th>
+                            <td class="p-2">{{i.token_id}}</td>
+                        </tr>
+                            <tr>
+                                <th class="p-2"><strong>Student Name</strong></th>
+                                <td class="p-2">{{i.firstname}} {{i.lastname}}</td>
+                            </tr>
+                           
+                            <tr>
+                                <th class="p-2"><strong>Mobile Number</strong></th>
+                                <td class="p-2">{{i.phone}}</td>
+                            </tr>
+                            <tr>
+                                <th class="p-2"><strong>Email</strong></th>
+                                <td class="p-2">{{i.email}}</td>
+                            </tr>
+                            <tr>
+                                <th class="p-2"><strong>Course</strong></th>
+                                <td class="p-2">{{i.course_interested_in}}</td>
+                            </tr>
+                            <tr>
+                                <th class="p-2"><strong>Course Faculty</strong></th>
+                                <td class="p-2">{{i.course_faculty}}</td>
+                            </tr>
+                            <tr>
+                                <th class="p-2"><strong>Plan</strong></th>
+                                <td class="p-2">{{i.plan}}</td>
+                            </tr>
+                            <tr>
+                                <th class="p-2"><strong>Batch No</strong></th>
+                                <td class="p-2">{{i.batch_no}}</td>
+                            </tr>
+                            <tr>
+                                <th class="p-2"><strong>Joining Date</strong></th>
+                                <td class="p-2">{{i.joining_date}}</td>
+                            </tr>
+                            <tr>
+                                <th class="p-2"><strong>Course Fee</strong></th>
+                                <td class="p-2">{{i.course_fee}}</td>
+                            </tr>
+                            <tr>
+                                <th class="p-2"><strong>Discount Fee</strong></th>
+                                <td class="p-2">{{i.discount_fee}} %</td>
+                            </tr>
+                            <tr>
+                                <th class="p-2"><strong>Final Fee</strong></th>
+                                <td class="p-2">{{i.Final_fee}}</td>
+                            </tr>
+                            <tr>
+                                <th class="p-2"><strong>Admission Fee</strong></th>
+                                <td class="p-2">{{i.admission_fee}}</td>
+                                
+                            </tr>
+                            <tr>
+                                <th class="p-2"><strong>Remaining Fee</strong></th>
+                                <td class="p-2">{{i.remaining_fee}}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="modal-footer d-flex justify-content-center">
+                    <button type="submit" class="btn btn-secondary"><i class="fa fa-print"></i> Print</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+ {% endfor %}
+
+{% endblock %}
+
+
+{% block scripts %}
+
+
+  <script>
+    $(document).ready(function() {
+      // alert message container
+      setTimeout(function() {
+        $(".alert").fadeOut("slow", function() {
+            // This function is called after the fadeOut completes
+            $(this).remove(); // Removes the element from the DOM
+        });
+    }, 5000);
+        // Function to update button operations
+        function updateButtonOperations() {
+            var selectedCount = $('.row-checkbox:checked').length;
+            var buttonsHtml = '';
+    
+            if (selectedCount >= 1) {
+                var prospectId = $('.row-checkbox:checked').data('id');
+                // When at least one checkbox is selected
+                buttonsHtml = `
+                    
+                  <button class="btn btn-dark mr-2 view-receipt" data-target="#ViewReciept${prospectId}"><i class="fa-solid fa-receipt"></i>Reciept</button>
+                  
+                    
+                `;
+                if(selectedCount > 1) {
+                    // When multiple checkboxes are selected, adjust the buttons accordingly
+                    buttonsHtml = `
+                    <button class="btn btn-dark mr-2"><i class="fa fa-envelope"></i> Email</button>
+                        <button class="btn btn-success mr-2"><i class="fa fa-phone"></i> WhatsApp</button>
+                        <button class="btn btn-info mr-2"><i class="fa fa-comments"></i> SMS</button>
+                        <button class="btn btn-danger mr-2"><i class="fa fa-trash-o"></i> Delete</button>
+                    `;
+                }
+            }
+    
+            $('#button_operations').html(buttonsHtml);
+        }
+        $('#button_operations').on('click', '.view-receipt', function() {
+        var targetModal = $(this).data('target');
+        $(targetModal).modal('show');
+    });
+    
+        // Attach change event listener to checkboxes for row selection
+        $(document).on('change', '.row-checkbox', function() {
+            // Check if all checkboxes are selected
+            var allChecked = $('.row-checkbox').length === $('.row-checkbox:checked').length;
+            $('#checkAll').prop('checked', allChecked);
+            updateButtonOperations();
+        });
+    
+        // "Check All" functionality
+        $('#checkAll').change(function() {
+            $('.row-checkbox').prop('checked', this.checked);
+            updateButtonOperations();
+        });
+    });
+    </script>
+    
+
+
+  
+  
+{% endblock %}

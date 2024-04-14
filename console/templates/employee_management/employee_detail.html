@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Employee Detail</title>
+    <style>
+        table > tbody > tr > td,
+      table > tbody > tr > th {
+        text-align: start;
+        font-size: 20px;
+      }
+
+      table {
+        border: 1px solid gray;
+      }
+    </style>
+</head>
+<body>
+    <div>
+        
+       <table style="width:100%;">
+        <tbody>
+            <tr>
+                <th style="padding: 5px;">Employee ID</th>
+                <td style="padding: 5px;"> {{employee.Employee_id}} </td>
+            </tr>
+            <tr>
+                <th style="padding: 5px;">Profile Image</th>
+                <td style="padding: 5px;"> <img src="{% if employee.profile_image %}{{employee.profile_image.path}}{% endif %}" alt="" width="100px" class="rounded-circle" height="100px"> </td>
+            </tr>
+            <tr>
+                <th style="padding: 5px;">Full Name</th>
+                <td style="padding: 5px;"> {{employee.first_name}} {{employee.last_name}} </td>
+            </tr>
+            <tr>
+                <th style="padding: 5px;">Personal Number</th>
+                <td style="padding: 5px;"> {{employee.personal_number}} </td>
+            </tr>
+            {% if employee.alternative_number %}
+            <tr>
+                <th style="padding: 5px;">Alternative Number</th>
+                <td style="padding: 5px;"> {{employee.alternative_number}} </td>
+            </tr>
+            {% endif %}
+            <tr>
+                <th style="padding: 5px;">Personal Email</th>
+                <td style="padding: 5px;"> {{employee.personal_email}} </td>
+            </tr>
+            {% if employee.professional_email %}
+            <tr>
+                <th style="padding: 5px;">Professional Email</th>
+                <td style="padding: 5px;"> {{employee.professional_email}} </td>
+            </tr>
+            {% endif %}
+            {% if employee.blood_group %}
+            <tr>
+                <th style="padding: 5px;">Blood Group</th>
+                <td style="padding: 5px;"> {{employee.blood_group}} </td>
+            </tr>
+            {% endif %}
+            <tr>
+                <th style="padding: 5px;">Date of Birth</th>
+                <td style="padding: 5px;"> {{employee.date_of_birth}} </td>
+            </tr>
+            <tr>
+                <th style="padding: 5px;">Gender</th>
+                <td style="padding: 5px;"> {{employee.gender}} </td>
+            </tr>
+            {% if employee.nationality %}
+            <tr>
+                <th style="padding: 5px;">Nationality</th>
+                <td style="padding: 5px;"> {{employee.nationality}} </td>
+            </tr>
+            {% endif %}
+            {% if employee.religion %}
+            <tr>
+                <th style="padding: 5px;">Religion</th>
+                <td style="padding: 5px;"> {{employee.religion}} </td>
+            </tr>
+            {% endif %}
+            {% if employee.caste %}
+            <tr>
+                <th style="padding: 5px;">Caste</th>
+                <td style="padding: 5px;"> {{employee.caste}} </td>
+            </tr>
+            {% endif %}
+            <tr>
+                <th style="padding: 5px;">Employee Type</th>
+                <td style="padding: 5px;"> {{employee.employee_type}} </td>
+            </tr>
+            <tr>
+                <th style="padding: 5px;">Department </th>
+                <td style="padding: 5px;"> {{employee.department_name}} </td>
+            </tr>
+
+            <tr>
+                <th style="padding: 5px;">Designation</th>
+                <td style="padding: 5px;"> {{employee.designation_name}} </td>
+            </tr>
+            
+            <tr>
+                <th style="padding: 5px;">Branch</th>
+                <td style="padding: 5px;"> {{employee.branch}} </td>
+            </tr>
+
+            {% if employee.country %}
+            <tr>
+                <th style="padding: 5px;">Country</th>
+                <td style="padding: 5px;"> {{employee.country}} </td>
+            </tr>
+            {% endif %}
+
+            {% if employee.state %}
+            <tr>
+                <th style="padding: 5px;">State</th>
+                <td style="padding: 5px;"> {{employee.state}} </td>
+            </tr>
+            {% endif %}
+
+            {% if employee.city %}
+            <tr>
+                <th style="padding: 5px;">City</th>
+                <td style="padding: 5px;"> {{employee.city}} </td>
+            </tr>
+            {% endif %}
+
+            {% if employee.pincode %}
+            <tr>
+                <th style="padding: 5px;">Pincode</th>
+                <td style="padding: 5px;"> {{employee.pincode}} </td>
+            </tr>
+            {% endif %}
+
+            {% if employee.address %}
+            <tr>
+                <th style="padding: 5px;">Address</th>
+                <td style="padding: 5px;"> {{employee.address|safe}} </td>
+            </tr>
+            {% endif %}
+            <tr>
+                <th style="padding: 5px;">Aadhar Card</th>
+                <td style="padding: 5px;"> {{employee.aadhar_card}} </td>
+            </tr>
+
+            {% if employee.pan_card %}
+            <tr>
+                <th style="padding: 5px;">Pan Card</th>
+                <td style="padding: 5px;"> {{employee.pan_card}} </td>
+            </tr>
+            {% endif %}
+            
+
+
+
+        </tbody>
+
+       </table>
+        
+                   
+        
+    </div>
+</body>
+</html>
