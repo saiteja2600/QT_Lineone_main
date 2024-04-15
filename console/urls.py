@@ -36,7 +36,9 @@ urlpatterns = [
     path('Job_type/',views.Job_type,name='Job_type'),  
     path('job_category/',views.job_category,name='job_category'),
     path('qualification/',views.qualification,name='qualification'),
-       path('jobrole/',views.jobrole,name="jobrole"),
+    path('jobrole/',views.jobrole,name="jobrole"),
+    path('class_room/',views.classroom,name="class_room"),
+
    #  student card
    path('student_card/',views.student_card,name="student_card"),
   
@@ -309,6 +311,15 @@ urlpatterns = [
    path('emplpoyee_type_export/', views.emplpoyee_type_export, name='emplpoyee_type_export'),
 #    employee type import
    path('Employee_import/', views.Employee_import, name="Employee_import"),
+
+   # class room edit
+   path('classroomedit/<int:pk>',views.classroomedit,name='classroomedit'),
+   # class room delete
+   path('classroomdelete/<int:pk>',views.classroomdelete,name='classroomdelete'),
+   # class room export
+   path('classroom_export/',views.classroom_export,name='classroom_export'),
+   # class room import
+   path('classroom_import/',views.classroom_import,name='classroom_import'),
 
 
     # upi status

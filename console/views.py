@@ -92,10 +92,10 @@ def register_page(request):
       print("terms",terms_and_conditions)
 
 
-      if Register_model.objects.filter(phone_number=phone_number,company_name=company_name).exists():
+      if Register_model.objects.filter(phone_number=phone_number).exists():
         messages.error(request, 'Phone number already exists')
         return redirect('register')
-      if Register_model.objects.filter(email_id=email_id,company_name=company_name).exists():
+      if Register_model.objects.filter(email_id=email_id).exists():
         messages.error(request, 'Email id already exists')
         return redirect('register')
 
@@ -754,18 +754,24 @@ def create_lead(request):
             lead_type = request.POST.get('lead_type')
             crn = request.POST.get('crn')
             id = request.POST.get('id')
+
+            # Retrieve the register user based on CRN
             register_user = Register_model.objects.get(crn=crn)
+
+            # Check if the provided branch exists for the user
             if branch_name:
-               if not register_user.branches.filter(id=branch_name).exists():
+                if not register_user.branches.filter(id=id).exists():
                     messages.error(request, 'Branch not found')
                     return redirect('branch_error')
-            
+
+            # Check if a lead with the same mobile number or email already exists
             if register_user.leads.filter(Q(mobile_number=mobile_number) | Q(email=email)).exists():
                 messages.error(request, 'Lead with the same mobile number or email already exists')
                 return redirect('inquiry_form', id=id, crn=crn)
-            
+
             otp = send_otp_to_phone(mobile_number)
             if otp:
+        
                 request.session['otp'] = otp
                 request.session['lead_data'] = {
                     'first_name': first_name,
@@ -792,15 +798,13 @@ def create_lead(request):
                 return render(request, 'branch_qr/verify_otp.html', context)
             else:
                 messages.error(request, 'Failed to send OTP')
-                return redirect('create_lead')
         except Register_model.DoesNotExist:
             messages.error(request, 'User with provided CRN does not exist')
-            return redirect('inquiry_form')
         except Exception as e:
             messages.error(request, f'An error occurred: {str(e)}')
-            return redirect('inquiry_form')
-    
-    return redirect('inquiry_form')
+
+   
+    return redirect('inquiry_form', id=id, crn=crn)
 
 
 
@@ -3650,6 +3654,152 @@ def emplpoyee_type_export(request):
         writer.writerow([i,employee_type.employee_type])
 
     return response
+
+
+
+# class rooms start here
+# Class room
+def classroom(request):
+  crn = request.session.get('admin_user').get('crn')
+  register_user = Register_model.objects.get(crn=crn)
+  table=class_room.objects.all()
+  branches=BranchModel.objects.all()
+  
+  if request.method=='POST':
+    room=request.POST['class_room']
+    floor=request.POST['floor']
+    capacity=request.POST['capacity']
+    address=request.POST['address']
+    branch=request.POST['branch_id']
+    if register_user.class_rooms.filter(branch_id=branch).exists() and register_user.class_rooms.filter(class_room=room).exists():
+      messages.error(request,f'Branch Name and class room is already existes')
+      return redirect('class_room')
+    else:
+      form=class_room(class_room=room,floor=floor,capacity=capacity,address=address,branch_id=branch,crn_number=register_user)
+      form.save()
+      messages.success(request,f'Class room :{room} added successfully')
+      return redirect('class_room')
+
+  context={'class':table,'branches':branches}
+  return render(request,'settings_page/class_room.html',context)
+
+
+# class edit
+
+def classroomedit(request, pk):
+  crn = request.session.get('admin_user').get('crn')
+  register_user = Register_model.objects.get(crn=crn)
+  if request.method == 'POST':
+        room = request.POST.get('class_room2')
+        floor = request.POST.get('floor2')
+        capacity = request.POST.get('capacity2')
+        address = request.POST.get('address2')
+        branch2 = request.POST.get('branch_id2')
+        try:
+            branch1 = register_user.branches.get(pk=branch2)
+        except ObjectDoesNotExist:
+            messages.error(request, f'Branch does not exist')
+            return redirect('class_room')
+        edit = register_user.class_rooms.get(id=pk)
+        edit.class_room = room
+        edit.floor = floor
+        edit.capacity = capacity
+        edit.address = address
+        edit.branch = branch1
+
+        if register_user.class_rooms.filter(class_room=room).exclude(id=pk).exists() and register_user.class_rooms.filter(branch=branch1).exclude(id=pk).exists():
+            messages.error(request, f'Class Room and Branch already exists')
+            return redirect('class_room')
+        # Check if any other class room is associated with the selected branch
+        else:
+        # Save the changes if all validations pass
+          edit.save()
+          messages.success(request, f'Updated successfully')
+          return redirect('class_room')
+
+
+# classroom delete
+def classroomdelete(request, pk):
+  crn = request.session.get('admin_user').get('crn')
+  register_user = Register_model.objects.get(crn=crn)
+  table = register_user.class_rooms.get(id=pk)
+  if table:
+    class_room_name = table.class_room 
+    table.delete()
+    messages.success(request, f'Class Room "{class_room_name}" deleted successfully.')
+  else:
+    messages.error(request, 'Class Room not found.')  
+  return redirect('class_room')
+
+
+
+# classroom export
+def classroom_export(request):
+  crn = request.session.get('admin_user').get('crn')
+  register_user = Register_model.objects.get(crn=crn)
+  response=HttpResponse(content_type='text/csv')
+  writer=csv.writer(response)
+  writer.writerow(['S.no','Class Room No.','Floor No.','Seating Capacity','Branch','Address'])
+  i=0
+  for classroom in register_user.class_rooms.all():
+    i+=1
+    writer.writerow([i,classroom.class_room,classroom.floor,classroom.capacity,classroom.branch,classroom.address])
+  response['Content-Disposition'] = 'attachment; filename="List_of_class_room.csv"'
+  return response
+
+
+
+
+# class room import
+def classroom_import(request):
+  crn = request.session.get('admin_user').get('crn')
+  register_user = Register_model.objects.get(crn=crn)
+  if request.method=='POST':
+    form=classroom_import_form(request.POST,request.FILES)
+    if form.is_valid():
+      try:
+        csv_file=request.FILES['classroom_file']#input field name
+        decoded_file=csv_file.read().decode('utf-8')
+        reader=csv.reader(decoded_file.splitlines())
+        headers=next(reader)
+        expected_headers = 6
+        for row in reader:
+          if len(row)!=expected_headers:
+            messages.error(request, f'File should have {expected_headers} columns')
+            return redirect('class_room')
+          class_room=row[1]
+          floor=row[2]
+          capacity=row[3]
+          branch=row[4]
+          branch_instance_name=register_user.branches.filter(branch_name=branch).first()
+          address=row[5]
+          if not class_room or not floor or not capacity or not branch_instance_name or not address:
+            continue
+          if register_user.class_rooms.filter(class_room=class_room,branch=branch_instance_name).exists():
+            continue
+          
+          
+          else:
+            class_room.objects.create(
+                class_room=class_room,
+                floor=floor,
+                capacity=capacity,
+                branch=branch_instance_name,
+                address=address,
+                crn_number=register_user
+                )
+        messages.success(request, f'File Imported Successfully')      
+        return redirect('class_room')
+      except Exception as e:
+        messages.error(request, f'{e}File Should be only in CSV Format ')
+        return redirect('class_room')
+  return render(request, 'settings_page/class_room.html')
+
+
+
+
+
+
 
 
 

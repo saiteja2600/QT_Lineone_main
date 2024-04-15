@@ -1,0 +1,419 @@
+{% extends 'base/base.html' %}
+{% block title %}QTLineone | Class Rooms {% endblock %}
+{% block breadCrum %}
+
+<!-- Breadcrumb -->
+<!-- Breadcrumb -->
+<div class="hk-pg-header d-flex justify-content-between mb-0">
+  <h4 class="hk-pg-title m-3">Class Rooms</h4>
+  <nav aria-label="breadcrumb">
+    <ol class="breadcrumb bg-transparent mb-0">
+      <li class="breadcrumb-item"><a href="{% url 'dashboard' %}">Dashboard</a></li>
+      <li class="breadcrumb-item"><a href="{% url 'settings' %}">Settings</a></li>
+      <li class="breadcrumb-item active" aria-current="page">Class Rooms</li>
+    </ol>
+  </nav>
+</div>
+<!-- /Breadcrumb -->
+
+{% endblock %}
+{% block content %}
+
+ <!-- message here -->
+
+ {% if messages %}
+ {% for message in messages %}
+   {% if message.tags == "error" %}
+     <div class="h-25 alert alert-danger alert-dismissible fade show mt-2 h-25 text-center" role="alert">{{ message }}</div>
+   {% elif message.tags == "success" %}
+     <div class="h-25 alert alert-success alert-dismissible fade show mt-2 h-25 text-center" role="alert">{{ message }}</div>
+     {% else %}
+    <div class="h-25 alert alert-info alert-dismissible fade show mt-2 h-25 text-center" role="alert">{{ message }}</div>
+    {% endif %}
+   {% endfor %}
+ {% endif %}
+
+<!-- message end here -->
+<section class="hk-sec-wrapper">
+  <div class="">
+    <button type="button" class="btn btn-primary mr-2 mb-3" data-toggle="modal" data-target="#CreateBatch">
+      <i class="glyphicon glyphicon-plus"></i> Create Class Room
+    </button>
+    <a href="{% url 'classroom_export' %}" class="btn btn-success mr-2 mb-3"><i class="glyphicon glyphicon-export"></i> Export</a>
+    <button type="button" class="btn btn-secondary mr-2 mb-3" data-toggle="modal" data-target="#UploadBatch">
+      <i class="glyphicon glyphicon-import"></i> Import
+    </button>
+  </div>
+
+  <div class="row">
+    <div class="col-sm">
+      <div class="table-wrap">
+        <table id="datable_1" class="table table-hover w-100 display pb-30 table-bordered">
+          <thead class="bg-dark">
+            <tr>
+              <th class="text-white">S.No</th>
+              <th class="text-white">Class Room No.</th>
+              <th class="text-white text-center">Floor No.</th>
+              <th class="text-white text-center">Seating Capacity</th>
+              <th class="text-white text-center">Branch</th>
+              <th class="text-white text-center">Address</th>
+              <th class="text-white text-center">Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for i in class %}
+            <tr>
+              <td>{{forloop.counter}}</td>
+              <td>{{i.class_room}}</td>
+              <td>{{i.floor}}</td>
+              <td>{{i.capacity}}</td>
+              <td>{{i.branch}}</td>
+              <td>{{i.address}}</td>
+              <td class="text-center">
+                <button class="btn btn-primary m-1" data-toggle="modal" data-target="#editBatch{{forloop.counter}}">
+                  <i class="fa fa-pencil"></i>
+                </button>
+                <button class="btn btn-danger m-1" data-toggle="modal" data-target="#DeleteBatch{{forloop.counter}}">
+                  <i class="fa fa-trash"></i>
+                </button>
+              </td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- create model start here -->
+
+<div class="modal fade" id="CreateBatch" tabindex="-1" role="dialog" aria-labelledby="CreateBatch" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header bg-dark">
+        <h5 class="modal-title text-white">Create New Class Room</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true" class="text-white">&times;</span>
+        </button>
+      </div>
+      <form action="" method="post" id="createBatch">
+        {% csrf_token %}
+        <div class="modal-body">
+          <div class="mb-3">
+            <label for="" class="form-label">Class Room  No.<span class="text-danger">*</span></label>
+            <input name="class_room" type="number" placeholder="Ex: 1,2,3..." class="form-control" />
+          </div>
+          <div class="mb-3">
+            <label for="" class="form-label">Floor No.<span class="text-danger">*</span></label>
+            <input name="floor" type="number" placeholder="Ex: 1,2,3..." class="form-control" />
+          </div>
+          <div class="mb-3">
+            <label for="" class="form-label">Seating Capacity <span class="text-danger">*</span></label>
+            <input name="capacity" type="number" placeholder="Ex: 80,...." class="form-control" />
+          </div>
+          <div class="mb-3">
+            <label for="" class="form-label">Branch<span class="text-danger">*</span></label>
+            <select class="form-control custom-select" id="" name="branch_id">
+              <option value="">Select Your Branch</option>
+              {% for b in branches %}
+              <option value="{{ b.id }}">{{ b.branch_name }}</option>
+              {% endfor %}
+            </select>
+          </div>
+          <div class="mb-3">
+            <label for="" class="form-label">Address<span class="text-danger">*</span></label>
+            <textarea name="address" type="text" rows='5' placeholder="Ex: Hyderabad,Chennai,...." class="form-control"></textarea>
+          </div>
+        </div>
+        <div class="mb-3 d-flex justify-content-center">
+          <button type="submit" class="btn btn-primary m-1">Submit</button>
+          <button type="reset" class="btn btn-secondary m-1">Reset</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+<!-- Create model end here -->
+
+<!-- Edit model start here -->
+{% for i in class %}
+<div class="modal fade" id="editBatch{{forloop.counter}}" tabindex="-1" role="dialog" aria-labelledby="editBatch" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header bg-dark">
+        <h5 class="modal-title text-white">Update Class Room</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true" class="text-white">&times;</span>
+        </button>
+      </div>
+      <form action="{% url 'classroomedit' i.id %}" method="post" class="editclassroom">
+        {% csrf_token %}
+        <div class="modal-body">
+          <div class="mb-3">
+            <label for="" class="form-label">Class Room  No.<span class="text-danger">*</span></label>
+            <input name="class_room2" type="text" placeholder="Ex: 1,2,3..." class="form-control" value={{i.class_room}} />
+          </div>
+          <div class="mb-3">
+            <label for="" class="form-label">Floor No.<span class="text-danger">*</span></label>
+            <input name="floor2" type="text" placeholder="Ex: 1,2,3..." class="form-control"  value={{i.floor}} />
+          </div>
+          <div class="mb-3">
+            <label for="" class="form-label">Capacity <span class="text-danger">*</span></label>
+            <input name="capacity2" type="text" placeholder="Ex: 80,...." class="form-control"  value={{i.capacity}} />
+          </div>
+          <div class="mb-3">
+            <label for="" class="form-label">Branch<span class="text-danger">*</span></label>
+            <select class="form-control custom-select" id="" name="branch_id2">
+              <!-- <option value="">Select Your Branch</option> -->
+              {% for b in branches %}
+              {% if b.branch_name == i.branch.branch_name %}
+              <option selected value="{{ b.id }}">{{ b.branch_name }}</option>
+              {% else  %}
+              <option value="{{b.id}}">{{b.branch_name}}</option>
+              {% endif %}
+              {% endfor %}
+            </select>
+          </div>
+          <div class="mb-3">
+            <label for="" class="form-label">Address<span class="text-danger">*</span></label>
+            <textarea name="address2" type="text" rows='5'  placeholder="Ex: Hyderabad,Chennai,...." class="form-control" >{{i.address}}</textarea>
+          </div>
+        </div>
+        <div class="mb-3 d-flex justify-content-center">
+          <button type="submit" class="btn btn-primary m-1">Submit</button>
+          <button type="reset" class="btn btn-secondary m-1">Reset</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+{% endfor %}
+<!-- Edit model end here -->
+
+<!-- Delete model start here -->
+{% for i in class %}
+
+<div class="modal fade" id="DeleteBatch{{forloop.counter}}" tabindex="-1" role="dialog" aria-labelledby="DeleteBatch" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header bg-danger">
+        <h5 class="modal-title text-white">Delete Batch</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true" class="text-white">&times;</span>
+        </button>
+      </div>
+      <form action="{% url 'classroomdelete' i.id %}" method="post">
+        {% csrf_token %}
+      <div class="modal-body">
+          <div class="mb-3 text-center">
+            <div class="d-flex justify-content-center mb-3">
+
+              <img src="../../static/triangle-exclamation-solid.svg" width="120" height="70" alt="">
+            </div>
+            Are you sure you want to delete Class Room :{{i.class_room1}} ?
+          </div>
+      </div>
+      <div class="mb-3 d-flex justify-content-center">
+        <button type="button" class="btn btn-secondary m-1" data-dismiss="modal" aria-label="Close">
+          No
+        </button>
+        <button type="submit" class="btn btn-danger m-1">Yes</button>
+      </div>
+      </form>
+    </div>
+  </div>
+</div>
+{% endfor %}
+
+<!-- Delete model end here -->
+
+<!-- Upload model  -->
+<div class="modal fade" id="UploadBatch" tabindex="-1" role="dialog" aria-labelledby="#UploadBatch" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header bg-dark">
+        <h5 class="modal-title text-white">Upload File</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true" class="text-white">&times;</span>
+        </button>
+      </div>
+      <form action="{% url 'classroom_import' %}" method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        <div class="modal-body">
+          <input type="file" name="classroom_file" id="input-file-now" class="dropify" />
+          <div id="csvPreview"></div>
+        </div>
+        <div class="mb-3 d-flex justify-content-center">
+          <button type="submit" class="btn btn-primary m-1">Submit</button>
+          <button type="button" class="btn btn-secondary m-1" data-dismiss="modal" aria-label="Close">
+            Close
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+<!-- Upload model end here -->
+
+{% endblock %}
+
+
+{% block scripts %}
+<!-- script here  -->
+<script>
+$(document).ready(function () {
+  $.validator.addMethod("selectRequired", function (value, element) {
+      return value !== "" && value !== null && value !== "0";
+    },
+      "Please select Branch."
+    );
+  //address
+  $("#createBatch").validate({
+    rules: {
+      class_room: {
+        required: true,
+        minlength: 1,
+        maxlength:4
+      },
+      floor:{
+        required: true,
+        minlength: 1,
+        maxlength:4
+      },
+      capacity:{
+        required: true,
+        minlength: 1,
+        maxlength:4
+      },
+      address:{
+        required: true,
+        minlength:3,
+        maxlength:100,
+      },
+      branch_id:{
+        selectRequired:true,
+
+      }
+    },
+    messages: {
+      class_room: {
+        required: "Please Enter Class Room Number",
+        minlength: "Minimum of 3 characters",
+        maxlength:'Maximum of 4 characters',
+      },
+      floor:{
+        required: "Please Enter Floor Number",
+        minlength: "Minimum of 3 characters",
+        maxlength:'Maximum of 4 characters',
+      },
+      capacity:{
+        required: "Please Enter Capacity",
+        minlength: "Minimum of 3 characters",
+        maxlength:'Maximum of 4 characters',
+      },
+      Address:{
+        required: "Please Enter Address",
+        minlength: "Minimum of 3 characters",
+        maxlength:'Maximum of 100 characters',
+      },
+    },
+    submitHandler: function (form) {
+      form.submit();
+    },
+
+  });
+
+  $(".editclassroom").each(function () {
+    $.validator.addMethod('selectRequired',function(value,element){
+      return value!== "" && value!==null && value!=0;
+
+    },"Please Select Branch")
+    $(this).validate({
+      rules: {
+      class_room2: {
+        required: true,
+        minlength: 1,
+        maxlength:4
+      },
+      floor2:{
+        required: true,
+        minlength: 1,
+        maxlength:4
+      },
+      capacity2:{
+        required: true,
+        minlength: 1,
+        maxlength:4
+      },
+      address2:{
+        required: true,
+        minlength:3,
+        maxlength:100,
+      },
+      branch_id2:{
+        selectRequired:true,
+      }
+    },
+    messages: {
+      class_room2: {
+        required: "Please Enter Class Room Number",
+        minlength: "Minimum of 3 characters",
+        maxlength:'Maximum of 4 characters',
+      },
+      floor2:{
+        required: "Please Enter Floor Number",
+        minlength: "Minimum of 3 characters",
+        maxlength:'Maximum of 4 characters',
+      },
+      capacity2:{
+        required: "Please Enter Capacity",
+        minlength: "Minimum of 3 characters",
+        maxlength:'Maximum of 4 characters',
+      },
+      Address2:{
+        required: "Please Enter Address",
+        minlength: "Minimum of 3 characters",
+        maxlength:'Maximum of 100 characters',
+      }
+      },
+      submitHandler: function (form) {
+        form.submit();
+      },
+
+    });
+  });
+});
+</script>
+<script>
+  function validateUploadForm(form) {
+    $(form).find('#input-file-now').on('change', function () {
+      var file = this.files[0];
+      var fileExt = file.name.split('.').pop().toLowerCase();
+
+      if (fileExt === 'csv') {
+        $(form).find('button[type="submit"]').prop('disabled', false);
+        $(form).find('#input-file-now').html('');
+      } else {
+        $(form).find('button[type="submit"]').prop('disabled', true);
+        $(form).find('#csvPreview').html('<span style="color: red;">Only CSV files are allowed.</span>');
+      }
+    });
+
+    $(form).on('submit', function (e) {
+      var file = $(form).find('#input-file-now')[0].files[0];
+
+      if (!file) {
+        e.preventDefault();
+        $(form).find('#csvPreview').html('<span style="color: red;">Please select a csv file.</span>');
+      }
+    });
+  }
+
+  $('#UploadBatch').on('shown.bs.modal', function () {
+    validateUploadForm($(this).find('form'));
+  });
+</script>
+
+
+{% endblock %}

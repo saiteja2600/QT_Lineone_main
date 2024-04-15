@@ -297,6 +297,17 @@ class Calender_import_model(models.Model):
     def __str__(self):
         return self.title    
     
+# class room 
+class class_room(models.Model):
+    class_room=models.IntegerField()
+    floor=models.IntegerField()
+    capacity=models.IntegerField()
+    address=models.TextField()
+    branch=models.ForeignKey(BranchModel,on_delete=models.CASCADE)
+    crn_number = models.ForeignKey(Register_model, on_delete=models.CASCADE, related_name='class_rooms')
+
+    def _str_(self):
+        return str(self.class_room)
 
 
 
@@ -491,7 +502,7 @@ class LeadModel(models.Model):
     prospect_taken = models.BooleanField(default=False)
     def save(self, *args, **kwargs):
         today = timezone.now()
-        token_prefix = f"{self.crn_number.company_short_name}{today.day:02d}{today.month:02d}{today.year % 100:02d}"
+        token_prefix = f"{self.crn_number.company_short_name}S{today.day:02d}{today.month:02d}{today.year % 100:02d}"
         last_lead = LeadModel.objects.order_by('-id').first()
         if last_lead:
             last_token_id = last_lead.token_id

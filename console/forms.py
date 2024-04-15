@@ -90,3 +90,8 @@ class qualification_import_form(forms.Form):
 
 class jobrole_import_form(forms.Form):
     jobrole_file = forms.FileField()    
+
+
+
+class classroom_import_form(forms.Form):
+    classroom_file = forms.FileField()    
