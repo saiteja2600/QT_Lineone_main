@@ -5022,10 +5022,29 @@ def employee_list(request):
    pan_card=request.POST.get('pan_card')
    aadhar_card_pdf=request.FILES.get('aadhar_card_pdf')
    pan_card_pdf=request.FILES.get('pan_card_pdf')
+   if Employee_model.objects.filter(personal_number=personal_number).exists():
+     messages.error(request,'Employee personal number already exists')
+     return redirect('employees')
+   if alternative_number:
+     if Employee_model.objects.filter(alternative_number=alternative_number).exists():
+       messages.error(request,'Employee alternative number already exists')
+       return redirect('employees')
+   if Employee_model.objects.filter(personal_email=personal_email).exists():
+     messages.error(request,'Employee personal email already exists')
+     return redirect('employees')
+   if professional_email:
+     if Employee_model.objects.filter(professional_email=professional_email).exists():
+       messages.error(request,'Employee professional email already exists')
+       return redirect('employees')
+   if Employee_model.objects.filter(aadhar_card=aadhar_card).exists():
+     messages.error(request,'Employee aadhar card already exists')
+     return redirect('employees')
+   if pan_card:
+     if Employee_model.objects.filter(pan_card=pan_card).exists():
+       messages.error(request,'Employee pan card already exists')
+       return redirect('employees') 
    
-   if register_user.employee.filter(personal_number=personal_number,personal_email=personal_email).exists():
-    messages.error(request,'Employee already exists')
-    return redirect('employees')
+   
    else:
      Employee_model.objects.create(
       first_name=first_name,
@@ -5158,14 +5177,28 @@ def employee_update(request,id):
     aadhar_card_pdf=request.FILES.get('aadhar_card_pdf_edit')
     pan_card_pdf=request.FILES.get('pan_card_pdf_edit')
     
-   
-    if register_user.employee.filter(
-    personal_number=personal_number,
-    alternative_number=alternative_number,
-    personal_email=personal_email,
-    professional_email=professional_email).exclude(id=id).exists():
-      messages.error(request, 'Employee already exists')
+    if Employee_model.objects.filter(personal_number=personal_number).exclude(id=id).exists():
+      messages.error(request, 'Employee Personal number already exists')
       return redirect('employees')
+    if alternative_number:
+      if Employee_model.objects.filter(alternative_number=alternative_number).exclude(id=id).exists():
+        messages.error(request, 'Employee Alternative number already exists')
+        return redirect('employees')
+    if Employee_model.objects.filter(personal_email=personal_email).exclude(id=id).exists():
+      messages.error(request, 'Employee Personal email already exists')
+      return redirect('employees')
+    if professional_email:
+      if Employee_model.objects.filter(professional_email=professional_email).exclude(id=id).exists():
+        messages.error(request, 'Employee Professional email already exists')
+        return redirect('employees')
+    if Employee_model.objects.filter(aadhar_card=aadhar_card).exclude(id=id).exists():
+      messages.error(request, 'Employee Aadhar card already exists')
+      return redirect('employees')
+    if pan_card:
+      if Employee_model.objects.filter(pan_card=pan_card).exclude(id=id).exists():
+        messages.error(request, 'Employee Pan card already exists')
+        return redirect('employees')
+    
    
     if 'profile_image_edit' in request.FILES:
       profile_image = request.FILES['profile_image_edit']
@@ -5348,19 +5381,27 @@ def employee_upload(request):
                     if alternative_number:
                         if not re.match(r"^(?:(?:\+|0{0,2})91)?[6-9]\d{9}$",alternative_number):
                             continue
-                    if not re.match(r"^[0-9]{12}$",aadhar_card):
+                    if not re.match(r"^[2-9]\d{11}$",aadhar_card):
                         continue
                     if pan_card:
                        if not re.match(r"^[A-Z]{5}[0-9]{4}[A-Z]{1}$",pan_card):
                          continue
-                      
+                    if Employee_model.objects.filter(personal_number=personal_number).exists():
+                        continue
+                    if alternative_number:
+                        if Employee_model.objects.filter(alternative_number=alternative_number).exists():
+                            continue
                     
-                      
-                      
-                    
-                    if register_user.employee.filter(first_name=first_name, last_name=last_name,
-                                                     personal_number=personal_number, personal_email=personal_email).exists():
-                     continue
+                    if Employee_model.objects.filter(personal_email=personal_email).exists():
+                        continue
+                    if professional_email:
+                        if Employee_model.objects.filter(professional_email=professional_email).exists():
+                            continue
+                    if Employee_model.objects.filter(aadhar_card=aadhar_card).exists():
+                        continue
+                    if pan_card:
+                        if Employee_model.objects.filter(pan_card=pan_card).exists():
+                            continue
                     else:
                         Employee_model.objects.create(
                             first_name= first_name.strip().title(),
@@ -5408,8 +5449,7 @@ def employee_upload(request):
     context = {'employee': employee, 'department': department, 'designation': designation,
                'employee_type': employee_type, 'branch': branch}
 
-    return render(request, 'employee_management/employee_list.html', context)
-          
+    return render(request, 'employee_management/employee_list.html', context)          
         
 
 @admin_required

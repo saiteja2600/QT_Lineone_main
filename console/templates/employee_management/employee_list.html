@@ -1189,8 +1189,12 @@
             // Check if the value matches the custom email pattern
             return this.optional(element) || emailRegex.test(value);
           }, "Please enter a valid email address.");
-        
-        
+
+          $.validator.addMethod("aadharNumber", function(value, element) {
+            var aadharRegex = /^[2-9]\d{11}$/; // Aadhaar number without spaces and starting with 2-9
+            return this.optional(element) || aadharRegex.test(value);
+        }, "Please enter a valid Aadhaar number starting with 2-9 and exactly 12 digits.");
+    
 
         $.validator.setDefaults({
             errorPlacement: function (error, element) {
@@ -1306,7 +1310,8 @@
                     required: true,
                     digits: true,
                     minlength: 12,
-                    maxlength: 12
+                    maxlength: 12,
+                    aadharNumber: true
                 },
                 pan_card: {
                     validPANCard: true,
@@ -1443,7 +1448,11 @@
             }
         });
         
-        
+        $.validator.addMethod("aadharNumber", function(value, element) {
+            var aadharRegex = /^[2-9]\d{11}$/; // Aadhaar number without spaces and starting with 2-9
+            return this.optional(element) || aadharRegex.test(value);
+        }, "Please enter a valid Aadhaar number starting with 2-9 and exactly 12 digits.");
+    
 
 
         $.validator.addMethod("validAge", function(value, element) {
@@ -1530,7 +1539,8 @@
                         required: true,
                         digits: true,
                         minlength: 12,
-                        maxlength: 12
+                        maxlength: 12,
+                        aadharNumber
                     },
                     pan_card_edit: {
                         validPANCard:true,
