@@ -421,16 +421,33 @@
     $.validator.addMethod("noSpecialChar", function (value, element) {
       return this.optional(element) || /^[a-zA-Z\s]+$/.test(value);
 
-  }, "Special Characters are not allowed and Numbers are not allowed");
+  }, "Special Characters are not allowed");
   $.validator.addMethod("noExcessiveAndLeadingTrailingSpace", function(value, element) {
     return !(/^\s|\s$|\s{2,}/.test(value));
 }, "No excessive or leading/trailing spaces");
+
+$.validator.addMethod("noNumbersOrSpecialChars", function (value, element) {
+  // Check if the value contains numbers or special characters
+  var containsNumbers = /\d/.test(value);
+  var containsSpecialChars = /[^a-zA-Z0-9\s]/.test(value);
+
+  // Return false if the value contains both numbers and special characters
+  return !(containsNumbers && containsSpecialChars);
+  }, "Numbers and special characters are not allowed.");
+
+  $.validator.addMethod("noNumbers", function (value, element) {
+    return !/\d/.test(value);
+  }, "Numbers are not allowed.");
+
+
 
     $('#BranchValid').validate({
       rules:{
         branch_name:{
           required:true,
+          noNumbersOrSpecialChars:true,
           noSpecialChar:true,
+          noNumbers:true,
           minlength:3,
           maxlength:50,
           noExcessiveAndLeadingTrailingSpace:true
@@ -453,7 +470,9 @@
         rules:{
           branch_name_edit:{
             required:true,
+            noNumbersOrSpecialChars:true,
             noSpecialChar:true,
+
             minlength:3,
             maxlength:50,
             noExcessiveAndLeadingTrailingSpace:true
