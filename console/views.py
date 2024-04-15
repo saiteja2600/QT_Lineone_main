@@ -293,30 +293,24 @@ def department_status(request, id):
 # department edit
 @admin_required
 def department_edit(request, id):
-    crn = request.session.get('admin_user').get('crn')
-    if crn:
-        register_user = Register_model.objects.get(crn=crn)
-        try:
-            dep = register_user.departments.get(id=id)
-        except Department.DoesNotExist:
-            messages.error(request, 'Department Not Found')
-            return redirect('departments')
-    else:
-        messages.error(request, 'Invalid User Session')
-        return redirect('departments')
-
     if request.method == "POST":
-        department_name = request.POST.get('editdepartment')
-        if register_user.departments.exclude(id=id).filter(department_name=department_name.capitalize()).exists():
-            messages.error(request, f'{department_name.strip().title()} already exists')
-            return redirect('departments')
-        else:
-            dep.department_name = department_name.strip().title()
-            dep.save()
-            messages.success(request, f"{department_name.strip().title()} updated successfully")
-            return redirect('departments')
+      crn=request.session.get('admin_user').get('crn')
+      register_user=Register_model.objects.get(crn=crn)
 
-    return render(request, 'settings_page/department_edit.html', {'dep': dep})
+      department_name = request.POST.get('editdepartment')
+      if register_user.departments.filter(id=id).exists():
+        if register_user.departments.filter(department_name=department_name.strip().title()).exclude(id=id).exists():
+          messages.error(request, f'{department_name.strip().title()} already exists')
+          return redirect('departments')
+        else:
+          register_user.departments.filter(id=id).update(
+          department_name = department_name.strip().title()
+          )
+          messages.success(request, f"{department_name.strip().title()} updated successfully")
+          return redirect('departments')
+      else:
+        messages.error(request, 'Department not found')
+        return redirect('departments')
 
 
 
@@ -2285,11 +2279,12 @@ def specialization_import(request):
 
                     if not sep_import or not cos_import.strip().title():
                         continue
+                      
 
                     if Specialization.objects.filter(specilalization_name=sep_import.strip().title(), crn_number=register_user).exists():
                         continue
 
-                    if not re.match(r'^[a-zA-Z\s!@#$%^&*()-_+=.,?/]{3,50}$', sep_import):
+                    if not re.match(r"^[a-zA-Z\s]{3,50}$", sep_import):
                         continue
 
 
@@ -4391,7 +4386,11 @@ def demo_status(request,id):
      return redirect('demo')
 
 
+
+
+
 # demo edit
+
 @admin_required
 def demo_edit(request,id):
   crn=request.session.get('admin_user').get('crn')
@@ -4443,13 +4442,10 @@ def demo_edit(request,id):
         passcode=passcode,
         datestartat=datestartat,
         dateendat=dateendat,
-        demoimage=demoimage,
-        demobannerimage=demobannerimage,
         demodescription=demodescription,
       )
       messages.success(request, f'{demo} Demo updated successfully')    
       return redirect('demo')
-
 
 # demo delete
 @admin_required
@@ -4660,6 +4656,7 @@ def load_specializations_and_batches(request):
 
 
 
+
 @admin_required
 def course_manage(request):
   crn=request.session.get('admin_user').get('crn')
@@ -4683,8 +4680,8 @@ def course_manage(request):
     software=request.POST.get('soft').capitalize()
     short_description=request.POST.get('short').capitalize()
     long_description=request.POST.get('long').capitalize()
-    if register_user.course_manage.filter(course_title=title).exists():
-      messages.error(request, f'{title}  already exists')
+    if register_user.course_manage.filter(course_name=cos_name,specialization=cos_specialization).exists():
+      messages.error(request, f'{cos_name} with {cos_specialization}  already exists')
       return redirect('course_manage')
     else:
       CourseManage.objects.create(
@@ -4708,7 +4705,7 @@ def course_manage(request):
         long_description=long_description,
         crn_number=register_user
       )
-      messages.success(request,f"{title} details created successfully")
+      messages.success(request,f'{cos_name} with {cos_specialization} details created successfully')
       return redirect('course_manage')
   manage=register_user.course_manage.all().order_by('-id')
   plan=register_user.plans.all()
@@ -4736,8 +4733,10 @@ def course_manage_edit(request,id):
     register_user=Register_model.objects.get(crn=crn)
     title= request.POST.get('editcourse_title').strip().title()
     cos_plan=request.POST.get('editcourse_plan')
-    cos_name=request.POST.get('editcourse_name')
-    cos_specialization=request.POST.get('editspecialization')
+    course_id = request.POST.get('editcourse_name').strip().title()
+    cos_name = register_user.courses.get(pk=course_id)
+    specization_id = request.POST.get('editspecialization').strip().title()
+    cos_specialization = register_user.specializations.get(pk=specization_id)
     teaching_faculty=request.POST.get('editfaculty')
     cos_type=request.POST.get('editbatch_type')
     cos_duration=request.POST.get('editduration')
@@ -4770,8 +4769,8 @@ def course_manage_edit(request,id):
         manage = register_user.course_manage.get(id=id)
         manage.course_banner = course_banner
         manage.save()
-      if register_user.course_manage.filter(course_title=title.strip().title()).exclude(id=id).exists():
-        messages.error(request, f'{title} already exists')
+      if register_user.course_manage.filter(course_name=cos_name,specialization=cos_specialization,).exclude(id=id).exists():
+        messages.error(request, f'{cos_name} with {cos_specialization} already exists')
         return redirect('course_manage')
       else:
         register_user.course_manage.filter(id=id).update(
@@ -4792,11 +4791,8 @@ def course_manage_edit(request,id):
           long_description=long_description,
           crn_number=register_user
         )
-        messages.success(request,f"{title} details updated successfully")
+        messages.success(request,f"{cos_name} with {cos_specialization} details updated successfully")
         return redirect('course_manage')
-
-
-
 
   
 
@@ -4811,10 +4807,10 @@ def course_manage_delete(request,id):
     if register_user.course_manage.filter(id=id).exists():
       manage = register_user.course_manage.get(id=id)
       manage.delete()
-      messages.success(request,f'{manage.course_title} details deleted successfully')
+      messages.success(request,f'{manage.course_name} with {manage.specialization} details deleted successfully')
       return redirect('course_manage')
     else:
-      messages.error(request,f"{manage.course_title} course does not exist")
+      messages.error(request,f"{manage.course_name} with {manage.specialization} course does not exist")
       return redirect('course_manage')
 
 
@@ -4906,7 +4902,7 @@ def course_manage_import(request):
           if not re.match(r"^[0-9]+(\.[0-9]+)?$", final_price):
             continue
           final_price.strip().title()
-          if register_user.course_manage.filter(course_title=course_title).exists():
+          if register_user.course_manage.filter(course_name=course_name_instance,specialization=specialization_instance,).exists():
             continue
           else:
             CourseManage.objects.create(
@@ -4954,8 +4950,6 @@ def course_manage_import(request):
     'teaching_faculty':teaching_faculty,
   }
   return render(request,'Course/course_manage.html',context)
-          
-
 
 
 
@@ -4972,8 +4966,6 @@ def manage_views(request,id):
   if pisa_status.err:
     return HttpResponse('We had some errors <pre>' + html_template + '</pre>')
   return response
-
-
 
 
 

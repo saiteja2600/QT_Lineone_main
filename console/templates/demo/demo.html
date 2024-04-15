@@ -568,7 +568,7 @@
                     </table>
                 </div>
                 <div class="mb-3 d-flex justify-content-center">
-                    <button type="submit" class="btn btn-secondary"><i class="fa fa-print"></i> Print</button>
+                    <button type="submit" class="btn btn-success"><i class="fa fa-print"></i> Print</button>
                 </div>
             </form>
         </div>
@@ -703,7 +703,7 @@
             <div class="modal-body">
                 <form action="{% url 'demo_import' %}" method="post" enctype="multipart/form-data">
                   {% csrf_token %}
-                    <input type="file" name="demo_file" id="input-file-now" class="dropify" />
+                    <input type="file" name="demo_file" accept=".csv" id="input-file-now" class="dropify" />
                     <div id="csvPreview"></div>
                     <div class="mb-3 d-flex justify-content-center">
                         <button type="submit" class="btn btn-primary m-1">Submit</button>
