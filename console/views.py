@@ -239,7 +239,7 @@ def departments(request):
     #  context = {
     #     "departments": zip(departments, short_form_list),
     # } 
-    departments = register_user.departments.all()   
+    departments = register_user.departments.all().order_by("-id")   
     context = {
         "dep": zip(dep, short_form_list),
         "departments":departments
@@ -5295,7 +5295,6 @@ def employee_upload(request):
                             pass  # Continue trying other formats
 
                     if date_of_birth is None:
-                        messages.error(request, f'Invalid date of birth format for row: {row[9]}')
                         continue
 
                     nationality = row[10]

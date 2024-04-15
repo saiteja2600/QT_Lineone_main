@@ -1208,14 +1208,20 @@
             }
         });
         
-        $.validator.addMethod("validDateOfBirth", function(value, element) {
+        $.validator.addMethod("validAge", function(value, element) {
             // Get today's date
             var today = new Date();
             // Get the date of birth entered by the user
             var dateOfBirth = new Date(value);
-            // Compare the date of birth with today's date
-            return dateOfBirth <= today;
-        }, 'Please enter a valid date of birth.');
+            // Calculate age
+            var age = today.getFullYear() - dateOfBirth.getFullYear();
+            var monthDiff = today.getMonth() - dateOfBirth.getMonth();
+            if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < dateOfBirth.getDate())) {
+                age--;
+            }
+            // Check if age is at least 20 years
+            return age >= 18;
+        }, "Age must be at least 18 years old.");
         
         $.validator.addMethod("validPANCard", function(value, element) {
             // Regular expression for PAN card format
@@ -1264,7 +1270,7 @@
                 },
                 date_of_birth: {
                     required: true,
-                    validDateOfBirth: true
+                    validAge: true
                     
                     
 
@@ -1440,14 +1446,20 @@
         
 
 
-        $.validator.addMethod("validDateOfBirth", function(value, element) {
+        $.validator.addMethod("validAge", function(value, element) {
             // Get today's date
             var today = new Date();
             // Get the date of birth entered by the user
             var dateOfBirth = new Date(value);
-            // Compare the date of birth with today's date
-            return dateOfBirth <= today;
-        }, 'Please enter a valid date of birth.');
+            // Calculate age
+            var age = today.getFullYear() - dateOfBirth.getFullYear();
+            var monthDiff = today.getMonth() - dateOfBirth.getMonth();
+            if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < dateOfBirth.getDate())) {
+                age--;
+            }
+            // Check if age is at least 20 years
+            return age >= 18;
+        }, "Age must be at least 18 years old.");
         
         $('.EmployeeEdit').each(function () {
             $(this).validate({
@@ -1487,7 +1499,7 @@
                     },
                     date_of_birth_edit: {
                         required: true,
-                        validDateOfBirth: true
+                        validAge: true
 
                     },
                     employee_type_edit: {
@@ -1994,6 +2006,7 @@
         'Maharashtra':['Ahmednagar','Aurangabad','Beed','Chandrapur','Dhule','Jalgaon','Kolhapur','Latur','Nanded','Nagpur','Nashik','Pune','Sangli','Satara','Sindhudurg','Solapur','Thane','Wardha','Washim','Yavatmal'],
         'Gujarat':['Ahmedabad','surat','Amreli','Anand','Bharuch','Bhavnagar','Dahod','Gandhinagar','Jamnagar','Kutch','Narmada','Navsari','Patan','Porbandar','Rajkot','Sabarkantha','Surat','Surendranagar','Tapi','Vadodara','Valsad'],
         'Daman and Diu':['Daman','Diu'],
+        'Telangana':['Adilabad','Hyderabad','Karimnagar','Khammam','Mahabubnagar','Medak','Nalgonda','Nizamabad','Warangal'],
 
 
         // Add more city data as needed...
@@ -2089,6 +2102,7 @@
         'Maharashtra':['Ahmednagar','Aurangabad','Beed','Chandrapur','Dhule','Jalgaon','Kolhapur','Latur','Nanded','Nagpur','Nashik','Pune','Sangli','Satara','Sindhudurg','Solapur','Thane','Wardha','Washim','Yavatmal'],
         'Gujarat':['Ahmedabad','surat','Amreli','Anand','Bharuch','Bhavnagar','Dahod','Gandhinagar','Jamnagar','Kutch','Narmada','Navsari','Patan','Porbandar','Rajkot','Sabarkantha','Surat','Surendranagar','Tapi','Vadodara','Valsad'],
         'Daman and Diu':['Daman','Diu'],
+        'Telangana':['Adilabad','Hyderabad','Karimnagar','Khammam','Mahabubnagar','Medak','Nalgonda','Nizamabad','Warangal'],
         // Add more city data as needed...
     };
 
