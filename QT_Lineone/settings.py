@@ -79,7 +79,7 @@ WSGI_APPLICATION = 'QT_Lineone.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'qtlineone',
+        'NAME': 'qtlineone_git',
         'USER': 'root',
         'PASSWORD': '',
         'HOST': '127.0.0.1',
