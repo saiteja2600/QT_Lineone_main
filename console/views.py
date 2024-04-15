@@ -182,7 +182,10 @@ def logout_page(request):
   return redirect('login')
   
     
-  
+def terms_and_conditions(request):
+  return render(request,'accounts/terms_and_conditions.html')  
+
+
 
 
 # Dashboard page
@@ -718,6 +721,11 @@ def inquery_form(request, id, crn):
     prospect_types = register_user.prospect_types.filter(status = "Active").all()
     
     branch = register_user.branches.get(id=id)
+    if branch.status == "Deactive":
+        return redirect('branch_error')
+    if not branch:
+        return redirect('branch_error')
+        
   
     context = {
         'courses': course,
@@ -729,6 +737,11 @@ def inquery_form(request, id, crn):
         'id':id
     }
     return render(request, 'branch_qr/create_lead.html', context)
+
+
+def branch_error(request):
+   return render(request,'branch_qr/branch_error.html')
+   
 
 
 
@@ -748,6 +761,10 @@ def create_lead(request):
             crn = request.POST.get('crn')
             id = request.POST.get('id')
             register_user = Register_model.objects.get(crn=crn)
+            if branch_name:
+               if not register_user.branches.filter(id=branch_name).exists():
+                    messages.error(request, 'Branch not found')
+                    return redirect('branch_error')
             
             if register_user.leads.filter(Q(mobile_number=mobile_number) | Q(email=email)).exists():
                 messages.error(request, 'Lead with the same mobile number or email already exists')
@@ -2501,8 +2518,8 @@ def net_banking(request):
     accounttype=request.POST.get('Accounttype').strip().title()
     bankname=request.POST.get('Bankname').strip().title()
     branchname=request.POST.get('Branchname').strip().title()
-    if register_user.net_banking.filter(ifscode=ifscode).exists():
-      messages.error(request, f'{ifscode} netbanking already exists')
+    if register_user.net_banking.filter( accountnumber=accountnumber).exists():
+      messages.error(request, f'{accountnumber} accountnumber already exists')
       return redirect('net_banking')
     else:
       netbanking.objects.create(
@@ -5916,21 +5933,19 @@ def qualification_import(request):
 @admin_required
 def jobrole(request):
   crn = request.session.get('admin_user').get('crn')
-  if crn:
-    register_user = Register_model.objects.get(crn=crn)
-    role = register_user.jobrole.all().order_by("-id")  
-  else:
-    role = Jobrole.objects.none() 
+  register_user = Register_model.objects.get(crn=crn)
+  role = register_user.jobrole.all().order_by("-id")  
+
   if request.method == "POST":
     jobrole = request.POST.get('jobrole_name')
-    if register_user.jobrole.filter(jobrole_name=jobrole).exists():
+    if register_user.jobrole.filter(jobrole_name=jobrole.strip().title()).exists():
       messages.error(request, f'{jobrole} Job Role already exists for this user')
     else:
       Jobrole.objects.create(
           crn_number=register_user,  
-          jobrole_name=jobrole,
+          jobrole_name=jobrole.strip().title(),
       )
-      messages.success(request, f'{jobrole} Job Role Created Successfully')
+      messages.success(request, f'{jobrole.strip().title()} Job Role Created Successfully')
     return redirect('jobrole')
 
   context = {

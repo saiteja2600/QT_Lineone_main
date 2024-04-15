@@ -6,7 +6,7 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-    <title>{% block title %}Receipt{% endblock %}</title>
+    <title>{% block title %}Branch Not Found{% endblock %}</title>
     <meta name="description" content="A responsive bootstrap 4 admin dashboard vendors4late by hencework" />
 
     <!-- Favicon -->
@@ -66,29 +66,6 @@
 
 
 
-
-    <!--css here  -->
-
-    <style>
-      .token-id {
-        white-space: nowrap; 
-        overflow: hidden; /* Hide the overflowing text */
-        text-overflow: ellipsis; /* Show an ellipsis (...) when the text overflows */
-        max-width: 200px; /* Set a maximum width for the Token ID */
-      }
-      .receipt-details {
-        font-size: 16px;
-    }
-    .receipt-details strong {
-        width: 130px;
-        display: inline-block;
-    }
-    .card {
-        max-width: 500px;
-        min-width: 200px;
-    }
-    
-  </style>
     <!-- css end here -->
 
     
@@ -113,33 +90,18 @@
             <div class="container-fluid">
               <!-- main content start here -->
               <body>
-                  <div class="d-flex justify-content-center mt-5">
-                      <div class="paper-border">
-                          <div class="paper-top"></div>
-                          <div class="card shadow-lg">
-                              <div class="card-header bg-dark text-white">
-                                  <h5 class="card-title text-white">Receipt</h5>
-                              </div>
-                              <div class="card-body">
-                                  <div class="receipt-details">
-                                      <p><strong>Token ID:</strong> <strong><span class="token-id">{{ token }}</span></strong></p>
-                                      <p><strong>First Name:</strong> {{ first_name }}</p>
-                                      <p><strong>Last Name:</strong> {{ last_name }}</p>
-                                      <p><strong>Mobile Number:</strong> {{ mobile_number }}</p>
-                                      <p><strong>Email:</strong>  {{ email }}</p>
-                                      <p><strong>Course Name:</strong> {{ course_name }}</p>
-                                      <p><strong>Branch Name:</strong> {{ branch_name }}</p>
-                                      <p><strong>Training Type:</strong> {{ training_type }}</p>
-                                      <p><strong>Referral Source:</strong> {{ lead_type }}</p>
-                                  </div>
-                              </div>
+                <div class="row d-flex justify-content-center mt-5">
+                  <div class="col-md-6 col-sm-12 col-lg-6">
+                      <div class="card">
+                          <div class="card-body" style="font-size: 18px;">
+                              <p>The branch is currently not available. Please contact the branch administrator for further details.</p>
                           </div>
-                          <div class="paper-bottom"></div>
                       </div>
                   </div>
-                  <div class="d-flex justify-content-center">
-                      <a href="{% url 'receipt_pdf' token %}" class="btn btn-success">Print</a>
-                  </div>
+              </div>
+              
+              
+                  
               <!-- main content end here -->
           </div>
           
@@ -263,93 +225,6 @@
 
 
 
-    <!-- Scripts block end here -->
-
-    <script>
-      $(document).ready(function () {
-        $.validator.addMethod(
-          "noSpecialChars",
-          function (value, element) {
-            return this.optional(element) || /^[a-zA-Z\s]+$/.test(value);
-          },
-          "Special Characters are not allowed and Numbers are not allowed"
-        );
-
-        $.validator.addMethod(
-          "customphone",
-          function (value, element) {
-            return (
-              this.optional(element) || /^(\+91-|0)?[6-9]\d{9}$/.test(value)
-            );
-          },
-          "Please enter a valid phone number"
-        );
-
-        $("#enquiryForm").validate({
-          rules: {
-            first_name: {
-              required: true,
-              minlength: 3,
-              maxlength: 10,
-              noSpecialChars: true,
-            },
-            last_name: {
-              required: true,
-              minlength: 3,
-              maxlength: 10,
-              noSpecialChars: true,
-            },
-            mobile_number: {
-              required: true,
-              customphone: true,
-            },
-            email: {
-              required: true,
-              email: true,
-            },
-            course_name: {
-              required: true,
-            },
-
-            lead_type: {
-              required: true,
-            },
-
-          },
-          messages: {
-            first_name: {
-              required: "Please enter your first name",
-              minlength: "First name must be at least 3 characters",
-              maxlength: "First name must be at most 10 characters",
-            },
-            last_name: {
-              required: "Please enter your last name",
-              minlength: "Last name must be at least 3 characters",
-              maxlength: "Last name must be at most 10 characters",
-            },
-            mobile_number: {
-              required: "Please enter your mobile number",
-              customphone: "Please enter a valid mobile number",
-            },
-            email: {
-              required: "Please enter your email",
-              email: "Please enter a valid email address",
-            },
-            course_name: {
-              required: "Please select a course name",
-            },
-
-            lead_type: {
-              required: "Please select a lead type",
-            },
-
-          },
-          submitHandler: function (form) {
-            form.submit();
-          },
-        });
-      });
-    </script>
 
 
 

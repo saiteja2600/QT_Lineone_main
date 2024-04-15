@@ -193,7 +193,7 @@ class BranchModel(models.Model):
         if not self.id:
             return
 
-        qr_url = f"http://192.168.219.156:8080/inquiry_form/{self.id}/{self.crn_number.crn}"
+        qr_url = f"http://192.168.1.34:8080/inquiry_form/{self.id}/{self.crn_number.crn}"
         qr = qrcode.make(qr_url)
         buffer = BytesIO()
         qr.save(buffer, format="PNG")
@@ -355,7 +355,7 @@ class Purpose_of_visit_model(models.Model):
         ('Deactive', 'Deactive')
     )
     crn_number = models.ForeignKey(Register_model, on_delete=models.CASCADE, related_name='purpose')
-    purpose = models.CharField(max_length=250,unique=True)
+    purpose = models.CharField(max_length=250)
     status = models.CharField(
         max_length=10, choices=STATUS_CHOICES, default='Active')
     created_at = models.DateTimeField(default=datetime.now)

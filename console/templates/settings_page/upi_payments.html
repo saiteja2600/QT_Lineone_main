@@ -120,7 +120,7 @@
           <div class="mb-3">
             <label for="">UPI Type Name<span class="text-danger">*</span></label>
             <input type="text" class="form-control" id="upitype" name="upipayments_name"
-              placeholder="Enter UPI Type" value=""  />
+              placeholder="Ex:Phone pe,Google pay" value=""  />
           </div>
 
           <div class="mb-3">
@@ -161,7 +161,7 @@
           <div class="mb-3">
             <label for="">UPI Type Name<span class="text-danger">*</span></label>
             <input type="text" class="form-control" id="editupitype" name="upitype"
-              placeholder="Enter UPI Type" value="{{i.upitype}}"  />
+              placeholder="Ex:Phone pe,Google pay" value="{{i.upitype}}"  />
           </div>
 
           <div class="mb-3">
@@ -270,7 +270,7 @@
       <form action="{% url 'upi_import' %}" method="post" enctype="multipart/form-data">
         {% csrf_token %}
         <div class="modal-body">
-          <input type="file" name="upi_file" id="input-file-now" class="dropify" />
+          <input type="file"  accept=".csv" name="upi_file" id="input-file-now" class="dropify" />
           <div id="csvPreview"></div>
         </div>
         <div class="mb-3 d-flex justify-content-center">
@@ -325,6 +325,12 @@
     return !(containsNumbers && containsSpecialChars);
     }, "Numbers and special characters are not allowed.");
 
+    
+
+  $.validator.addMethod("noSpace_for_upi", function(value, element) {
+    return value === value.trim() && !/\s/.test(value);
+}, "Leading, trailing, and middle spaces are not allowed");
+
 
 
 
@@ -342,8 +348,8 @@
         upiid: {
           required: true,
           minlength: 4,
-          maxlength: 20,
-          noSpace:true,
+          maxlength: 50,
+          noSpace_for_upi:true,
           NoSpecialChars:true
         },
         mobilenumber:{
@@ -390,8 +396,8 @@
           upiid: {
             required: true,
             minlength: 4,
-            maxlength: 20,
-            noSpace:true,
+            maxlength: 50,
+            noSpace_for_upi:true,
             NoSpecialChars:true
           },
           mobilenumber:{

@@ -6,6 +6,7 @@ urlpatterns = [
     path('register/',views.register_page,name="register"),
     path('otp_page/<int:user_id>/',views.otp_page,name="otp_page"),
     path('register_resend_otp/',views.register_resend_otp,name="register_resend_otp"),
+    path('terms_and_conditions/',views.terms_and_conditions,name="terms_and_conditions"),
     path('departments/',views.departments,name="departments"),
     path('settings/',views.settings_page,name="settings"),
     path('designations/',views.designations,name="designations"),
@@ -154,6 +155,7 @@ urlpatterns = [
    path('receipt/',views.receipt,name="receipt"),
    path('receipt_pdf/<str:token_id>',views.receipt_pdf,name="receipt_pdf"),
    path('resend-otp/', views.resend_otp, name='resend_otp'),
+   path('branch_error/',views.branch_error,name="branch_error"),   
 
     # complaint status
     path('complaints_status/<int:id>',views.complaints_status,name="complaints_status"),
