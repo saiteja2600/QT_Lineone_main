@@ -1,0 +1,265 @@
+{% extends 'base/base.html' %} 
+{% block title %}QTLineone | Student Details{% endblock %}
+{% block breadCrum %}
+
+
+  <!-- Breadcrumb -->
+  <div class="hk-pg-header d-flex justify-content-between mb-0">
+    <h4 class="hk-pg-title m-3">Total Students Applied [100]</h4>
+    <nav aria-label="breadcrumb">
+      <ol class="breadcrumb bg-transparent mb-0">
+        <li class="breadcrumb-item"><a href="{% url 'placement_dashboard' %}">Dashboard</a></li>
+        <li class="breadcrumb-item"><a href="">Quality Thoughts</a></li>
+        <li class="breadcrumb-item active" aria-current="page">Total Student Applied </li>      
+      </ol>
+    </nav>
+  </div>
+  <!-- /Breadcrumb -->
+{% endblock %}
+
+{% block content %}
+
+<section class="hk-sec-wrapper">
+  <div class="row">
+    <div class="col">
+      
+    </div>
+  
+    <div class="button_operations col-auto ml-auto p-0 mb-3 mr-3 d-flex justify-content-end"  id="button_operations">
+        
+    </div>
+    <div class="d-flex justify-content-end">
+      <a href='#' type="button" class="btn btn-success ml-auto mr-3 mb-3"><i class="fa fa-download"></i> Print</a>
+    </div>
+  </div>
+
+
+<div class="row">
+  <div class="col-sm">
+    <div class=" table-wrap">
+      <table
+      id="datable_1"
+      class="table table-hover w-100 display pb-30 table-bordered">
+      <thead class="bg-dark">
+        <tr>
+          <tr>
+          <th class="text-white  text-center">
+            <p class="mr-5">All<input type="checkbox" class="form-check-input" style="margin-left:3px; margin-right: 20px;" id="checkAll"></p>
+          </th>
+          <th class="text-white">S.ID</th>
+          <th class="text-white">Student Name</th>
+          <th class="text-white">Job Title</th>
+          <th class="text-white">Company</th>
+          <th class="text-white">Email</th>
+          <th class="text-white">Contact</th>
+          <th class="text-white text-center">Profile Status</th>
+          <th class="text-white">Resume</th>
+          <th class="text-white">Posted by</th>
+        </tr>
+      </thead>
+      <tbody>
+       
+        <tr>
+          <td><input type="checkbox" class="row-checkbox" data-id="{{i.id}}"></td>
+          <td>1</td>
+          <td>Kolluru Lokesh</td>
+          <td>Python Developer</td>
+          <td>Test Press Technology</td>
+          <td>lokesh@gmail.com</td>
+          <td>9876598765</td>
+          <td class="text-center"><a href=""><span class="badge badge-success badge-pill">Applied</span></a></td>
+          <td><i class="fa fa-file-pdf-o" style="font-size:25px;margin-left:10px; color:red;" data-toggle="modal" data-target="#resumeModal"></i></td>
+          <td>Shyam Srinivas</td>
+        </tr>  
+
+        <tr>
+          <td><input type="checkbox" class="row-checkbox" data-id="{{i.id}}"></td>
+          <td>1</td>
+          <td>Kolluru Lokesh</td>
+          <td>Python Developer</td>
+          <td>Test Press Technology</td>
+          <td>lokesh@gmail.com</td>
+          <td>9876598765</td>
+          <td class="text-center"><a href=""><span class="badge badge-success badge-pill">Applied</span></a></td>
+          <td><i class="fa fa-file-pdf-o" style="font-size:25px;margin-left:10px; color:red;" data-toggle="modal" data-target="#resumeModal"></i></td>
+          <td>Shyam Srinivas</td>
+        </tr>  
+          
+      </tbody>
+    </table>
+     
+    </div>
+  </div>
+</div>
+</section>
+
+<!-- Modal -->
+<div class="modal fade" id="resumeModal" tabindex="-1" role="dialog" aria-labelledby="resumeModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="resumeModalLabel">Resume Viewer</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <iframe id="resumeFrame" src="../../static/dist/resumes/KolluruLokeshResume.pdf" frameborder="0" style="width: 100%; height: 500px;"></iframe>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-primary" onclick="shareResume()" data-target="#share" data-toggle="modal"><i class="fa fa-share"></i> Share</button>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- share modal start here -->
+<div
+  class="modal fade"
+  id="share"
+  tabindex="-1"
+  role="dialog"
+  aria-labelledby="share"
+  aria-hidden="true"
+>
+  <div class="modal-dialog modal-sm modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title text-center">Share Options</h5>
+        <button
+          type="button"
+          class="close"
+          data-dismiss="modal"
+          aria-label="Close"
+        >
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form action="">
+          <div class="mb-3 text-center">
+            <div class="d-flex flex-col">
+              {% comment %} <div>
+              <a href="https://www.facebook.com/sharer/sharer.php?u=https%3A%2F%2Fparse.com">  <button type="button" class="btn btn-primary mb-3 pl-4 pr-4"><i class="fa fa-facebook"></i> SHARE ON FACEBOOK</button></a>
+              </div>
+              <div>
+              <a href="https://www.linkedin.com/shareArticle?mini=true&url=articleUrl&title=YourarticleTitle&summary=YourarticleSummary&source=YourarticleSource"><button type="button" class="btn btn-secondary mb-3 pl-4 pr-4"><i class="fa fa-linkedin"></i> SHARE ON LINKEDIN</button></a>
+              </div>
+              <div>
+              <a href="whatsapp://send?abid=phonenumber&text=Hello%2C%20World!"><button type="button" class="btn btn-success mb-3 pl-3 pr-3"><i class="fa fa-whatsapp"></i> SHARE ON WHATSAPP</button></a>
+              </div>
+              <div>
+              <a href="http://www.twitter.com/share?url=http://www.google.com/"><button type="button" class="btn btn-warning mb-3 pl-4 pr-4"><i class="fa fa-twitter"></i> SHARE ON TWITTER</button></a>
+              </div>
+              <div>
+              <a href="https://mail.google.com/mail/u/1/?view=cm&fs=1&to=userid@gmail.com&tf="><button type="button" class="btn btn-danger mb-3 pl-30 pr-30"><i class="fa fa-mail-reply-all mr-3"></i>  SHARE ON EMAIl</button></a>
+              </div> {% endcomment %}
+              <a href="whatsapp://send?abid=phonenumber&text=Hello%2C%20World!"><button type="button" class="btn btn-icon btn-icon-circle btn-success mr-15"><span class="btn-icon-wrap"><i class="fa fa-whatsapp"></i></span></button><br><h6 class="mr-3" style="font-size:x-small;">whatsapp</h6></a>
+              <a href="https://www.facebook.com/sharer/sharer.php?u=https%3A%2F%2Fparse.com"><button type="button" class="btn btn-icon btn-icon-circle btn-indigo mr-15"><span class="btn-icon-wrap"><i class="fa fa-facebook p-0"></i></span></button><br><h6 class="mr-3"  style="font-size:x-small;">facebook</h6></a>
+              <a href="http://www.twitter.com/share?url=http://www.google.com/"><button type="button" class="btn btn-icon btn-icon-circle btn-primary mr-15"><span class="btn-icon-wrap"><i class="fa fa-twitter"></i></span></button><br><h6 class="mr-3"  style="font-size:x-small;">twitter</h6></a>
+              <a href="https://mail.google.com/mail/u/1/?view=cm&fs=1&to=userid@gmail.com&tf="><button type="button" class="btn btn-icon btn-icon-circle btn-danger mr-15"><span class="btn-icon-wrap"><i class="fa fa-mail-reply-all"></i></span></button><br><h6 class="mr-3"  style="font-size:x-small;">Email</h6></a>
+              <a href="https://www.linkedin.com/shareArticle?mini=true&url=articleUrl&title=YourarticleTitle&summary=YourarticleSummary&source=YourarticleSource"><button type="button" class="btn btn-icon btn-icon-circle btn-primary mr-9"><span class="btn-icon-wrap"><i class="fa fa-linkedin"></i></span></button><br><h6  class="mr-1"  style="font-size:x-small;">linkedin</h6></a>
+
+            </div>
+          </div>
+        </form>
+      </div>       
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- share modal end here -->
+
+
+<script>
+function printResume() {
+  // Print the resume iframe content
+  window.frames["resumeFrame"].focus();
+  window.frames["resumeFrame"].print();
+}
+
+// {% comment %} function shareResume() {
+//   // Placeholder for share functionality
+//   alert('Share functionality to be implemented.');
+// } {% endcomment %}
+
+// Function to set resume source when modal is shown
+$('#resumeModal').on('show.bs.modal', function (event) {
+  var button = $(event.relatedTarget); // Button that triggered the modal
+  var resumePath = button.data('resume-path'); // Extract info from data-* attributes
+  var modal = $(this);
+  modal.find('.modal-body iframe').attr('src', resumePath);
+});
+</script>
+
+
+{% endblock %}
+
+
+
+{% block scripts %}
+
+<script>
+  $(document).ready(function(){
+    function updateButtonOperations() {
+        var selectedCount = $('.row-checkbox:checked').length;
+        var buttonsHtml = '';
+
+        if (selectedCount >= 1) {
+            // When at least one checkbox is selected
+            var prospectId = $('.row-checkbox:checked').data('id');
+            buttonsHtml = `
+                
+                
+                <select class="form-control select2 sm-3" aria-label="Default select example" name="category" data-trget='#update${prospectId}'  required>
+                  <option selected>Select</option>
+                  <option value="1">Applied</option>
+                  <option value="2">Eligible</option>
+                  <option value="3">Not Eligible</option>
+                  <option value="4">Not Intrested</option>
+                  <option value="5">Not Attended</option>
+                  <option value="6">Level 1</option>
+                  <option value="7">Level 2</option>
+                  <option value="8">Level 3</option>
+                  <option value="9">Placed</option>
+                  <option value="10">Not Placed</option>
+                </select>
+            <div class="px-3 ">
+            <button class="btn btn-primary">Update</button>
+            </div>
+                
+            `;
+            // if(selectedCount > 1) {
+            //     // When multiple checkboxes are selected, adjust the buttons accordingly
+            //     buttonsHtml = `
+            //     <button class="btn btn-dark mr-2"><i class="fa fa-envelope"></i> Email</button>
+                
+            //     `;
+            // }
+        }
+
+        $('#button_operations').html(buttonsHtml);
+    }
+
+    
+    // Attach change event listener to checkboxes for row selection
+    $(document).on('change', '.row-checkbox', function() {
+        // Check if all checkboxes are selected
+        var allChecked = $('.row-checkbox').length === $('.row-checkbox:checked').length;
+        $('#checkAll').prop('checked', allChecked);
+        updateButtonOperations();
+    });
+
+    // "Check All" functionality
+    $('#checkAll').change(function() {
+        $('.row-checkbox').prop('checked', this.checked);
+        updateButtonOperations();
+    });
+  })
+
+
+  
+</script>
+
+
+{% endblock %}

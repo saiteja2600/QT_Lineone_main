@@ -1,0 +1,154 @@
+{% extends 'base/base.html' %} 
+{% block title %}QTLineone | Not_eligible{% endblock %}
+{% block breadCrum %}
+
+
+  <!-- Breadcrumb -->
+  <div class="hk-pg-header d-flex justify-content-between mb-0">
+    <h4 class="hk-pg-title m-3">Not Eligible Candidates</h4>
+    <nav aria-label="breadcrumb">
+      <ol class="breadcrumb bg-transparent mb-0">
+        <li class="breadcrumb-item"><a href="{% url 'placement_dashboard' %}">Dashboard</a></li>
+        <li class="breadcrumb-item"><a href="">Quality Thoughts</a></li>
+        <li class="breadcrumb-item active" aria-current="page">Not Eligible </li>      
+      </ol>
+    </nav>
+  </div>
+  <!-- /Breadcrumb -->
+{% endblock %}
+
+{% block content %}
+
+<section class="hk-sec-wrapper">
+  <div class="row">
+    <div class="col">
+      
+    </div>
+  
+    <div class="button_operations col-auto ml-auto p-0 mb-3 mr-3 d-flex justify-content-end"  id="button_operations">
+        
+    </div>
+    <div class="d-flex justify-content-end">
+      <a href='#' type="button" class="btn btn-success ml-auto mr-3 mb-3"><i class="fa fa-download"></i> Print</a>
+    </div>
+  </div>
+
+
+<div class="row">
+  <div class="col-sm">
+    <div class=" table-wrap">
+      <table
+      id="datable_1"
+      class="table table-hover w-100 display pb-30 table-bordered">
+      <thead class="bg-dark">
+        <tr>
+          <tr>
+            <th class="text-white  text-center">
+              <p class="mr-5">All<input type="checkbox" class="form-check-input" style="margin-left:3px; margin-right: 20px;" id="checkAll"></p>
+          </th>
+          <th class="text-white">S.Id</th>
+          <th class="text-white">Job Title</th>
+          <th class="text-white">Name</th>
+          <th class="text-white">Contact</th>
+          <th class="text-white">Email</th>
+          <th class="text-white">Gender</th>
+          <td class="text-white">Company</td>
+          <th class="text-white text-center">Percentage</th>
+          <th class="text-white text-center">Status</th>
+          <th class="text-white">Posted By</th>
+
+        </tr>
+      </thead>
+      <tbody>
+       
+        <tr>
+          <td><input type="checkbox" class="row-checkbox" data-id="{{i.id}}"></td>
+          <td>1</td>
+            <td>Python developer</td>
+            <td><a href="{% url 'student_Report' %}">Gogulakonda sai charan</a></td>
+            <td>9390951447</td>
+            <td>saicharan@gmail.com</td>
+            <td>Male</td>
+            <td>TCS</td>
+            <td>60%</td>
+            <td class="text-center text-white"><a type="button" class="badge badge badge-pill bg-green">Not Eligible</a> </td>
+            <td>adithi</td>
+        </tr>  
+          
+      </tbody>
+    </table>
+     
+    </div>
+  </div>
+</div>
+</section>
+{% endblock %}
+
+
+
+{% block scripts %}
+
+<script>
+  $(document).ready(function(){
+    function updateButtonOperations() {
+        var selectedCount = $('.row-checkbox:checked').length;
+        var buttonsHtml = '';
+
+        if (selectedCount >= 1) {
+            // When at least one checkbox is selected
+            var prospectId = $('.row-checkbox:checked').data('id');
+            buttonsHtml = `
+                
+                
+                <select class="form-control select2 sm-3" aria-label="Default select example" name="category" data-trget='#update${prospectId}'  required>
+                  <option selected>Select</option>
+                  <option value="1">Applied</option>
+                  <option value="2">Eligible</option>
+                  <option value="3">Not Eligible</option>
+                  <option value="4">Not Intrested</option>
+                  <option value="5">Not Attended</option>
+                  <option value="6">Level 1</option>
+                  <option value="7">Level 2</option>
+                  <option value="8">Level 3</option>
+                  <option value="9">Placed</option>
+                  <option value="10">Not Placed</option>
+                </select>
+            <div class="px-3 ">
+            <button class="btn btn-primary">Update</button>
+            </div>
+                
+            `;
+            // if(selectedCount > 1) {
+            //     // When multiple checkboxes are selected, adjust the buttons accordingly
+            //     buttonsHtml = `
+            //     <button class="btn btn-dark mr-2"><i class="fa fa-envelope"></i> Email</button>
+                
+            //     `;
+            // }
+        }
+
+        $('#button_operations').html(buttonsHtml);
+    }
+
+    
+    // Attach change event listener to checkboxes for row selection
+    $(document).on('change', '.row-checkbox', function() {
+        // Check if all checkboxes are selected
+        var allChecked = $('.row-checkbox').length === $('.row-checkbox:checked').length;
+        $('#checkAll').prop('checked', allChecked);
+        updateButtonOperations();
+    });
+
+    // "Check All" functionality
+    $('#checkAll').change(function() {
+        $('.row-checkbox').prop('checked', this.checked);
+        updateButtonOperations();
+    });
+  })
+
+
+  
+</script>
+
+
+{% endblock %}

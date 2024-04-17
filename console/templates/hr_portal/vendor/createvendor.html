@@ -1,0 +1,201 @@
+{% extends 'base/base.html' %} 
+{% block title %}QTLineone | Student Details{% endblock %}
+{% block breadCrum %}
+
+  <!-- Breadcrumb -->
+  <div class="hk-pg-header d-flex justify-content-between mb-0">
+    <h4 class="hk-pg-title m-3">Create Vendor</h4>
+    <nav aria-label="breadcrumb">
+      <ol class="breadcrumb bg-transparent mb-0">
+        <li class="breadcrumb-item"><a href="{% url 'placement_dashboard' %}">Dashboard</a></li>
+        <li class="breadcrumb-item"><a href="">Quality Thoughts</a></li>
+        <li class="breadcrumb-item active" aria-current="page">Create Vendor</li>      
+      </ol>
+    </nav>
+  </div>
+  <!-- /Breadcrumb -->
+{% endblock %}
+
+
+
+{% block content %}
+
+
+
+<section class="hk-sec-wrapper">
+  <div class="d-flex justify-content-end">
+    <div>
+      <button
+        type="button"
+        class="btn btn-primary mr-2 mb-3"
+        data-toggle="modal"
+        data-target="#createvendor"
+        >
+        <i class="glyphicon glyphicon-plus"></i> Create Vendor
+      </button>
+   </div>
+    <a href='#' type="button" class="btn btn-success mr-2 mb-3"><i class="fa fa-download"></i> Print</a>
+  </div>
+  <div class="row">
+  <div class="col-sm">
+    <div class="table-wrap">
+      <table
+        id="datable_1"
+        class="table table-hover w-100 display pb-30 table-bordered">
+      <thead class="bg-dark" >
+        <tr>
+          <th class="text-white">CRN</th>
+          <th class="text-white">Company</th>
+          <th class="text-white">Location</th>
+          <th class="text-white">Category</th>
+          <th class="text-white">HR Name</th>
+          <th class="text-white">Mobile</th>
+          <th class="text-white">Alternate Mobile</th>
+          <th class="text-white">Email</th>
+          <th class="text-white">Website</th>
+          <th class="text-white">POC Name</th>
+          <th class="text-white">POC Mobile</th>
+          <th class="text-white text-center">Status</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>45</td>
+          <td>TCS</td>
+          <td>Hyderabad</td>
+          <td>Technical</td>
+          <td>Kolluru Lokesh</td>
+          <td>9876598765</td>
+          <td>9876598765</td>
+          <td>lokesh@gmail.com</td>
+          <td>www.tcs.com</td>
+          <td>Lokesh</td>
+          <td>9876598765</td>
+          <td class="text-center text-white"><a type="button" class="badge badge badge-pill bg-green">Registered</a> </td>
+        </tr>
+        
+      </tbody>
+    </table>
+  </div>
+</div>
+</div>
+</section>
+
+<!-- Crare job modal starts here -->
+<div class="modal fade" 
+id="createvendor" 
+tabindex="-1"
+role="dialog" 
+aria-labelledby="createvendor" 
+aria-hidden="true"
+>
+<div class="modal-dialog modal-lg  " role="document">
+<div class="modal-content">
+  <div class="modal-header bg-dark">
+    <h4 class="modal-title text-white" >Create Vendor</h4>
+    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+    <span aria-hidden="true" class="text-white">&times;</span>
+  </div>
+
+  <div class="modal-body">
+    <form action="">
+    <div class="row">
+      <div class="col-xl-12">
+              <div class="row ">
+                  <div class="col-sm">
+                      <div class="row">
+
+                          <div class="col-md-6">
+                            <label for="" class="form-label">Company Name <span class="text-danger">*</span></label>
+                            <input type="text"placeholder="Ex:TCS" name="companyname" class="form-control mb-3"/>
+                          </div>
+
+                          <div class="col-md-6 mb-2">
+                            <label for="" class="form-label">HR Name <span class="text-danger">*</span></label>
+                            <input type="text"placeholder="Ex:Full Stack developer" name="hrname" class="form-control mb-3"/>
+                          </div>
+                          
+                      </div>
+
+                      <div class="row">
+                        
+                        <div class="col-md-6 mb-2">
+                          <label for="" class="form-label">Location <span class="text-danger">*</span></label>
+                          <input type="text"placeholder="Ex:Hyderabad" name="location" class="form-control mb-3"/>
+                        </div>
+
+                        <div class="col-md-6">
+                          <label for="" class="form-label">Category <span class="text-danger">*</span></label>
+                          <!-- <input type="text"placeholder="Ex:TCS" name="companyname" class="form-control mb-3"/> -->
+                          <select class="form-control select2 sm-3" aria-label="Default select example" name="category"  required>
+                            <option selected>Select</option>
+                            <option value="1">Technical</option>
+                            <option value="2">Non Technical</option>
+                          </select>
+                        </div>
+                        
+                    </div>
+
+                    <div class="row">
+
+                      <div class="col-md-6 mb-2">
+                        <label for="" class="form-label">Mobile <span class="text-danger">*</span></label>
+                        <input type="number" placeholder="Ex:98976598765" name="mobile" class="form-control mb-3"/>
+                      </div>
+
+                      <div class="col-md-6">
+                        <label for="" class="form-label">Alternate Mobile <span class="text-danger">*</span></label>
+                        <input type="number" placeholder="Ex:9876598765" name="alternatemobile" class="form-control mb-3"/>
+                      </div>
+                      
+                    </div>
+
+                    <div class="row">
+
+                      <div class="col-md-6 mb-2">
+                        <label for="" class="form-label">Email <span class="text-danger">*</span></label>
+                        <input type="email" placeholder="Ex:lokesh@gmial.com" name="email" class="form-control mb-3"/>
+                      </div>
+
+                      <div class="col-md-6 mb-2">
+                        <label for="" class="form-label">Website <span class="text-danger">*</span></label>
+                        <input type="email" placeholder="Ex:www.tcs.com" name="website" class="form-control mb-3"/>
+                      </div>
+                      
+                    </div>
+
+                    <div class="row">
+
+                      <div class="col-md-6">
+                        <label for="" class="form-label">POC Name <span class="text-danger">*</span></label>
+                        <input type="website" placeholder="Lokesh" name="pocname" class="form-control mb-3"/>
+                      </div>
+                      
+                      
+                      <div class="col-md-6">
+                        <label for="" class="form-label">POC Mobile <span class="text-danger">*</span></label>
+                        <input type="website" placeholder="9876598765" name="pocmobile" class="form-control mb-3"/>
+                      </div>
+                      
+                    </div>
+
+                  </div>
+              </div>
+            </div>
+          </div>
+          
+          <div class="modal-footer d-flex justify-content-center">
+            <button type="submit" class="btn btn-primary">Create Vendor</button>
+            <button type="reset" class="btn btn-secondary">Reset</button>
+          </div>
+          <!-- <div class="modal-footer justify-content-md-center d-grid gap-2 col-6 mx-auto ">
+            <button type="submit" class="btn btn-info btn-md btn-block" data-bs-dismiss="modal">ADD</button>
+          </div> -->
+        </form>
+        </div>
+      </div>
+    </div>        
+
+<!-- Create modal ends here -->
+
+{% endblock %}

@@ -11,6 +11,7 @@ from django.urls import reverse
 from django.core.files.base import ContentFile
 from django.utils import timezone
 from django.utils.timezone import now
+from django.db.models import Max
 
 
 
@@ -193,7 +194,7 @@ class BranchModel(models.Model):
         if not self.id:
             return
 
-        qr_url = f"http://192.168.1.34:8080/inquiry_form/{self.id}/{self.crn_number.crn}"
+        qr_url = f"http://192.168.219.156:8080/inquiry_form/{self.id}/{self.crn_number.crn}"
         qr = qrcode.make(qr_url)
         buffer = BytesIO()
         qr.save(buffer, format="PNG")
@@ -485,53 +486,6 @@ class BatchType_import(models.Model):
 
 
 
-class LeadModel(models.Model):
-    crn_number = models.ForeignKey(Register_model, on_delete=models.CASCADE, related_name='leads')
-    first_name = models.CharField(max_length=100)
-    last_name = models.CharField(max_length=100)
-    mobile_number = models.CharField(max_length=11)
-    email = models.EmailField()
-    course_name = models.ForeignKey(Course, on_delete=models.CASCADE)
-
-    branch_name = models.ForeignKey(BranchModel, on_delete=models.CASCADE, editable=False)
-    training_type = models.ForeignKey(TrainingType, on_delete=models.CASCADE)
-    lead_type = models.ForeignKey(ProspectType_model, on_delete=models.CASCADE)
-
-    token_id = models.CharField(max_length=100, unique=True, editable=False)
-    token_generated_date = models.DateField(null=True, blank=True)
-    prospect_taken = models.BooleanField(default=False)
-    def save(self, *args, **kwargs):
-        today = timezone.now()
-        token_prefix = f"{self.crn_number.company_short_name}S{today.day:02d}{today.month:02d}{today.year % 100:02d}"
-        last_lead = LeadModel.objects.order_by('-id').first()
-        if last_lead:
-            last_token_id = last_lead.token_id
-            last_count = int(last_token_id[len(token_prefix):])
-            new_count = last_count + 1
-            self.token_id = f"{token_prefix}{new_count:03d}"
-        else:
-            self.token_id = f"{token_prefix}001"
-        self.token_generated_date = timezone.now().date()
-        super().save(*args, **kwargs)
-
-
-
-class Leadstage(models.Model):
-
-    choice_status = (('Active','Active'),
-        ('Deactive','Deactive'),)
-    crn_number = models.ForeignKey(Register_model, on_delete=models.CASCADE, related_name='leadstages')
-    Leadstage_name=models.CharField(max_length=100)
-    status = models.CharField(max_length=100, choices=choice_status, default='Active')
-    def __str__(self) ->str:
-        return self.Leadstage_name 
-
-class Leadstage_import(models.Model):
-    Leadstage_name=models.CharField(max_length=100)        
-
-
-
-
 class Employee_model(models.Model):
     choice_status=(
         ('Active','Active'),
@@ -579,6 +533,34 @@ class Employee_model(models.Model):
 
     def __str__(self) ->str:
         return self.first_name 
+
+
+
+
+
+
+class Leadstage(models.Model):
+
+    choice_status = (('Active','Active'),
+        ('Deactive','Deactive'),)
+    crn_number = models.ForeignKey(Register_model, on_delete=models.CASCADE, related_name='leadstages')
+    Leadstage_name=models.CharField(max_length=100)
+    status = models.CharField(max_length=100, choices=choice_status, default='Active')
+    def __str__(self) ->str:
+        return self.Leadstage_name 
+
+class Leadstage_import(models.Model):
+    Leadstage_name=models.CharField(max_length=100)  
+
+
+
+
+
+
+
+      
+
+
 
 
 
@@ -695,8 +677,7 @@ class Qualification(models.Model):
 
 
 class Lead_generation(models.Model):
-    # Assuming the Register_model, Course, BranchModel, and TrainingType are defined elsewhere
-    # Basic Contact Information
+  
     crn_number = models.ForeignKey(Register_model, on_delete=models.CASCADE, related_name='Register_model')
     token_id = models.CharField(max_length=255)
     token_generated_date = models.DateField(default=now)
@@ -706,21 +687,20 @@ class Lead_generation(models.Model):
     phone = models.CharField(max_length=15)
     lead_source = models.CharField(max_length=255, null=True, blank=True)
     lead_stage = models.CharField(max_length=255, null=True, blank=True)
-    # Relationships
-    course_interested_in = models.ForeignKey(Course, on_delete=models.CASCADE)  # Assuming Course is a model
-    Training_type = models.ForeignKey(TrainingType, on_delete=models.CASCADE)  # Assuming TrainingType is a model
-    branch_name = models.ForeignKey(BranchModel, on_delete=models.CASCADE)  # Assuming BranchModel is a model
-    enquiry_taken_by = models.ForeignKey(Register_model, on_delete=models.CASCADE)  # Assuming Register_model is a model
+    course_interested_in = models.ForeignKey(Course, on_delete=models.CASCADE)  
+    Training_type = models.ForeignKey(TrainingType, on_delete=models.CASCADE)
+    branch_name = models.ForeignKey(BranchModel, on_delete=models.CASCADE)
+    enquiry_taken_by = models.ForeignKey(Register_model, on_delete=models.CASCADE) 
 
-    # Lead process
+
     LEAD_POSITION = (
-        ('LEAD', 'Lead'),
-        ('ASSIGNED_DEMO', 'AssignedDemo'),
-        ('ATTENDED_DEMO', 'AttendedDemo'),
-        ('REQUEST_DISCOUNT', 'RequestDiscount'),
-        ('OPPORTUNITY', 'Opportunity'),
-        ('ADMITTED', 'Admitted'),
-        ('SPAM', 'Spam'),
+        ('LEAD', 'LEAD'),
+        ('ASSIGNED_DEMO', 'ASSIGNED_DEMO'),
+        ('ATTENDED_DEMO', 'ATTENDED_DEMO'),
+        ('REQUEST_DISCOUNT', 'REQUEST_DISCOUNT'),
+        ('OPPORTUNITY', 'OPPORTUNITY'),
+        ('ADMITTED', 'ADMITTED'),
+        ('SPAM', 'SPAM'),
     )
     lead_position = models.CharField(max_length=100, choices=LEAD_POSITION)
     lead_type = models.CharField(max_length=255, null=True, blank=True)
@@ -748,3 +728,66 @@ class Lead_generation(models.Model):
     lead_description = models.TextField(null=True, blank=True)
     mql_description = models.TextField(null=True, blank=True)
     sql_description = models.TextField(null=True, blank=True)
+
+
+
+
+
+class LeadModel(models.Model):
+    crn_number = models.ForeignKey(Register_model, on_delete=models.CASCADE, related_name='leads')
+    first_name = models.CharField(max_length=100)
+    last_name = models.CharField(max_length=100)
+    mobile_number = models.CharField(max_length=11)
+    email = models.EmailField()
+    course_name = models.ForeignKey(Course, on_delete=models.CASCADE)
+
+    branch_name = models.ForeignKey(BranchModel, on_delete=models.CASCADE, editable=False)
+    training_type = models.ForeignKey(TrainingType, on_delete=models.CASCADE)
+    lead_sourse = models.ForeignKey(ProspectType_model, on_delete=models.CASCADE)
+    LEAD_POSITION = (
+                     
+        ('PROSPECT','PROSPECT'),
+        ('LEAD', 'LEAD'),
+        ('MQL','MQL'),
+        ('ASSIGNED_DEMO', 'ASSIGNED_DEMO'),
+        ('ATTENDED_DEMO', 'ATTENDED_DEMO'),
+        ('REQUEST_DISCOUNT', 'REQUEST_DISCOUNT'),
+        ('OPPORTUNITY', 'OPPORTUNITY'),
+        ('ADMITTED', 'ADMITTED'),
+        ('SPAM', 'SPAM'),
+    )
+    lead_position = models.CharField(max_length=100, choices=LEAD_POSITION,default='PROSPECT')
+    lead_stage = models.ForeignKey(Leadstage, on_delete=models.SET_NULL,null=True)
+    lead_type = models.CharField(max_length=100,null=True)
+    demo = models.ForeignKey(Demo, on_delete=models.SET_NULL, null=True)
+    faculty = models.ForeignKey(Employee_model, on_delete=models.SET_NULL, null=True)     
+    token_id = models.CharField(max_length=100, unique=True, editable=False)
+    token_generated_date = models.DateTimeField(null=True, blank=True)
+    prospect_taken = models.BooleanField(default=False)
+    lead_description = models.TextField(null=True)
+    
+    
+
+    def save(self, *args, **kwargs):
+        today = timezone.now()
+        token_prefix = f"{self.crn_number.company_short_name}S{today.day:02d}{today.month:02d}{today.year % 100:02d}"
+
+        last_token_id = LeadModel.objects.filter(crn_number=self.crn_number).aggregate(Max('token_id'))['token_id__max']
+
+        if last_token_id:
+            last_count = int(last_token_id[len(token_prefix):])
+            new_count = last_count + 1
+            self.token_id = f"{token_prefix}{new_count:03d}"
+        else:
+            self.token_id = f"{token_prefix}001"
+
+        self.token_generated_date = datetime.now()
+        super().save(*args, **kwargs)    
+
+
+    
+    
+
+
+
+    

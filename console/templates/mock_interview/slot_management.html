@@ -1,0 +1,657 @@
+{% extends 'base/base.html' %}
+{% block title %}QTLineone | Faculty Mock Schedule{% endblock %}
+
+{% block breadCrum %}
+
+<!-- Breadcrumb -->
+<div class="hk-pg-header d-flex justify-content-between mb-0" xmlns="http://www.w3.org/1999/html">
+  <h4 class="hk-pg-title m-3">Scheduling Mock </h4>
+  <nav aria-label="breadcrumb">
+    <ol class="breadcrumb bg-transparent mb-0">
+      <li class="breadcrumb-item"><a href="{% url 'faculty_dashboard'%}">Dashboard</a></li>
+      <li class="breadcrumb-item active" aria-current="page">Scheduling Mock</li>
+    </ol>
+  </nav>
+</div>
+<!-- /Breadcrumb -->
+
+{% endblock %}
+{% block content %}
+ <!-- message here -->
+
+ {% if messages %}
+ {% for message in messages %}
+   {% if message.tags == "error" %}
+     <div class="h-25 alert alert-danger alert-dismissible fade show mt-2 h-25 text-center" role="alert">{{ message }}</div>
+   {% elif message.tags == "success" %}
+     <div class="h-25 alert alert-success alert-dismissible fade show mt-2 h-25 text-center" role="alert">{{ message }}</div>
+     {% else %}
+    <div class="h-25 alert alert-info alert-dismissible fade show mt-2 h-25 text-center" role="alert">{{ message }}</div>
+    {% endif %}
+   {% endfor %}
+ {% endif %}
+
+<!--<section class="hk-sec-wrapper">-->
+<!--  <div class="">-->
+<!--    <button type="button" class="btn btn-primary mr-2 mb-3" data-toggle="modal" data-target="#CreateCourse">-->
+<!--      <i class="glyphicon glyphicon-plus"></i> Create Course-->
+<!--    </button>-->
+<!--    <a href="{% url 'course_export' %}" class="btn btn-success mr-2 mb-3"><i class="glyphicon glyphicon-export"></i>-->
+<!--      Export</a>-->
+<!--    <button type="button" class="btn btn-secondary mr-2 mb-3" data-toggle="modal" data-target="#UploadCourse">-->
+<!--      <i class="glyphicon glyphicon-import"></i> Import-->
+<!--    </button>-->
+<!--  </div>-->
+
+<!-- message end here -->
+<!--<section class="hk-sec-wrapper shadow-lg p-3 mb-10 bg-white rounded">-->
+
+<!--  <div class="heading" style="padding-bottom:10px;">-->
+<!--  </div>-->
+<!--     <form action="" method="post" id="">-->
+
+<!--      <div class="container-fluid">-->
+<!--       <div class="row">-->
+<!--                  <div class="col-md-4">-->
+<!--                    <div class="form-group">-->
+<!--                    <label for="" class="form-label">Available  Slot Date <span class="text-danger">*</span></label>-->
+<!--&lt;!&ndash;                      <input  class="form-control" type="datetime-local" id="dateTime" name="dateTime" required>&ndash;&gt;-->
+<!--                       <input  class="form-control" type="date" id="date" name="date" required>-->
+<!--                  </div>-->
+<!--                  </div>-->
+<!--                  <div class="col-md-4">-->
+<!--                    <div class="form-group">-->
+<!--                    <label for="" class="form-label">Start Time<span class="text-danger">*</span></label>-->
+<!--                       <input  class="form-control" type="time" id="time" name="time" required>-->
+<!--                  </div>-->
+<!--                  </div>-->
+<!--                   <div class="col-md-4">-->
+<!--                    <div class="form-group">-->
+<!--                    <label for="" class="form-label">End Time<span class="text-danger">*</span></label>-->
+<!--                       <input  class="form-control" type="time" id="time" name="time" required>-->
+<!--                  </div>-->
+<!--                  </div>-->
+<!--                  <div class="col-md-4 form-group">-->
+<!--                    <label for="" class="form-label">Link<span class="text-danger">*</span></label>-->
+<!--                      <textarea  class="form-control" type="text"  name="" required></textarea>-->
+
+<!--                  </div>-->
+<!--       </div>-->
+<!--                </div>-->
+<!--          <div class="modal-footer d-flex justify-content-center mt-20">-->
+<!--                  <button type="submit" class="btn btn-primary">Submit</button>-->
+<!--                  <button type="reset" class="btn btn-secondary">Reset</button>-->
+<!--                </div>-->
+<!--         </form>-->
+<!--</section>-->
+
+
+<!-- Table starts here -->
+
+<section class="hk-sec-wrapper shadow-lg p-3 mb-10 bg-white rounded">
+ <div class="">
+    <button  type="button" class="btn btn-primary mr-2 mb-3" data-toggle="modal" data-target="#Bookinterview">
+      <i class="glyphicon glyphicon-plus"></i> Add Slot
+    </button>
+    <a href="{% url 'course_export' %}" class="btn btn-success mr-2 mb-3"><i class="glyphicon glyphicon-export"></i>
+      Export</a>
+    <button type="button" class="btn btn-secondary mr-2 mb-3" data-toggle="modal" data-target="#UploadCourse">
+      <i class="glyphicon glyphicon-import"></i> Import
+    </button>
+  </div>
+
+  <div class="row">
+    <div class="col-sm">
+      <div class="table-wrap">
+        <table id="datable_1" class="table table-hover w-100  pb-30 table-bordered">
+          <thead class="bg-dark">
+            <tr>
+              <th class="text-white">S.no</th>
+              <th class="text-white text-center">Available Slot</th>
+                 <th class="text-white text-center">Mock Link</th>
+              <th class="text-white text-center">Status</th>
+              <th class="text-white text-center" >Action</th>
+            </tr>
+          </thead>
+          <tbody>
+
+            <tr>
+              <td>1</td>
+               <td class="text-center">March 02,2024 11:00 AM</td>
+              <td class="text-center">
+                <button type="button" class="btn btn-link" data-toggle="tooltip" data-html="true" title="<em>Tooltip</em> <u>on</u> <b>Link</b>">
+                                           #Mock Link
+                  <button class="btn btn-icon btn-icon-only btn-icon-style-4"><i class="fa fa-copy"></i></button>
+
+                </button>
+              </td>
+                <td class="text-center">
+                <span class="badge badge-success badge-pill mt-15 mr-10">Active</span>
+                </td>
+              <td class="text-center">
+                  <div class="d-flex align-items-center justify-content-center ">
+<!--                  <button class="btn btn-icon btn-success " data-toggle="modal" data-target="#Cancel">-->
+<!--                   <i class="fa fa-rocket"></i>-->
+<!--                 </button>-->
+
+                <button class="btn btn-icon btn-success " data-toggle="modal" data-target="#Edit">
+                  <i class="fa fa-rocket"></i>
+                 </button>
+
+
+<!--                 <button class="btn btn-icon btn-danger " data-toggle="modal" data-target="#Delete">-->
+<!--                   <i class="fa fa-trash"></i>-->
+<!--                 </button>--><div class="timer" style="padding-left:10px;color: red; font-weight: bold;" id="timer">00:00</div>
+                  </div>
+
+              </td>
+
+            </tr>
+            <tr>
+              <td>2</td>
+               <td class="text-center">March 03,2024 11:00 AM</td>
+                  <td class="text-center">
+                <button type="button" class="btn btn-link" data-toggle="tooltip" data-html="true" title="<em>Tooltip</em> <u>on</u> <b>Link</b>">
+                                           #Mock Link
+                  <button class="btn btn-icon btn-icon-only btn-icon-style-4"><i class="fa fa-copy"></i></button>
+
+                </button>
+              </td>
+                <td class="text-center">
+                <span class="badge badge-danger badge-pill mt-15 mr-10">Cancel</span>
+                </td>
+               <td class="text-center">
+                  <div class="d-flex align-items-center justify-content-center ">
+<!--                  <button class="btn btn-icon btn-success " data-toggle="modal" data-target="#Cancel">-->
+<!--                   <i class="fa fa-rocket"></i>-->
+<!--                 </button>-->
+
+                <button class="btn btn-icon btn-success " data-toggle="modal" data-target="#Edit">
+                  <i class="fa fa-rocket"></i>
+                 </button>
+
+
+<!--                 <button class="btn btn-icon btn-danger " data-toggle="modal" data-target="#Delete">-->
+<!--                   <i class="fa fa-trash"></i>-->
+<!--                 </button>--><div class="timer" style="padding-left:10px;color: red; font-weight: bold;" id="timer">00:00</div>
+                  </div>
+
+              </td>
+            </tr>
+            <tr>
+              <td>3</td>
+               <td class="text-center">March 03,2024 11:00 AM</td>
+                  <td class="text-center">
+                <button type="button" class="btn btn-link" data-toggle="tooltip" data-html="true" title="<em>Tooltip</em> <u>on</u> <b>Link</b>">
+                                           # Mock Link
+                  <button class="btn btn-icon btn-icon-only btn-icon-style-4"><i class="fa fa-copy"></i></button>
+
+                </button>
+              </td>
+                <td class="text-center">
+                <span class="badge badge-pumpkin badge-pill mt-15 mr-10">Reschedule</span>
+                </td>
+              <td class="text-center">
+                  <div class="d-flex align-items-center justify-content-center ">
+<!--                  <button class="btn btn-icon btn-success " data-toggle="modal" data-target="#Cancel">-->
+<!--                   <i class="fa fa-rocket"></i>-->
+<!--                 </button>-->
+
+                <button class="btn btn-icon btn-success " data-toggle="modal" data-target="#Edit">
+                  <i class="fa fa-rocket"></i>
+                 </button>
+
+
+<!--                 <button class="btn btn-icon btn-danger " data-toggle="modal" data-target="#Delete">-->
+<!--                   <i class="fa fa-trash"></i>-->
+<!--                 </button>--><div class="timer" style="padding-left:10px;color: red; font-weight: bold;"  id="timer">00:00</div>
+                  </div>
+
+              </td>
+            </tr>
+
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</section>
+<!--    Table ends here -->
+
+<!--    Book interview start here -->
+<div class="modal fade" id="Bookinterview" tabindex="-1" role="dialog" aria-labelledby="Bookinterview" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header bg-dark">
+        <h5 class="modal-title text-white">Add Slot</h5>
+        <button type="button" class="close text-white" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <form action="" method="post" id="slot_add">
+        {% csrf_token %}
+        <div class="modal-body">
+          <div class="mb-3">
+            <label for="" class="form-label">Available  Slot <span class="text-danger">*</span></label>
+<!--                      <input  class="form-control" type="datetime-local" id="dateTime" name="dateTime" required>-->
+                       <input  class="form-control" type="datetime-local" id="datetime" name="datetime" required>
+          </div>
+<!--          <div class="mb-3">-->
+<!--              <label for="" class="form-label">Start Time<span class="text-danger">*</span></label>-->
+<!--                       <input  class="form-control" type="time" id="time" name="time" required>-->
+<!--          </div>-->
+<!--          <div class="mb-3">-->
+<!--                    <div class="form-group">-->
+<!--                    <label for="" class="form-label">End Time<span class="text-danger">*</span></label>-->
+<!--                       <input  class="form-control" type="time" id="time" name="time" required>-->
+<!--                  </div>-->
+<!--                  </div>-->
+                  <div class="mb-3">
+                    <label for="" class="form-label">Mock Link<span class="text-danger"> *</span></label>
+                      <textarea  class="form-control"  name="link" required></textarea>
+
+                  </div>
+        </div>
+        <div class="modal-footer d-flex justify-content-center">
+          <button type="submit" class="btn btn-primary">Submit</button>
+          <button type="reset" class="btn btn-secondary">Reset</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+<!--    Book interview ends here -->
+
+<!--&lt;!&ndash; Cancel model start here &ndash;&gt;-->
+
+<!--<div class="modal fade" id="Cancel" tabindex="-1" role="dialog" aria-labelledby="Cancel"-->
+<!--  aria-hidden="true">-->
+<!--  <div class="modal-dialog modal-dialog-centered" role="document">-->
+<!--    <div class="modal-content">-->
+<!--      <div class="modal-header bg-warning">-->
+<!--        <h5 class="modal-title text-white">Cancel Slot</h5>-->
+<!--        <button type="button" class="close" data-dismiss="modal" aria-label="Close">-->
+<!--          <span aria-hidden="true" class="text-white">&times;</span>-->
+<!--        </button>-->
+<!--      </div>-->
+<!--      <form action="" method="post">-->
+<!--        {% csrf_token %}-->
+<!--        <div class="modal-body">-->
+<!--          <div class="mb-3 text-center">-->
+<!--            <div class="d-flex justify-content-center mb-3">-->
+<!--              <img src="../../static/triangle-exclamation-solid.svg" width="120" height="70" alt="">-->
+<!--            </div>-->
+<!--            Are you sure you want to  cancel the slot ?-->
+<!--          </div>-->
+<!--        </div>-->
+<!--        <div class="modal-footer d-flex justify-content-center">-->
+<!--          <button type="button" class="btn btn-secondary" data-dismiss="modal" aria-label="Close">-->
+<!--            No-->
+<!--          </button>-->
+<!--          <button type="submit" class="btn btn-warning">Yes</button>-->
+<!--        </div>-->
+<!--      </form>-->
+<!--    </div>-->
+<!--  </div>-->
+<!--</div>-->
+
+
+<!--&lt;!&ndash; Cancel model ends here&ndash;&gt;-->
+<!-- Edit model start here -->
+<div class="modal fade" id="Edit" tabindex="-1" role="dialog" aria-labelledby="Edit" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header bg-dark">
+        <h5 class="modal-title text-white">Reschedule Slot</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true" class="text-white">&times;</span>
+        </button>
+      </div>
+      <form action="" method="post" id="Edit_slot">
+        {% csrf_token %}
+        <div class="modal-body">
+          <div class="container-fluid">
+            <div class="row">
+              <div class="col-sm">
+                <div class="row mb-20">
+                  <div class="col-md-6 mt-15">
+                    <div class="custom-control custom-radio">
+                      <input type="radio" id="customRadio1" name="customRadio" value="Reschedule Slot" class="custom-control-input" onchange="handleOptionChange()">
+                      <label class="custom-control-label" for="customRadio1">Reschedule Slot</label>
+                    </div>
+                  </div>
+                  <div class="col-md-6 mt-15">
+                    <div class="custom-control custom-radio">
+                      <input type="radio" id="customRadio2" name="customRadio" value="Cancel Slot" class="custom-control-input" onchange="handleOptionChange()">
+                      <label class="custom-control-label" for="customRadio2">Cancel Slot</label>
+                    </div>
+                  </div>
+                    <div class="col-md-6 mt-15" id="radioError"></div>
+                </div>
+                <div class="mb-3">
+                  <label for="" class="form-label">Available Slot <span class="text-danger">*</span></label>
+                  <input class="form-control" type="datetime-local" id="dateTime" name="dateTime" >
+                </div>
+                <div class="mb-3">
+                  <label for="" class="form-label">Mock Link<span class="text-danger"> *</span></label>
+                  <textarea class="form-control" name="link" id="mockLink" placeholder="Enter mock link here." ></textarea>
+                </div>
+                <div class="mb-3">
+                  <label for="">Reason for Cancel Slot <span class="text-danger">*</span></label>
+                  <textarea id="reasonField" class="form-control" name="feedback" placeholder="What Would you like to say?" rows="5" ></textarea>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer d-flex justify-content-center">
+          <button type="submit" class="btn btn-primary" id="confirmAction">Confirm</button>
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+<!-- Edit model end here -->
+
+
+<!-- Delete model start here -->
+<!--<div class="modal fade" id="Delete" tabindex="-1" role="dialog" aria-labelledby="Delete"-->
+<!--  aria-hidden="true">-->
+<!--  <div class="modal-dialog modal-dialog-centered" role="document">-->
+<!--    <div class="modal-content">-->
+<!--      <div class="modal-header bg-danger">-->
+<!--        <h5 class="modal-title text-white">Delete Slot</h5>-->
+<!--        <button type="button" class="close" data-dismiss="modal" aria-label="Close">-->
+<!--          <span aria-hidden="true" class="text-white">&times;</span>-->
+<!--        </button>-->
+<!--      </div>-->
+<!--      <form action="" method="post">-->
+<!--        {% csrf_token %}-->
+<!--        <div class="modal-body">-->
+<!--          <div class="mb-3 text-center">-->
+<!--            <div class="d-flex justify-content-center mb-3">-->
+<!--              <img src="../../static/triangle-exclamation-solid.svg" width="120" height="70" alt="">-->
+<!--            </div>-->
+<!--            Are you sure you want to delete {{i.course_name}} Slot ?-->
+<!--          </div>-->
+<!--        </div>-->
+<!--        <div class="modal-footer d-flex justify-content-center">-->
+<!--          <button type="button" class="btn btn-secondary" data-dismiss="modal" aria-label="Close">-->
+<!--            No-->
+<!--          </button>-->
+<!--          <button type="submit" class="btn btn-danger">Yes</button>-->
+<!--        </div>-->
+<!--      </form>-->
+<!--    </div>-->
+<!--  </div>-->
+<!--</div>-->
+
+
+<!-- Delete model end here -->
+
+<!-- Upload model  -->
+
+
+<div class="modal fade" id="UploadCourse" tabindex="-1" role="dialog" aria-labelledby="UploadCourse" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header bg-dark">
+        <h5 class="modal-title text-white">Upload File</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true" class="text-whte">&times;</span>
+        </button>
+      </div>
+      <form action="{% url 'course_import' %}" method="post" id="uploadfile" enctype="multipart/form-data">
+        {% csrf_token %}
+        <div class="modal-body">
+          <input type="file" name="cos_file" accept=".csv" id="input-file-now" class="dropify" />
+          <div id="csvPreview"></div>
+         </div>
+        <div class="modal-footer d-flex justify-content-center">
+          <button type="submit" class="btn btn-primary">Submit</button>
+          <button type="button" class="btn btn-secondary" data-dismiss="modal" aria-label="Close">
+            Close
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+<!-- Upload model end here -->
+
+
+
+{% endblock %}
+
+{% block scripts %}
+
+
+
+
+<script>
+  // Define handleOptionChange function
+  function handleOptionChange() {
+    var rescheduleRadio = document.getElementById("customRadio1");
+    var cancelRadio = document.getElementById("customRadio2");
+    var dateTimeInput = document.getElementById("dateTime");
+    var linkTextarea = document.getElementById("mockLink");
+    var reasonTextarea = document.getElementById("reasonField");
+
+    if (rescheduleRadio.checked) {
+      dateTimeInput.disabled = false;
+      linkTextarea.disabled = false;
+      reasonTextarea.disabled = true;
+      reasonTextarea.value = ''; // Clear the value
+      $('#radioError').html(''); // Clear error message
+    } else if (cancelRadio.checked) {
+      dateTimeInput.disabled = true;
+      dateTimeInput.value = ''; // Clear the value
+      linkTextarea.disabled = true;
+      linkTextarea.value = ''; // Clear the value
+      reasonTextarea.disabled = false;
+      $('#radioError').html(''); // Clear error message
+    }
+  }
+
+  // Validate form using jQuery Validation Plugin
+  $(document).ready(function () {
+    $.validator.addMethod("overspecialization", function (value, element) {
+        return !/\d/.test(value);
+    }, "Please enter a valid value.");
+
+    $.validator.addMethod("radioRequired", function (value, element) {
+        return $('input[name="customRadio"]:checked').length > 0;
+    }, "Please select an option.");
+
+    $("#Edit_slot").validate({
+        rules: {
+            dateTime: {
+                required: true,
+                overspecialization: false
+            },
+            link: {
+                required: true,
+                overspecialization: true
+            },
+            feedback: {
+                required:true,
+            },
+            customRadio: {
+                radioRequired: true
+            }
+
+        },
+        messages: {
+            dateTime: {
+                required: "Please Select Slot."
+            },
+            link: {
+                required: "Please provide link."
+            },
+            feedback: {
+                required:" Please enter a reason",
+            },
+            customRadio: {
+                radioRequired: "Please select an option."
+            }
+
+        },
+        errorPlacement: function(error, element) {
+            if (element.attr("name") == "customRadio") {
+                error.appendTo("#radioError");
+            } else {
+                error.insertAfter(element);
+            }
+        },
+        submitHandler: function (form) {
+            form.submit();
+        },
+    });
+  });
+</script>
+<!-- script for reschedule and cancel ends here-->
+<!-- radio buttons -->
+<script>
+  // JavaScript to handle radio button selection and modal display
+  document.getElementById("confirmAction").addEventListener("click", function() {
+    var selectedAction = document.querySelector('input[name="customRadio"]:checked').value;
+    if (selectedAction === "Reschedule Slot") {
+      $('#rescheduleModal').modal('show');
+    } else if (selectedAction === "Cancel Slot") {
+      $('#cancelModal').modal('show');
+    }
+  });
+</script>
+<!-- radio buttons ends-->
+
+<!-- script for timer starts here-->
+<script>
+  function startTimer(duration, timerDisplay) {
+    var start = Date.now();
+    var intervalId = setInterval(function () {
+      var diff = duration - (((Date.now() - start) / 1000) | 0);
+
+      var minutes = (diff / 60) | 0;
+      var seconds = (diff % 60) | 0;
+
+      minutes = minutes < 10 ? "0" + minutes : minutes;
+      seconds = seconds < 10 ? "0" + seconds : seconds;
+
+      timerDisplay.textContent = minutes + ":" + seconds;
+
+      if (diff <= 0) {
+        clearInterval(intervalId);
+        timerDisplay.textContent = "Time's up!";
+      }
+    }, 1000);
+  }
+
+  // Example: Set timer for 5 minutes (300 seconds) for each timer element
+  document.querySelectorAll('.timer').forEach(function (timer) {
+    startTimer(300, timer);
+  });
+</script>
+<!-- script for timer ends here-->
+<script>
+  $(document).ready(function () {
+    $.validator.addMethod("overspecialization", function (value, element) {
+        return !/\d/.test(value);
+    }, );
+
+    $("#slot_add").validate({
+        rules: {
+            datetime: {
+                required: true,
+                overspecialization: false
+            },
+            link: {
+                required: true,
+                overspecialization: false
+            },
+            course: {
+                required:true,
+            },
+            specialization:{
+                required:true,
+            },
+            faculty:{
+                required:true,
+            },
+        },
+        messages: {
+            datetime: {
+                required: "Please Select  Slot."
+            },
+            link: {
+                required: "Please provide link."
+            },
+            course:{
+                required:"Please Select Course."
+            },
+            specialization:{
+                required:" Please Select Specialization."
+            },
+            faculty:{
+                required:"Please Select Faculty."
+            },
+        },
+        submitHandler: function (form) {
+            form.submit();
+        },
+    });
+
+    // Set the minimum value of the datetime input field to the current date and time
+    var currentDate = new Date().toISOString().slice(0, 16);
+    $("#datetime").attr("min", currentDate);
+
+    // Function to reset the input field if a past date or time is entered
+    $("#datetime").on("change", function () {
+        var selectedDateTime = new Date($(this).val());
+        var currentDateTime = new Date();
+
+        // Compare selected datetime with current datetime
+        if (selectedDateTime < currentDateTime) {
+            // If selected datetime is in the past, reset the input field
+            $(this).val('');
+        }
+    });
+});
+
+</script>
+
+
+
+<script>
+  function validateUploadForm(form) {
+    $(form).find('#input-file-now').on('change', function () {
+      var file = this.files[0];
+      var fileExt = file.name.split('.').pop().toLowerCase();
+
+      if (fileExt === 'csv') {
+        $(form).find('button[type="submit"]').prop('disabled', false);
+        $(form).find('#input-file-now').html('');
+      } else {
+        $(form).find('button[type="submit"]').prop('disabled', true);
+        $(form).find('#csvPreview').html('<span style="color: red;">Only CSV files are allowed.</span>');
+      }
+    });
+
+    $(form).on('submit', function (e) {
+      var file = $(form).find('#input-file-now')[0].files[0];
+
+      if (!file) {
+        e.preventDefault();
+        $(form).find('#csvPreview').html('<span style="color: red;">Please select a csv file.</span>');
+      }
+    });
+  }
+
+  $('#UploadCourse').on('shown.bs.modal', function () {
+    validateUploadForm($(this).find('form'));
+  });
+</script>
+
+{% endblock %}

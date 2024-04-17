@@ -1,0 +1,354 @@
+<html><head></head><body>{% extends 'base/base.html' %}
+    {% block title %}QTLineone | Mock Interview-Dashboard{% endblock %}
+    
+    {% block content %}
+    
+    
+    
+    
+    
+        <div class="hk-pg-header d-flex justify-content-between mb-0">
+          <h3 class="hk-pg-title m-3">Placements Dashboard</h3>
+          <nav aria-label="breadcrumb">
+            <ol class="breadcrumb bg-transparent mb-0">
+                <li class="breadcrumb-item"><a href="{% url 'placement_dashboard' %}">Home</a></li>
+                <li class="breadcrumb-item active" aria-current="page">Placement Dashboard</li> 
+            </ol>
+          </nav>
+        </div>
+    
+
+    
+            <!-- <p class="mb-40">Use border utilities to change just the border-color of a card.</p> -->
+        
+    
+    
+    <section class="hk-sec-wrapper">
+    <h5 class="hk-sec-title">Placements details</h5>
+        <div class="container-fluid mt-3">
+            <div class="row ">
+                <div class="col-12  col-sm-9 col-md-6 col-lg-4 col-xl-3" >
+                    <div class="card mt-2 text-black" style="border: 0.98px solid #d3d3d3;">
+                        <div class="px-3 py-3 d-flex justify-content-around ">
+                            <div>
+                                <span style="font-size: 35px; opacity: 0.8; color: black; padding-left: 2pc;"><i class="fa fa-users"></i></span>
+                            </div>
+                            <div class="align-self-center" style="padding-left: 10px;">
+                                <h6 class="fw-bold "><span class="counter-anim">1669</span></h6>
+                                <p style="font-size:14px">Total Students Applied</p>
+                            </div>
+                            </div>
+                            <div class="card-footer border-0 py-1 text-center bg-info" >
+                                <a href="{% url 'totalstudents' %}" class="text-white text-decoration-none font-weight-bold" style="font-size:12px">Today &nbsp;[12]<span style="padding-left:1pc;"> Yesterday&nbsp;[23]</span> &nbsp;<span style="padding-left:1pc;">Last week&nbsp;[5]</span></a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-12   col-sm-9 col-md-6 col-lg-3 col-xl-3 ">
+                        <div class="card mt-2 text-black" style="border: 0.98px solid #d3d3d3;">
+                            <div class="px-3 py-3 d-flex justify-content-around ">
+
+                                <div>
+                                    <span style="font-size: 35px; opacity: 0.8; color:black; padding-left: 1pc;"><i class="fa fa-thumbs-down"></i></span>
+                                </div>
+                                <div class="align-self-center" style="padding-left: 10px;">
+                                    <h6 class="fw-bold "> <span class="counter-anim">1500</span></h6>
+                                    <p  style="font-size:14px">Not Eligible</p>
+                                </div>
+                            </div>
+                            <div class="card-footer border-0 py-1 text-center bg-danger ">
+                                <a href="{% url 'totalnoteligible' %}" class="text-white text-decoration-none font-weight-bold" style="font-size:12px">Today &nbsp;[30]<span style="padding-left:0.8pc;">  Yesterday&nbsp;[40]</span> &nbsp;<span style="padding-left:0.5pc;">Last week&nbsp;[35]</span></a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-12  col-sm-9 col-md-6 col-lg-3 col-xl-3 ">
+                        <div class="card mt-2 text-black" style="border: 0.98px solid #d3d3d3;">
+                            <div class="px-3 py-3 d-flex justify-content-around ">
+
+                                <div>
+                                    <span style="font-size: 35px; opacity: 0.8; color: black; padding-left: 2pc;"><i class="fa fa-thumbs-up"></i></span>
+                                </div>
+                                <div class="align-self-center" style="padding-left: 5px;">
+                                    <h6 class="fw-bold"><span class="counter-anim">169</span></h6>
+                                    <p  style="font-size:14px">Eligible/Profile Sent&nbsp;&nbsp;</p>
+                                </div>
+                            </div>
+                            <div class="card-footer border-0 py-1 text-center bg-success ">
+                                <a href="{% url 'totaleligible' %}" class="text-white text-decoration-none font-weight-bold" style="font-size:12px">Today &nbsp;[25]<span style="padding-left:0.8pc;"> Yesterday&nbsp;[25]</span> &nbsp;<span style="padding-left:0.5pc;">Last week&nbsp;[80]</span></a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-12  col-sm-9 col-md-6 col-lg-3 col-xl-3 ">
+                        <div class="card mt-2 text-black" style="border: 0.98px solid #d3d3d3;">
+                            <div class="px-3 py-3 d-flex justify-content-around ">
+                                <div>
+                                    <span style="font-size: 35px; opacity: 0.8; color:black; padding-left: 1pc;"><i class="glyphicon glyphicon-ban-circle"></i></span>
+                                </div>
+                                <div class="align-self-center" style="padding-left: 5px;">
+                                    <h6 class="fw-bold"><span class="counter-anim">150</span></h6>
+                                    <p  style="font-size:14px">Not Intersted&nbsp;&nbsp;</p>
+                                </div>
+                            </div>
+                            <div class="card-footer border-0 py-1 text-center bg-secondary">
+                                <a href="{% url 'not_interested_hr' %}" class="text-white text-decoration-none font-weight-bold" style="font-size:12px">Today &nbsp;[19]<span style="padding-left:0.8pc;"> Yesterday &nbsp;[55]</span> &nbsp;<span style="padding-left:0.5pc;">Last week&nbsp;[60]</span></a>
+                            </div>
+                        </div>
+                    </div>
+
+
+                    <div class="col-12  col-sm-9 col-md-6 col-lg-3 col-xl-3 ">
+                        <div class="card mt-2 text-black" style="border: 0.98px solid #d3d3d3;">
+                            <div class="px-3 py-3 d-flex justify-content-around ">
+
+                                <div>
+                                    <span style="font-size: 35px; opacity: 0.8; color: black; padding-left: 1pc;"><i class="fa fa-shield"></i></span>
+                                </div>
+                                <div class="align-self-center" style="padding-left: 5px;">
+                                    <h6 class="fw-bold"><span class="counter-anim">190</span></h6>
+                                    <p  style="font-size:14px">Level 1</p>
+                                </div>
+                            </div>
+                            <div class="card-footer border-0 py-1 text-center " style="background-color:gold">
+                                <a href="{% url 'level1' %}" class="text-white text-decoration-none font-weight-bold" style="font-size:12px">Today &nbsp;[45]<span style="padding-left:0.8pc;"> Yesterday&nbsp;[60]</span> &nbsp;<span style="padding-left:0.5pc;">Last week&nbsp;[48]</span></a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-12  col-sm-9 col-md-6 col-lg-3 col-xl-3 ">
+                        <div class="card mt-2 text-black" style="border: 0.98px solid #d3d3d3;">
+                            <div class="px-3 py-3 d-flex justify-content-around ">
+
+                                <div>
+                                    <span style="font-size: 35px; opacity: 0.8; color: black;padding-left: 1pc; "><i class="fa fa-trophy"></i></span>
+                                </div>
+                                <div class="align-self-center" style="padding-left: 5px;">
+                                    <h6 class="fw-bold"><span class="counter-anim">180</span></h6>
+                                    <p  style="font-size:14px">Level 2</p>
+                                </div>  
+                            </div>
+                            <div class="card-footer border-0 py-1 text-center" style="background-color: sienna;">
+                                <a href="{% url 'level2' %}" class="text-white text-decoration-none font-weight-bold" style="font-size:12px">Today &nbsp;[25]<span style="padding-left:0.8pc;"> Yesterday&nbsp;[23]</span> &nbsp;<span style="padding-left:0.5pc;">Last week&nbsp;[37]</span></a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-12  col-sm-9 col-md-6 col-lg-3 col-xl-3 ">
+                            <div class="card mt-2 text-black" style="border: 0.98px solid #d3d3d3;">
+                                <div class="px-3 py-3 d-flex justify-content-around ">
+
+                                    <div>
+                                        <span style="font-size: 35px; opacity: 0.8; color: black;padding-left: 1pc;"><i class="glyphicon glyphicon-level-up"></i></span>
+                                    </div>
+                                    <div class="align-self-center" style="padding-left: 5px;">
+                                        <h6 class="fw-bold"><span class="counter-anim">310</span></h6>
+                                        <p  style="font-size:14px">Level 3</p>
+                                    </div>
+                                </div>
+                                <div class="card-footer border-0 py-1 text-center bg-dark ">
+                                    <a href="{% url 'level3' %}" class="text-white text-decoration-none font-weight-bold" style="font-size:12px">Today &nbsp;[12]<span style="padding-left:0.8pc;"> Yesterday&nbsp;[34]</span> &nbsp;<span style="padding-left:0.5pc;">Last week&nbsp;[23]</span></a>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-12  col-sm-9 col-md-6 col-lg-3 col-xl-3 ">
+                            <div class="card mt-2 text-black" style="border: 0.98px solid #d3d3d3;">
+                                <div class="px-3 py-3 d-flex justify-content-around ">
+
+                                    <div>
+                                        <span style="font-size: 35px; opacity: 0.8; color: black; padding-left: 1pc;"><i class="fa fa-spinner"></i></span>
+                                    </div>
+                                    <div class="align-self-center" style="padding-left: 5px;">
+                                        <h6 class="fw-bold"><span class="counter-anim">307</span></h6>
+                                        <p  style="font-size:14px">Under Progress</p>
+                                    </div>
+                                </div>
+                                <div class="card-footer border-0 py-1 text-center" style="background-color:orange">
+                                    <a href="{% url 'underprogress' %}" class="text-white text-decoration-none font-weight-bold" style="font-size:12px">Today &nbsp;[34]<span style="padding-left:0.8pc;"> Yesterday&nbsp;[42]</span> &nbsp;<span style="padding-left:0.5pc;">Last week&nbsp;[12]</span></a>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-12  col-sm-9 col-md-6 col-lg-3 col-xl-3 ">
+                            <div class="card mt-2 text-black" style="border: 0.98px solid #d3d3d3;">
+                                <div class="px-3 py-3 d-flex justify-content-around ">
+
+                                    <div>
+                                        <span style="font-size: 35px; opacity: 0.8; color:black; padding-left: 1pc;"><i class="glyphicon glyphicon-remove-circle"></i></span>
+                                    </div>
+                                    <div class="align-self-center" style="padding-left: 5px;">
+                                        <h6 class="fw-bold"><span class="counter-anim">270</span></h6>
+                                        <p  style="font-size:14px">Not Attended</p>
+                                    </div>
+                                </div>
+                                <div class="card-footer border-0 py-1 text-center bg-danger">
+                                    <a href="{% url 'totalnotattended' %}" class="text-white text-decoration-none font-weight-bold" style="font-size:12px">Today &nbsp;[34]<span style="padding-left:0.8pc;"> Yesterday&nbsp;[12]</span> &nbsp;<span style="padding-left:0.5pc;">Last week&nbsp;[12]</span></a>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-12  col-sm-9 col-md-6 col-lg-3 col-xl-3 ">
+                            <div class="card mt-2 text-black" style="border: 0.98px solid #d3d3d3;">
+                                <div class="px-3 py-3 d-flex justify-content-around ">
+
+                                    <div>
+                                        <span style="font-size: 35px; opacity: 0.8; color: black; padding-left: 2pc;"><i class="fa fa-graduation-cap"></i></span>
+                                    </div>
+                                    <div class="align-self-center" style="padding-left: 5px;">
+                                        <h6 class="fw-bold"><span class="counter-anim">155</span></h6>
+                                        <p  style="font-size:14px">Total Students Placed</p>
+                                    </div>
+                                </div>
+                                <div class="card-footer border-0 py-1 text-center bg-success">
+                                    <a href="{% url 'studentsplaced' %}" class="text-white text-decoration-none font-weight-bold" style="font-size:12px">Today &nbsp;[2]<span style="padding-left:0.8pc;"> Yesterday&nbsp;[22]</span> &nbsp;<span style="padding-left:0.5pc;">Last week&nbsp;[32]</span></a>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-12  col-sm-9 col-md-6 col-lg-3 col-xl-3 ">
+                            <div class="card mt-2 text-black" style="border: 0.98px solid #d3d3d3;">
+                                <div class="px-3 py-3 d-flex justify-content-around ">
+
+                                    <div>
+                                        <span style="font-size: 35px; opacity: 0.8; color: black; padding-left: 2.5pc;"><i class="fa fa-puzzle-piece"></i></span>
+                                    </div>
+                                    <div class="align-self-center" style="padding-left: 5px;">
+                                        <h6 class="fw-bold"><span class="counter-anim">125</span></h6>
+                                        <p  style="font-size:14px">Students Not Placed</p>
+                                    </div>
+                                </div>
+                                <div class="card-footer border-0 py-1 text-center bg-danger">
+                                    <a href="{% url 'studentsnotplaced' %}" class="text-white text-decoration-none font-weight-bold" style="font-size:12px">Today &nbsp;[27]<span style="padding-left:0.8pc;"> Yesterday&nbsp;[42]</span> &nbsp;<span style="padding-left:0.5pc;">Last week&nbsp;[12]</span></a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+                </section>
+                <section class="hk-sec-wrapper">
+                    <h5 class="hk-sec-title">Company Leads</h5>
+                    <div class="container-fluid mt-3">
+                        <div class="row">
+                        <div class="col-12  col-sm-9 col-md-6 col-lg-3 col-xl-3 ">
+                            <div class="card mt-2 text-black" style="border: 0.98px solid #a9a9a9;">
+                                <div class="px-3 py-3 d-flex justify-content-around ">
+
+                                    <div>
+                                        <span style="font-size: 35px; opacity: 0.8; color: black; padding-left: 1pc;"><i class="fa fa-file-text-o"></i></span>
+                                    </div>
+                                    <div class="align-self-center" style="padding-left: 5px;">
+                                        <h6 class="fw-bold"><span class="counter-anim">300</span></h6>
+                                        <p  style="font-size:14px">HR Leads</p>
+                                    </div>
+                                </div>
+                                <div class="card-footer border-0 py-1 text-center" style="background-color:#1E90FF">
+                                    <!-- <a href="{% url 'hr_leads' %}" class="text-white text-decoration-none font-weight-bold" style="text-align: center; padding-left: 5pc; font-size:12px; ">More info &nbsp;<span> <i class="fa fa-angle-double-right" style="size: 55%;"></i></span></a> -->
+                                    <a href="{% url 'hr_leads' %}" class="text-white text-decoration-none font-weight-bold" style="font-size:12px">Today &nbsp;[27]<span style="padding-left:0.8pc;"> Yesterday&nbsp;[42]</span> &nbsp;<span style="padding-left:0.5pc;">Last week&nbsp;[12]</span></a>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-12  col-sm-9 col-md-6 col-lg-3 col-xl-3 ">
+                            <div class="card mt-2 text-black" style="border: 0.98px solid #a9a9a9;">
+                                <div class="px-3 py-3 d-flex justify-content-around ">
+
+                                    <div>
+                                        <span style="font-size: 35px; opacity: 0.8; color: black; padding-left: 1pc;"><i class="fa fa-envelope"></i></span>
+                                    </div>
+                                    <div class="align-self-center" style="padding-left: 5px;">
+                                        <h6 class="fw-bold"><span class="counter-anim">400</span></h6>
+                                        <p  style="font-size:14px">JD Received/CL</p>
+                                    </div>
+                                </div>
+                                <div class="card-footer border-0 py-1 text-center" style="background-color:#A9A9A9">
+                                    <!-- <a href="#" class="text-white text-decoration-none font-weight-bold" style="text-align: center; padding-left: 5pc; font-size:12px; ">More info &nbsp;<span> <i class="fa fa-angle-double-right" style="size: 55%;"></i></span></a> -->
+                                    <a href="{% url 'hr_confirmed' %}" class="text-white text-decoration-none font-weight-bold" style="font-size:12px">Today &nbsp;[27]<span style="padding-left:0.8pc;"> Yesterday&nbsp;[42]</span> &nbsp;<span style="padding-left:0.5pc;">Last week&nbsp;[12]</span></a>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-12  col-sm-9 col-md-6 col-lg-3 col-xl-3 ">
+                            <div class="card mt-2 text-black" style="border: 0.98px solid #a9a9a9;">
+                                <div class="px-3 py-3 d-flex justify-content-around ">
+
+                                    <div>
+                                        <span style="font-size: 35px; opacity: 0.8; color: black; padding-left: 1pc;"><i class="fa fa-send"></i></span>
+                                    </div>
+                                    <div class="align-self-center" style="padding-left: 5px;">
+                                        <h6 class="fw-bold"><span class="counter-anim">130</span></h6>
+                                        <p  style="font-size:14px">Profile Sent</p>
+                                    </div>
+                                </div>
+                                <div class="card-footer border-0 py-1 text-center" style="background-color:#007bff">
+                                    <!-- <a href="#" class="text-white text-decoration-none font-weight-bold" style="text-align: center; padding-left: 5pc; font-size:12px; ">More info &nbsp;<span> <i class="fa fa-angle-double-right" style="size: 55%;"></i></span></a> -->
+                                    <a href="{% url 'profilesent' %}" class="text-white text-decoration-none font-weight-bold" style="font-size:12px">Today &nbsp;[27]<span style="padding-left:0.8pc;"> Yesterday&nbsp;[42]</span> &nbsp;<span style="padding-left:0.5pc;">Last week&nbsp;[12]</span></a>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-12  col-sm-9 col-md-6 col-lg-3 col-xl-3 ">
+                            <div class="card mt-2 text-black" style="border: 0.98px solid #a9a9a9;">
+                                <div class="px-3 py-3 d-flex justify-content-around ">
+
+                                    <div>
+                                        <span style="font-size: 35px; opacity: 0.8; color: black; padding-left: 2.5pc;"><i class="glyphicon glyphicon-calendar"></i></span>
+                                    </div>
+                                    <div class="align-self-center" style="padding-left: 5px;">
+                                        <h6 class="fw-bold"><span class="counter-anim">155</span></h6>
+                                        <p  style="font-size:14px">Interview Scheduled</p>
+                                    </div>
+                                </div>
+                                <div class="card-footer border-0 py-1 text-center" style="background-color:rgb(7, 110,102)">
+                                    <!-- <a href="#" class="text-white text-decoration-none font-weight-bold" style="text-align: center; padding-left: 5pc; font-size:12px; ">More info &nbsp;<span> <i class="fa fa-angle-double-right" style="size: 55%;"></i></span></a> -->
+                                    <a href="{% url 'interviewschedule' %}" class="text-white text-decoration-none font-weight-bold" style="font-size:12px">Today &nbsp;[27]<span style="padding-left:0.8pc;"> Yesterday&nbsp;[42]</span> &nbsp;<span style="padding-left:0.5pc;">Last week&nbsp;[12]</span></a>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-12  col-sm-9 col-md-6 col-lg-3 col-xl-3 ">
+                            <div class="card mt-2 text-black" style="border: 0.98px solid #a9a9a9;">
+                                <div class="px-3 py-3 d-flex justify-content-around ">
+
+                                    <div>
+                                        <span style="font-size: 35px; opacity: 0.8; color: black; padding-left: 1pc;"><i class="fa fa-repeat"></i></span>
+                                    </div>
+                                    <div class="align-self-center" style="padding-left: 5px;">
+                                        <h6 class="fw-bold"><span class="counter-anim">170</span></h6>
+                                        <p  style="font-size:14px">In Progress</p>
+                                    </div>
+                                </div>
+                                <div class="card-footer border-0 py-1 text-center" style="background-color:#FFA500">
+                                    <!-- <a href="#" class="text-white text-decoration-none font-weight-bold" style="text-align: center; padding-left: 5pc; font-size:12px; ">More info &nbsp;<span> <i class="fa fa-angle-double-right" style="size: 55%;"></i></span></a> -->
+
+                                    <a href="{% url 'hrunderprogress' %}" class="text-white text-decoration-none font-weight-bold" style="font-size:12px">Today &nbsp;[27]<span style="padding-left:0.8pc;"> Yesterday&nbsp;[42]</span> &nbsp;<span style="padding-left:0.5pc;">Last week&nbsp;[12]</span></a>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-12  col-sm-9 col-md-6 col-lg-3 col-xl-3 ">
+                            <div class="card mt-2 text-black" style="border: 0.98px solid #a9a9a9;">
+                                <div class="px-3 py-3 d-flex justify-content-around ">
+
+                                    <div>
+                                        <span style="font-size: 35px; opacity: 0.8; color: black; padding-left: 2pc;"><i class="fa fa-question-circle"></i></span>
+                                    </div>
+                                    <div class="align-self-center" style="padding-left: 5px;">
+                                        <h6 class="fw-bold"><span class="counter-anim">329</span></h6>
+                                        <p  style="font-size:14px">Not Confirmed Leads</p>
+                                    </div>
+                                </div>
+                                <div class="card-footer border-0 py-1 text-center bg-danger">
+                                    <!-- <a href="#" class="text-white text-decoration-none font-weight-bold" style="text-align: center; padding-left: 5pc; font-size:12px; ">More info &nbsp;<span> <i class="fa fa-angle-double-right" style="size: 55%;"></i></span></a> -->
+
+                                    <a href="{% url 'not_interested_hr' %}" class="text-white text-decoration-none font-weight-bold" style="font-size:12px">Today &nbsp;[27]<span style="padding-left:0.8pc;"> Yesterday&nbsp;[42]</span> &nbsp;<span style="padding-left:0.5pc;">Last week&nbsp;[12]</span></a>
+                                </div>
+                            </div>
+                        </div>
+                </div>
+            </div>
+    </section>
+   
+    {% endblock %}</body></html>

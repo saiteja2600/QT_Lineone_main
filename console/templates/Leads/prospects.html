@@ -92,10 +92,10 @@
           <div class="container">
               <ul class="nav nav-light nav-tabs" role="tablist">
                   <li class="nav-item">
-                      <a class="d-flex h-60p align-items-center nav-link {% if active_tab == 'lead_prospects' %}active{% endif %}" href="{% url 'lead_prospects' %}">Prospects</a>
+                      <a class="d-flex h-60p align-items-center nav-link {% if request.resolver_match.url_name == 'lead_prospects' %}active{% endif %}" href="{% url 'lead_prospects' %}">Prospects</a>
                   </li>
                   <li class="nav-item">
-                      <a class="d-flex h-60p align-items-center nav-link {% if active_tab == 'leads' %}active{% endif %}" href="{% url 'leads' %}">Leads</a>
+                      <a class="d-flex h-60p align-items-center nav-link {% if request.resolver_match.url_name == 'leads' %}active{% endif %}" href="{% url 'leads' %}">Leads</a>
                   </li>
                   <li class="nav-item">
                       <a class="d-flex h-60p align-items-center nav-link {% if active_tab == 'mql' %}active{% endif %}" href="{% url 'mql' %}">MQL</a>
@@ -205,17 +205,17 @@
           </tr>
         </thead>
         <tbody>
-          {% for i in prospects %}
+          {% for prospect in prospects %}
          <tr>
          
         <!-- <td><input type="checkbox" class="row-checkbox" data-id="{{i.id}}"></td> -->
-         <td>{{i.token_id}}</td>
-         <td>{{i.first_name}} {{i.last_name}}</td>
-         <td>{{i.mobile_number}}</td>
-         <td>{{i.email}}</td>
+         <td>{{ prospect.token_id }}</td>
+         <td>{{prospect.first_name}} {{prospect.last_name}}</td>
+         <td>{{prospect.email}}</td>
+         <td>{{prospect.mobile_number}}</td>
          <!-- <td>{{i.enquiry_taken_by}}</td> -->
-         <td>{{i.course_name}}</td>
-         <td>{{i.training_type}}</td>
+         <td>{{prospect.course_name.course_name}}</td>
+         <td>{{prospect.training_type.TrainingTypeName}}</td>
          <td>
           {% if  i.lead_stage%}
           {{i.lead_stage}}
@@ -224,16 +224,15 @@
           {% endif %}
 
          </td>
-         <td>{{i.lead_type}}</td>
-         <td>{{i.token_generated_date}}</td>
-         <td><a href="{% url 'mark_as_lead' i.id %}" class="btn btn-dark mr-2"><i class="fa fa-rocket"></i></a>
+         <td>{{prospect.lead_sourse.prospect_type}}</td>
+         <td>{{prospect.token_generated_date}}</td>
+         <td><a href="{% url 'mark_as_lead' prospect.id %}" class="btn btn-dark mr-2"><i class="fa fa-rocket"></i></a>
          </td>
          <!-- <td>{{i.branch_name}}</td> -->
          
          
          </tr>
          {% endfor %}
-         
         </tbody>
       </table>
        
@@ -317,7 +316,7 @@
           <span aria-hidden="true" class="text-white">&times;</span>
         </button>
       </div>
-      <div class="modal-body">
+       <div class="modal-body">
         <form id="enquiryForm" method="post" action="{% url 'submit_enquiry' %}" class="row ">
           {% csrf_token %}
           <div class="mb-3 col-md-6">
@@ -1180,43 +1179,46 @@ $('#input-file-now').change(function() {
     }
   });
 
+// JavaScript
+$(document).ready(function() {
   $("#otpForm").on('submit', function(e) {
     e.preventDefault();
     var formData = $(this).serialize();
     var csrftoken = $('[name=csrfmiddlewaretoken]').val(); // Get CSRF token
 
     $.ajax({
-        type: 'POST',
-        url: $(this).attr('action'),
-        data: formData,
-        dataType: 'json',
-        beforeSend: function(xhr) {
-            xhr.setRequestHeader('X-CSRFToken', csrftoken); // Include CSRF token in request header
-        },
-        success: function(response) {
-            if (response.otpverification) {
-                // If there's a URL to redirect to, perform the redirection
-                if (response.redirectUrl) {
-                    window.location.href = response.redirectUrl;
-                } else {
-                    // Handle unexpected case where OTP verification is true but no redirect URL is provided
-                    console.error("OTP verified, but no redirect URL provided.");
-                    alert("Error: No redirect URL provided. Please contact support.");
-                }
-            } else {
-                // OTP verification failed, show message and optionally other logic
-                $('#otp').modal('hide');
-                $('#addnew').modal('show');
-                alert(response.message);
-            }
-        },
-        error: function(xhr, status, error) {
-            console.error('AJAX Error:', error);
-            alert("An error occurred. Please try again later.");
+      type: 'POST',
+      url: $(this).attr('action'),
+      data: formData,
+      dataType: 'json',
+      beforeSend: function(xhr) {
+        xhr.setRequestHeader('X-CSRFToken', csrftoken); // Include CSRF token in request header
+      },
+      success: function(response) {
+        if (response.otpverification) {
+          // If there's a URL to redirect to, perform the redirection
+          if (response.redirectUrl) {
+            window.location.href = response.redirectUrl;
+          } else {
+            // Handle unexpected case where OTP verification is true but no redirect URL is provided
+            console.error("OTP verified, but no redirect URL provided.");
+            alert("Error: No redirect URL provided. Please contact support.");
+          }
+        } else {
+          // OTP verification failed, show message and optionally other logic
+          $('#otp').modal('hide');
+          $('#addnew').modal('show');
+          alert(response.message);
         }
+      },
+      error: function(xhr, status, error) {
+        console.error('AJAX Error:', error);
+        console.log('Response:', xhr.responseText); // Log the response text from the server
+        alert("An error occurred. Please try again later.");
+      }
     });
+  });
 });
-
 });
 </script>
 

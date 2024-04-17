@@ -1,0 +1,924 @@
+{% extends 'base/base.html' %}
+{% block title %}QTLineone | Faculty {% endblock %}
+{% block breadCrum %}
+
+
+<!-- Breadcrumb -->
+<div class="hk-pg-header d-flex justify-content-between mb-0">
+  <h4 class="hk-pg-title m-3">Today Interviews</h4>
+  <nav aria-label="breadcrumb">
+    <ol class="breadcrumb bg-transparent mb-0">
+      <li class="breadcrumb-item"><a href="{% url 'faculty_dashboard'%}">Dashboard</a></li>
+      <li class="breadcrumb-item active" aria-current="page">Faculty Interviews</li>
+    </ol>
+  </nav>
+</div>
+<!-- /Breadcrumb -->
+
+
+
+
+{% endblock %}
+{% block content %}
+
+ {% if messages %}
+ {% for message in messages %}
+   {% if message.tags == "error" %}
+     <div class="h-25 alert alert-danger alert-dismissible fade show mt-2 h-25 text-center" role="alert">{{ message }}</div>
+   {% elif message.tags == "success" %}
+     <div class="h-25 alert alert-success alert-dismissible fade show mt-2 h-25 text-center" role="alert">{{ message }}</div>
+     {% else %}
+    <div class="h-25 alert alert-info alert-dismissible fade show mt-2 h-25 text-center" role="alert">{{ message }}</div>
+    {% endif %}
+   {% endfor %}
+ {% endif %}
+
+
+
+<!-- Today interviews starts here -->
+
+<section class="hk-sec-wrapper">
+  <div class="row">
+    <div class="col-sm">
+      <div class="table-wrap">
+        <table id="datable_1" class="table table-hover w-100 pb-30 table-bordered">
+          <thead class="bg-dark">
+            <tr>
+              <th class="text-white text-center">S.no</th>
+              <th class="text-white text-center">Name</th>
+              <th class="text-white text-center">Email ID</th>
+              <th class="text-white text-center">Date Of Interview</th>
+              <th class="text-white text-center">Resume</th>
+              <th class="text-white text-center">Action</th>
+            </tr>
+          </thead>
+          <tbody>
+
+          <tr>
+              <td class="text-center">1</td>
+              <td class="text-center">Chidrup</td>
+              <td class="text-center">chidrup2@gmail.com</td>
+              <td class="text-center">April 02,04,2024,10.30 a.m.</td>
+              <td class="text-center">
+              <a href="" title="Image from freeiconspng.com"><img src="https://www.freeiconspng.com/uploads/pdf-icon-png-pdf-zum-download-2.png" width="35" alt="Student resume" /></a>
+              </td>
+              <td class="text-center">
+               <button
+                    type="button"
+                    class="btn btn-icon btn-success"
+                    data-toggle="modal"
+                    data-target="#BookInterview"
+                  >
+                  <span class="btn-icon-wrap"><i class="fa fa-rocket"></i></span>
+
+                  </button>
+              </td>
+          </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Today interviews ends here -->
+
+<!-- create model start here -->
+
+<div class="modal fade" id="BookInterview" tabindex="-1" role="dialog" aria-labelledby="FeedbackForm" aria-hidden="true">
+  <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header bg-dark">
+        <h5 class="modal-title text-white">Feedback Form</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true" class="text-white">&times;</span>
+        </button>
+      </div>
+      <form action="" method="post" id="createFeed">
+        {% csrf_token %}
+        <div class="modal-body">
+          <div class="container-fluid">
+            <div class="row">
+              <div class="col-md-6 col-sm-12 col-lg-6">
+                <div class="form-group">
+                  <label for="" class="form-label">Full Name </label>
+                  <input  value="Chinmai" name="batchtype_name" class="form-control" readonly>
+                </div>
+              </div>
+              <div class="col-md-6 col-sm-12 col-lg-6">
+                <div class="form-group">
+                  <label for="" class="form-label">Roll Number </label>
+                  <input  value="23" name="batchtype_name" class="form-control" readonly>
+                </div>
+              </div>
+              <div class="col-md-6 col-sm-12 col-lg-6">
+                <div class="form-group">
+                  <label for="" class="form-label">Batch Number </label>
+                  <input  value="22" name="batchtype_name" class="form-control" readonly>
+                </div>
+              </div>
+
+              <div class="col-md-6 col-sm-12 col-lg-6">
+                <div class="form-group">
+                  <label for="" class="form-label">Email Id </label>
+                  <input  value="chinmai5@gmail.com" name="batchtype_name" class="form-control" readonly>
+                </div>
+              </div>
+              <div class="col-md-6 col-sm-12 col-lg-6">
+                <div class="form-group">
+                  <label for="" class="form-label">Mobile Number </label>
+                  <input  value="9647521854" name="batchtype_name" class="form-control" readonly>
+                </div>
+              </div>
+              <div class="col-md-6 col-sm-12 col-lg-6">
+                <div class="form-group">
+                  <label for="" class="form-label">Date of Interview </label>
+                  <input  value="Mar.04,2024,10:30 am" name="batchtype_name" class="form-control" readonly>
+                </div>
+              </div>
+
+              <div class="col-md-6 col-sm-12 col-lg-6">
+                <div class="form-group">
+                  <label for="" class="form-label">Attendance <span class="text-danger">*</span></label>
+
+                  <select class="form-control select2" name="Attendance">
+                    <option value="" disabled selected>Please Select</option>
+                    <option value="1">Present</option>
+                    <option value="2">Absent</option>
+                  </select>
+
+                </div>
+              </div>
+              <div class="col-md-6 col-sm-12 col-lg-6">
+                <div class="form-group">
+                  <label for="" class="form-label">Communication Skills <span class="text-danger">*</span></label>
+                  <select class="form-control select2" name="Communication">
+                    <option value="" disabled selected>Please Select</option>
+                    <option value="1">0</option>
+                    <option value="2">1</option>
+                    <option value="3">2</option>
+                    <option value="4">3</option>
+                    <option value="5">4</option>
+                    <option value="6">5</option>
+                  </select>
+                </div>
+              </div>
+
+              <div class="col-md-6 col-sm-12 col-lg-6">
+                <div class="form-group">
+                  <label for="" class="form-label">Body Language <span class="text-danger">*</span></label>
+
+                  <select  class="form-control select2" name="Body Language">
+                    <option value="" disabled selected>Please Select</option>
+                    <option value="1">0</option>
+                    <option value="2">1</option>
+                    <option value="3">2</option>
+                    <option value="4">3</option>
+                    <option value="5">4</option>
+                    <option value="6">5</option>
+                  </select>
+
+                </div>
+              </div>
+
+              <div class="col-md-6 col-sm-12 col-lg-6">
+                <div class="form-group">
+                  <label for="" class="form-label">Technical Skills <span class="text-danger">*</span></label>
+
+                  <select  class="form-control select2" name="Technical Performance">
+                    <option value="" disabled selected>Please Select</option>
+                    <option value="1">0</option>
+                    <option value="2">1</option>
+                    <option value="3">2</option>
+                    <option value="4">3</option>
+                    <option value="5">4</option>
+                    <option value="6">5</option>
+                  </select>
+                </div>
+              </div>
+
+              <div class="col-md-6 col-sm-12 col-lg-6">
+                <div class="form-group">
+                  <label for="" class="form-label">Logical Thinking<span class="text-danger">*</span></label>
+
+                  <select  class="form-control select2" name="Logical Thinking">
+                    <option value="" disabled selected>Please Select</option>
+                    <option value="1">0</option>
+                    <option value="2">1</option>
+                    <option value="3">2</option>
+                    <option value="4">3</option>
+                    <option value="5">4</option>
+                    <option value="6">5</option>
+                  </select>
+                </div>
+              </div>
+
+              <div class="col-md-6 col-sm-12 col-lg-6 ">
+                <div class="form-group">
+                  <label for="" class="form-label">Send Attachment </label>
+                  <div class="fileinput fileinput-new input-group" data-provides="fileinput">
+                    <div class="input-group-prepend">
+                      <span class="input-group-text">Upload</span>
+                    </div>
+                    <div class="form-control text-truncate" data-trigger="fileinput"><i
+                        class="glyphicon glyphicon-file fileinput-exists"></i> <span class="fileinput-filename"></span>
+                    </div>
+                    <span class="input-group-append">
+                      <span class=" btn btn-primary btn-file"><span class="fileinput-new">Select file</span><span
+                          class="fileinput-exists">Change</span>
+                        <input type="file" name="...">
+                      </span>
+                    </span>
+                  </div>
+                </div>
+              </div>
+
+              <div class="col-md-12 ">
+                <div class="form-group">
+                  <label for="">Suggestions </label>
+                  <textarea class="form-control" id="" name="Suggestions"
+                    placeholder="What Would you like to say?" rows="3"></textarea>
+                </div>
+              </div>
+            </div>
+
+
+            <div class="modal-footer d-flex justify-content-center">
+              <button type="submit" class="btn btn-primary">Submit</button>
+              <button type="reset" class="btn btn-secondary">Reset</button>
+            </div>
+          </div>
+        </div>
+
+      </form>
+    </div>
+  </div>
+</div>
+
+<!-- create model ends here -->
+
+
+
+<!-- Tomorrow interviews starts here -->
+
+<div class="hk-pg-header d-flex justify-content-between mb-0">
+  <h4 class="hk-pg-title m-3">Tomorrow Interviews</h4>
+  <nav aria-label="breadcrumb">
+  </nav>
+</div>
+
+
+<section class="hk-sec-wrapper">
+  <div class="row">
+    <div class="col-sm">
+      <div class="table-wrap">
+        <table id="example_2" class="table table-hover w-100 pb-30 table-bordered">
+          <thead class="bg-dark">
+            <tr>
+              <th class="text-white text-center">S.no</th>
+              <th class="text-white text-center">Name</th>
+              <th class="text-white text-center">Email ID</th>
+              <th class="text-white text-center">Date Of Interview</th>
+              <th class="text-white text-center">Resume</th>
+              <th class="text-white text-center">Action</th>
+
+            </tr>
+          </thead>
+          <tbody>
+
+          <tr>
+                <td class="text-center">1</td>
+                <td class="text-center">Chidrup</td>
+                <td class="text-center">chidrup2@gmail.com</td>
+                  <td class="text-center">April 02,04,2024,10.30 a.m.</td>
+                <td class="text-center">
+                <a href="" title="Image from freeiconspng.com"><img src="https://www.freeiconspng.com/uploads/pdf-icon-png-pdf-zum-download-2.png" width="35" alt="Student resume" /></a>
+                </td>
+                <td class="text-center"> <button type="button" class="btn btn-icon btn-success" data-toggle="modal" data-target="#Edit">
+                  <span class="btn-icon-wrap"><i class="fa fa-rocket"></i></span>
+
+                  </button>
+          </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Tomorrow interviews Ends here -->
+
+<!-- create model starts here -->
+<div class="modal fade" id="Edit" tabindex="-1" role="dialog" aria-labelledby="Edit" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header bg-dark">
+        <h5 class="modal-title text-white">Reschedule Slot</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true" class="text-white">&times;</span>
+        </button>
+      </div>
+      <form action="" method="post" id="Edit_slot">
+        {% csrf_token %}
+        <div class="modal-body">
+          <div class="container-fluid">
+            <div class="row">
+              <div class="col-sm">
+                <div class="row mb-20">
+                  <div class="col-md-6 mt-15">
+                    <div class="custom-control custom-radio">
+                      <input type="radio" id="customRadio1" name="customRadio" value="Reschedule Slot" class="custom-control-input" onchange="handleOptionChange()">
+                      <label class="custom-control-label" for="customRadio1">Reschedule Slot</label>
+                    </div>
+                  </div>
+                  <div class="col-md-6 mt-15">
+                    <div class="custom-control custom-radio">
+                      <input type="radio" id="customRadio2" name="customRadio" value="Cancel Slot" class="custom-control-input" onchange="handleOptionChange()">
+                      <label class="custom-control-label" for="customRadio2">Cancel Slot</label>
+                    </div>
+                  </div>
+                    <div class="col-md-6 mt-15" id="radioError"></div>
+                </div>
+                <div class="mb-3">
+                  <label for="" class="form-label">Available Slot <span class="text-danger">*</span></label>
+                  <input class="form-control" type="datetime-local" id="dateTime" name="dateTime" >
+                </div>
+                <div class="mb-3">
+                  <label for="" class="form-label">Mock Link<span class="text-danger"> *</span></label>
+                  <textarea class="form-control" name="link" id="mockLink" placeholder="Enter mock link here." ></textarea>
+                </div>
+                <div class="mb-3">
+                  <label for="">Reason for Cancel Slot <span class="text-danger">*</span></label>
+                  <textarea id="reasonField" class="form-control" name="feedback" placeholder="What Would you like to say?" rows="5" ></textarea>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer d-flex justify-content-center">
+          <button type="submit" class="btn btn-primary" id="confirmAction">Confirm</button>
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+<!-- create model ends here -->
+
+
+<!-- Upcoming interviews starts here -->
+
+
+<div class="hk-pg-header d-flex justify-content-between mb-0">
+  <h4 class="hk-pg-title m-3">Upcoming Interviews</h4>
+  <nav aria-label="breadcrumb">
+  </nav>
+</div>
+
+<section class="hk-sec-wrapper">
+  <div class="row">
+    <div class="col-sm">
+      <div class="table-wrap">
+        <table id="example_3" class="table table-hover w-100 pb-30 table-bordered">
+          <thead class="bg-dark">
+            <tr>
+              <th class="text-white text-center">S.no</th>
+              <th class="text-white text-center">Name</th>
+              <th class="text-white text-center">Email ID</th>
+              <th class="text-white text-center">Date Of Interview</th>
+              <th class="text-white text-center">Resume</th>
+              <th class="text-white text-center">Action</th>
+            </tr>
+          </thead>
+          <tbody>
+
+          <tr>
+                <td class="text-center">1</td>
+                <td class="text-center">Chidrup</td>
+                <td class="text-center">chidrup2@gmail.com</td>
+                 <td class="text-center">April 02,04,2024,10.30 a.m.</td>
+                <td class="text-center">
+                <a href="" title="Image from freeiconspng.com"><img src="https://www.freeiconspng.com/uploads/pdf-icon-png-pdf-zum-download-2.png" width="35" alt="Student resume" /></a>
+                </td>
+                <td class="text-center"> <button
+                    type="button"
+                    class="btn btn-icon btn-success"
+                    data-toggle="modal"
+                    data-target="#Edit"
+                  >
+                  <span class="btn-icon-wrap"><i class="fa fa-rocket"></i></span>
+                  </button>
+          </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Upcoming interviews Ends here -->
+
+<!-- create model starts here -->
+
+<div class="modal fade" id="BookInterview"  tabindex="-1" role="dialog" aria-labelledby="BookInterview" aria-hidden="true">
+  <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header bg-dark">
+        <h5 class="modal-title text-white">Feedback Form</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true" class="text-white">&times;</span>
+        </button>
+      </div>
+<div class="modal-body">
+        <form action="" method="post" enctype="multipart/form-data" id="createfeed">
+          {% csrf_token %}
+          <section class="">
+
+            <div class="heading" style="padding-bottom:10px;">
+            </div>
+
+              {% csrf_token %}
+              <div class="modal-body">
+                <div class="container-fluid">
+                  <div class="row">
+                    <div class="col-md-6 col-sm-12 col-lg-6">
+                      <div class="form-group">
+                        <label for="" class="form-label">Full Name</label>
+                        <input value="Chinmai"  name="fullname" placeholder="" class="form-control "  readonly/>
+                      </div>
+                    </div>
+
+                    <div class="col-md-6 col-sm-12 col-lg-6">
+                      <div class="form-group">
+                        <label for="" class="form-label">Email Id</label>
+                        <input value="chinmai5@gmail.com" name="email_id"  class="form-control" readonly/>
+                      </div>
+                    </div>
+
+                    <div class="col-md-6 col-sm-12 col-lg-6">
+                      <div class="form-group">
+                        <label for="" class="form-label">Date of Interview</label>
+                        <input value="April 02,2024, 11 a.m." type="text"  class="form-control" readonly/>
+                      </div>
+                    </div>
+
+                    <div class="col-md-6 col-sm-12 col-lg-6">
+                      <div class="form-group">
+                        <label for="" class="form-label">Attendance <span class="text-danger">*</span></label>
+                        <select class="form-control select2" name="Attendance">
+                          <option value="" disabled selected>Please Select</option>
+                          <option value="1">Present</option>
+                          <option value="2">Absent</option>
+                        </select>
+                      </div>
+                    </div>
+                    <div class="col-md-6 col-sm-12 col-lg-6">
+                      <div class="form-group">
+                        <label for="" class="form-label">Communication skills<span class="text-danger">*</span></label>
+                        <select class="form-control select2" name="Communication">
+                          <option value="" disabled selected>Please Select</option>
+                          <option value="1">0</option>
+                          <option value="2">1</option>
+                          <option value="3">2</option>
+                          <option value="4">3</option>
+                          <option value="5">4</option>
+                          <option value="6">5</option>
+                        </select>
+                      </div>
+                    </div>
+
+                    <div class="col-md-6 col-sm-12 col-lg-6">
+                      <div class="form-group">
+                        <label for="" class="form-label">Body Language <span class="text-danger">*</span></label>
+                        <select class="form-control select2" name="Body Language">
+                          <option value="" disabled selected>Please Select</option>
+                          <option value="1">0</option>
+                          <option value="2">1</option>
+                          <option value="3">2</option>
+                          <option value="4">3</option>
+                          <option value="5">4</option>
+                          <option value="6">5</option>
+                        </select>
+                      </div>
+                    </div>
+
+                    <div class="col-md-6 col-sm-12 col-lg-6">
+                      <div class="form-group">
+                        <label for="" class="form-label">Technical Performance <span class="text-danger">*</span></label>
+                        <select  class="form-control select2" name="Technical Performance">
+                          <option value="" disabled selected>Please Select</option>
+                          <option value="1">0</option>
+                          <option value="2">1</option>
+                          <option value="3">2</option>
+                          <option value="4">3</option>
+                          <option value="5">4</option>
+                          <option value="6">5</option>
+                        </select>
+                      </div>
+                    </div>
+
+                    <div class="col-md-6 col-sm-12 col-lg-6">
+                      <div class="form-group">
+                        <label for="" class="form-label">Status <span class="text-danger">*</span></label>
+                        <select id="" class="form-control select2" name="Status">
+                          <option value="" disabled selected>Please Select</option>
+                          <option value="1">Pass</option>
+                          <option value="2">Fail</option>
+                        </select>
+                      </div>
+                    </div>
+
+                    <div class="col-md-6 col-sm-12 col-lg-6 ">
+                      <div class="form-group">
+                        <label for="" class="form-label">Send Attachment</label>
+                        <div class="fileinput fileinput-new input-group" data-provides="fileinput">
+                          <div class="input-group-prepend">
+                            <span class="input-group-text">Upload</span>
+                          </div>
+                          <div class="form-control text-truncate" data-trigger="fileinput"><i
+                              class="glyphicon glyphicon-file fileinput-exists"></i> <span class="fileinput-filename"></span>
+                          </div>
+                          <span class="input-group-append">
+                            <span class=" btn btn-primary btn-file"><span class="fileinput-new">Select file</span><span
+                                class="fileinput-exists">Change</span>
+                              <input type="file" name="...">
+                            </span>
+                          </span>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div class="col-md-12 ">
+                      <div class="form-group">
+                        <label for="">Suggestions</label>
+                        <textarea class="form-control"  name="Suggestions"
+                          placeholder="What Would you like to say?" rows="3"></textarea>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="modal-footer d-flex justify-content-center">
+                    <button type="submit" class="btn btn-primary">Submit</button>
+                    <button type="reset" class="btn btn-secondary">Reset</button>
+                  </div>
+                </div>
+              </div>
+
+
+
+          </section>
+
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- create model ends here -->
+
+
+<!-- completed interviews starts here -->
+
+<div class="hk-pg-header d-flex justify-content-between mb-0">
+  <h4 class="hk-pg-title m-3">Completed Interviews</h4>
+  <nav aria-label="breadcrumb">
+  </nav>
+</div>
+
+<section class="hk-sec-wrapper">
+    <div class="row">
+      <div class="col-sm">
+        <div class="table-wrap">
+          <table id="example_4" class="table table-hover w-100  pb-30 table-bordered">
+            <thead class="bg-dark">
+              <tr>
+                <th class="text-white text-center">S.No</th>
+                <th class="text-white text-center">Name</th>
+                <th class="text-white text-center">Email ID</th>
+                <th class="text-white text-center">Attendance</th>
+                <th class="text-white text-center">Logical Thinking</th>
+                <th class="text-white text-center">Technical</th>
+                <th class="text-white text-center">Communication</th>
+                <th class="text-white text-center">Body Language</th>
+                <th class="text-white text-center">Overall Rating</th>
+                <th class="text-white text-center">Status</th>
+                <th class="text-white text-center">Attachment</th>
+                <th class="text-white text-center">Action</th>
+
+              </tr>
+            </thead>
+            <tbody>
+
+              <tr>
+                <td>1</td>
+                <td>Rahul</td>
+                <td>Rahul5@gmailcom</td>
+                <td class="text-info text-center" style="font-weight:bold;">Present</td>
+                <td class="text-center">2</td>
+                <td class="text-center">2</td>
+                <td class="text-center">2</td>
+                <td class="text-center">1</td>
+                <td class="text-center">1</td>
+                <td class="text-success text-center" style="font-weight:bold;">Pass</td>
+                <td class="text-center">
+                <a href="" title=""><img src="/static/media/pdf.png" width="35" alt="Student resume" /></a> </td>
+                <td>
+                  <button type="button" class="btn btn-icon btn-success" data-toggle="modal" data-target="#BookInterview">
+                  <span class="btn-icon-wrap"><i class="fa fa-rocket"></i></span>
+
+                  </button>
+                </td>
+              </tr>
+
+              <tr>
+                <td>2</td>
+                <td>Chidrup</td>
+                <td>chidrup2@gmail.com</td>
+                <td class="text-danger text-center" style="font-weight:bold;">Absent</td>
+                <td class="text-center">0</td>
+                <td class="text-center">0</td>
+                <td class="text-center">0</td>
+                <td class="text-center">0</td>
+                <td class="text-center" >0</td>
+                <td class="text-danger text-center" style="font-weight:bold;">Fail</td>
+                <td class="text-center">
+<!--               <a href="" title=""><img src="/static/media/pdf.png" width="35" alt="Student resume" /></a> </td>-->
+                 No Attachments</td>
+                <td>
+                  <button type="button" class="btn btn-icon btn-success" data-toggle="modal" data-target="#BookInterview">
+                  <span class="btn-icon-wrap"><i class="fa fa-rocket"></i></span>
+
+                  </button>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </section>
+
+<!-- completed interviews Ends here -->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.datatables.net/1.10.24/js/jquery.dataTables.min.js"></script>
+
+<script>
+  $(document).ready(function () {
+    // Initialize DataTables for each table
+    $(' #example_2').DataTable({
+      "paging": true,
+      "searching": true,
+      "responsive": true,
+      "lengthChange": true,
+      "lengthMenu": [[10, 25, 50, -1], [10, 25, 50, "All"]],
+      // Customize search box appearance
+      "dom": '<"row"<"col-sm-6"l><"col-sm-6"f>>tip',
+      // Customize search field placeholder and remove search label
+      "language": {
+        "search": "",
+        "searchPlaceholder": "Search"
+      }
+    });
+  });
+</script>
+
+<script>
+  $(document).ready(function () {
+    // Initialize DataTables for each table
+    $(' #example_3').DataTable({
+      "paging": true,
+      "searching": true,
+      "responsive": true,
+      "lengthChange": true,
+      "lengthMenu": [[10, 25, 50, -1], [10, 25, 50, "All"]],
+      // Customize search box appearance
+      "dom": '<"row"<"col-sm-6"l><"col-sm-6"f>>tip',
+      // Customize search field placeholder and remove search label
+      "language": {
+        "search": "",
+        "searchPlaceholder": "Search"
+      }
+    });
+  });
+</script>
+
+<script>
+  $(document).ready(function () {
+    // Initialize DataTables for each table
+    $('#example_4').DataTable({
+      "paging": true,
+      "searching": true,
+      "responsive": true,
+      "lengthChange": true,
+      "lengthMenu": [[10, 25, 50, -1], [10, 25, 50, "All"]],
+      // Customize search box appearance
+      "dom": '<"row"<"col-sm-6"l><"col-sm-6"f>>tip',
+      // Customize search field placeholder and remove search label
+      "language": {
+        "search": "",
+        "searchPlaceholder": "Search"
+      }
+    });
+  });
+</script>
+
+
+{% endblock %}
+
+{% block scripts %}
+
+
+<script src="https://cdn.ckeditor.com/4.19.1/standard/ckeditor.js"></script>
+<script>
+  CKEDITOR.replace('Suggestions')
+
+</script>
+
+<script>
+  // Define handleOptionChange function
+  function handleOptionChange() {
+    var rescheduleRadio = document.getElementById("customRadio1");
+    var cancelRadio = document.getElementById("customRadio2");
+    var dateTimeInput = document.getElementById("dateTime");
+    var linkTextarea = document.getElementById("mockLink");
+    var reasonTextarea = document.getElementById("reasonField");
+
+    if (rescheduleRadio.checked) {
+      dateTimeInput.disabled = false;
+      linkTextarea.disabled = false;
+      reasonTextarea.disabled = true;
+      reasonTextarea.value = ''; // Clear the value
+      $('#radioError').html(''); // Clear error message
+    } else if (cancelRadio.checked) {
+      dateTimeInput.disabled = true;
+      dateTimeInput.value = ''; // Clear the value
+      linkTextarea.disabled = true;
+      linkTextarea.value = ''; // Clear the value
+      reasonTextarea.disabled = false;
+      $('#radioError').html(''); // Clear error message
+    }
+  }
+
+  // Validate form using jQuery Validation Plugin
+  $(document).ready(function () {
+    $.validator.addMethod("overspecialization", function (value, element) {
+        return !/\d/.test(value);
+    }, "Please enter a valid value.");
+
+    $.validator.addMethod("radioRequired", function (value, element) {
+        return $('input[name="customRadio"]:checked').length > 0;
+    }, "Please select an option.");
+
+    $("#Edit_slot").validate({
+        rules: {
+            dateTime: {
+                required: true,
+                overspecialization: false
+            },
+            link: {
+                required: true,
+                overspecialization: true
+            },
+            feedback: {
+                required:true,
+            },
+            customRadio: {
+                radioRequired: true
+            }
+
+        },
+        messages: {
+            dateTime: {
+                required: "Please Select Slot."
+            },
+            link: {
+                required: "Please provide link."
+            },
+            feedback: {
+                required:" Please enter a reason",
+            },
+            customRadio: {
+                radioRequired: "Please select an option."
+            }
+
+        },
+        errorPlacement: function(error, element) {
+            if (element.attr("name") == "customRadio") {
+                error.appendTo("#radioError");
+            } else {
+                error.insertAfter(element);
+            }
+        },
+        submitHandler: function (form) {
+            form.submit();
+        },
+    });
+  });
+</script>
+<!-- script for reschedule and cancel ends here-->
+<!-- radio buttons -->
+<script>
+  // JavaScript to handle radio button selection and modal display
+  document.getElementById("confirmAction").addEventListener("click", function() {
+    var selectedAction = document.querySelector('input[name="customRadio"]:checked').value;
+    if (selectedAction === "Reschedule Slot") {
+      $('#rescheduleModal').modal('show');
+    } else if (selectedAction === "Cancel Slot") {
+      $('#cancelModal').modal('show');
+    }
+  });
+</script>
+<script>
+  $(document).ready(function () {
+    //validationf for special charector
+    $.validator.addMethod("noSpecialChars", function (value, element) {
+      return /^[a-zA-Z0-9\s]*$/.test(value);
+    }, "Special characters are not allowed.");
+    //no numbers
+    $.validator.addMethod("noNumbers", function (value, element) {
+      return !/\d/.test(value);
+    }, "Numbers are not allowed in the course name.");
+
+    $.validator.addMethod("selectRequired", function (value, element) {
+      return value !== "" && value !== null && value !== "0";
+    },
+      "Please select an option."
+    );
+    // Resume upload Validation
+    $.validator.setDefaults({
+      errorPlacement: function(error,element){
+        if (element.attr('name') === 'resume'){
+          error.appendTo("#resume_upload");
+        }
+        else{ error.insertAfter(element);}
+      }
+    })
+
+
+    $("#createFeed").validate({
+      rules: {
+        Attendance : {
+
+          required: true,
+        },
+        Communication: {
+          selectRequired: true,
+        },
+        'Body Language': {
+          selectRequired: true,
+        },
+        'Technical Performance': {
+          selectRequired: true,
+        },
+        'Logical Thinking': {
+          selectRequired: true,
+        },
+
+        resume:{
+          required:true,
+          accept:'pdf',
+        }
+
+
+      },
+      messages: {
+        Attendance : {
+          required: "Please Select an option",
+        },
+        Communication: {
+          selectRequired: "Please Select an option",
+        },
+        'Body Language': {
+          selectRequired:" Please Select an option"
+        },
+        'Technical Performance':{
+          selectRequired:'Please Select an option'
+        },
+        'Logical Thinking': {
+          selectRequired: "Please Select an option",
+        },
+        Suggestions: {
+          selectRequired: "Text here",
+        },
+        resume:{
+          required:" please upload your Resume",
+          accept:"only PDF are allowed"
+        }
+
+      },
+
+      submitHandler: function (form) {
+        form.submit();
+      },
+
+    });
+  });
+
+  $.validator.addMethod("pdfOnly", function (value, element) {
+      // Check if the file extension is pdf
+      return this.optional(element) || /\.(pdf)$/i.test(value);
+    }, "Please select a PDF file.");
+</script>
+
+{% endblock %}

@@ -1,5 +1,5 @@
 {% extends 'base/base.html' %} 
-{% block title %}QTLineone | Prospects{% endblock %}
+{% block title %}QTLineone | Leads{% endblock %}
 {% block style %}
 
 <style>
@@ -129,7 +129,7 @@
                       <a class="d-flex h-60p align-items-center nav-link {% if active_tab == 'lead_prospects' %}active{% endif %}" href="{% url 'lead_prospects' %}">Prospects</a>
                   </li>
                   <li class="nav-item">
-                      <a class="d-flex h-60p align-items-center nav-link {% if active_tab == 'leads' %}active{% endif %}" href="{% url 'leads' %}">Leads</a>
+                      <a class="d-flex h-60p align-items-center nav-link active" href="{% url 'leads' %}">Leads</a>
                   </li>
                   <li class="nav-item">
                       <a class="d-flex h-60p align-items-center nav-link {% if active_tab == 'mql' %}active{% endif %}" href="{% url 'mql' %}">MQL</a>
@@ -231,15 +231,15 @@
               {{i.token_id}}
             </span>
           </td>
-          <td>{{i.firstname}} {{i.lastname}}</td>
-          <td>{{i.phone}}</td>
+          <td>{{i.first_name}} {{i.last_name}}</td>
+          <td>{{i.mobile_number}}</td>
           <td>{{i.email}}</td>
-          <td>{{i.course_interested_in}}</td>
+          <td>{{i.course_name.course_name}}</td>
           <!-- <td>{{i.course_faculty}}</td> -->
           <!-- <td>{{i.course_fee}}</td> -->
-          <td>{{i.Training_type}}</td>
-          <td>{{i.lead_source}}</td>
-          <td>{{i.lead_stage}}</td>
+          <td>{{i.training_type.TrainingTypeName}}</td>
+          <td>{{i.lead_sourse.prospect_type}}</td>
+          <td>{{i.lead_stage.Leadstage_name}}</td>
           
           <!-- <td>{{i.branch_name}}</td> -->
           
@@ -331,7 +331,7 @@
             <select id="leadstage" class="form-select form-control" name="leadstage">
               <option selected disabled>Select Lead Stage</option>
               {% for i in lead_stage %}
-              <option value="{{i.Leadstage_name}}" >{{i.Leadstage_name}}</option>
+              <option value="{{i.id}}" >{{i.Leadstage_name}}</option>
               {% endfor %}
               
             </select>
@@ -475,7 +475,7 @@
           </div>
           
           <div class="modal-body ">
-            <form action="{% url 'submit_to_mql' i.id %}" method="post" class="row g-3 mqlForm">
+            <form action="{% url 'lead_move_to_mql' i.id %}" method="post" class="row g-3 mqlForm">
 
                 {%  csrf_token %}
               
@@ -485,11 +485,11 @@
                 </div>
                 <div class="col-md-6 mb-3">
                   <label for="studentname" class="form-label">Student Name <span class="text-danger">*</span></label>
-                  <input type="text" class="form-control  bg-light text-secondary" id="studentname" value="{{i.firstname}} {{i.lastname}}" disabled>
+                  <input type="text" class="form-control  bg-light text-secondary" id="studentname" value="{{i.first_name}} {{i.last_name}}" disabled>
                 </div>
                 <div class="col-md-6 mb-3">
                   <label for="mblno" class="form-label">Mobile No <span class="text-danger">*</span></label>
-                  <input type="tel" class="form-control  bg-light text-secondary" id="mblno" value="{{i.phone}}" disabled>
+                  <input type="tel" class="form-control  bg-light text-secondary" id="mblno" value="{{i.mobile_number}}" disabled>
                 </div>
                 <div class="col-md-6 mb-3">
                   <label for="email" class="form-label">Email <span class="text-danger">*</span></label>
@@ -497,21 +497,22 @@
                 </div>
                 <div class="col-md-6 mb-3">
                   <label for="courseinput" class="form-label">Course <span class="text-danger">*</span></label>
-                  <input type="text" class="form-control  bg-light text-secondary" id="courseinput" value="{{i.course_interested_in}}" disabled>
+                  <input type="text" class="form-control  bg-light text-secondary" id="courseinput" value="{{i.course_name.course_name}}" disabled>
                 </div>
                 <div class="col-md-6 mb-3">
                   <label for="courseFaculty" class="form-label">Course Faculty <span class="text-danger">*</span></label>
                   <!-- <input type="text" class="form-control  bg-light text-secondary" id="courseFaculty" value="{{i.course_faculty}}" disabled> -->
                   <select id="courseFaculty" class="form-select form-control" name="courseFaculty">
                     <option selected disabled>Select the Course Faculty </option>
-                    <option>Adullah</option>
-                    <option>RamPrasad</option>
-                    <option>Raj</option>
+                    {% for emp in faculty %}
+                    <option value="{{emp.id}}">{{emp.first_name}} {{emp.last_name}} ({{emp.department_name.department_name}})</option>
+                    {% endfor %}
                   </select>
+                    
                 </div>
                 <div class="col-md-4 mb-3">
                   <label for="trainingType" class="form-label">Training Type <span class="text-danger">*</span></label>
-                  <input type="text" class="form-control  bg-light text-secondary" id="trainingType" value="{{i.Training_type}}" disabled>
+                  <input type="text" class="form-control  bg-light text-secondary" id="trainingType" value="{{i.training_type.TrainingTypeName}}" disabled>
                 </div>
                 <div class="col-md-4 mb-3">
                   <label for="branch" class="form-label">Branch <span class="text-danger">*</span></label>
@@ -519,25 +520,25 @@
                 </div>
                 <div class="col-md-4 mb-3">
                   <label for="Leadsource" class="form-label">Lead Source <span class="text-danger">*</span></label>
-                  <input type="text" class="form-control  bg-light text-secondary" id="Leadsource" value="{{i.lead_source}}" disabled>
+                  <input type="text" class="form-control  bg-light text-secondary" id="Leadsource" value="{{i.lead_sourse.prospect_type}}" disabled>
                 </div>
                 
                 <div class="col-md-6 mb-3">
                   <label for="leadType" class="form-label">Lead Type <span class="text-danger">*</span></label>
-                  <select id="leadType" class="form-select form-control" name="leadType">
+                  <select id="leadType" class="custom-select form-control" name="leadType">
                     <option selected disabled>Select Lead Type</option>
-                    <option>warm</option>
-                    <option>cold</option>
+                    <option value="warm">warm</option>
+                    <option value="cold">cold</option>
                   </select>
                 </div>
                 <div class="col-md-6 mb-3">
                   <label for="demodate" class="form-label">Schedule Demo <span class="text-danger">*</span></label>
                   <select id="demodate" class="form-select form-control" name="demodate">
                     <option selected disabled>Select Demo Date</option>
-                    <option>2024-03-23</option>
-                    <option>2024-03-24</option>
-                    <option>2024-03-26</option>
-                    <option>2024-03-27</option>
+                    {% for demos in demo %}
+                    <option value="{{demos.id}}">{{demos.datestartat}} - {{demos.dateendat}}</option>
+                    {% endfor %}
+                    
                   </select>
                 </div>
                 <div class="col-md-12 mb-3">

@@ -2,7 +2,7 @@ import csv
 import io
 
 from django.http import Http404, HttpResponse, HttpResponseRedirect, JsonResponse
-from django.shortcuts import render,redirect
+from django.shortcuts import render,redirect,reverse
 from .models import *
 from django.contrib import messages
 from django.contrib.auth.hashers import make_password
@@ -705,22 +705,21 @@ def branches(request):
     return render(request, 'settings_page/branches.html', context)
 
 
-
-
 def inquery_form(request, id, crn):
     register_user = Register_model.objects.get(crn=crn)
-    course = register_user.courses.filter(status = "Active").all()
-    specialization = register_user.specializations.filter(status = "Active").all()
-    training_types = register_user.training_types.filter(status = "Active").all()
-    prospect_types = register_user.prospect_types.filter(status = "Active").all()
-    
+    if not register_user:
+       return redirect('branch_error')
+    course = register_user.courses.filter(status="Active").all()
+    specialization = register_user.specializations.filter(status="Active").all()
+    training_types = register_user.training_types.filter(status="Active").all()
+    prospect_types = register_user.prospect_types.filter(status="Active").all()
+
     branch = register_user.branches.get(id=id)
     if branch.status == "Deactive":
         return redirect('branch_error')
     if not branch:
         return redirect('branch_error')
-        
-  
+
     context = {
         'courses': course,
         'specializations': specialization,
@@ -728,22 +727,21 @@ def inquery_form(request, id, crn):
         'training_types': training_types,
         'prospect_types': prospect_types,
         'crn': crn,
-        'id':id
+        'id': id
     }
     return render(request, 'branch_qr/create_lead.html', context)
 
-
 def branch_error(request):
-   return render(request,'branch_qr/branch_error.html')
-   
-
-
-
-
+    return render(request, 'branch_qr/branch_error.html')
 
 def create_lead(request):
+    id = None  
+    crn = None 
+
     if request.method == "POST":
+        # Handle POST request
         try:
+            # Retrieve form data
             first_name = request.POST.get('first_name')
             last_name = request.POST.get('last_name')
             mobile_number = request.POST.get('mobile_number')
@@ -751,27 +749,37 @@ def create_lead(request):
             course_name = request.POST.get('course_name')
             branch_name = request.POST.get('branch_id')
             training_type = request.POST.get('training_type')
-            lead_type = request.POST.get('lead_type')
+            lead_sourse = request.POST.get('lead_type')
             crn = request.POST.get('crn')
             id = request.POST.get('id')
+            print("first_name", first_name)
+            print("last_name", last_name)
+            print("mobile_number", mobile_number)
+            print("email", email)
+            print("course_name", course_name)
+            print("branch_name", branch_name)
+            print("training_type", training_type)
+            print("lead_type", lead_sourse)
+            print("crn", crn)
+            print("id", id)
 
-            # Retrieve the register user based on CRN
+            
             register_user = Register_model.objects.get(crn=crn)
 
-            # Check if the provided branch exists for the user
+
             if branch_name:
                 if not register_user.branches.filter(id=id).exists():
                     messages.error(request, 'Branch not found')
                     return redirect('branch_error')
 
-            # Check if a lead with the same mobile number or email already exists
-            if register_user.leads.filter(Q(mobile_number=mobile_number) | Q(email=email)).exists():
-                messages.error(request, 'Lead with the same mobile number or email already exists')
-                return redirect('inquiry_form', id=id, crn=crn)
 
+            if register_user.leads.filter((Q(mobile_number=mobile_number) | Q(email=email)) & Q(branch_name=branch_name)).exists():
+                messages.error(request, 'Lead with the same mobile number or email already exists in this branch')
+                return redirect(reverse('inquiry_form', kwargs={'id': id, 'crn': crn}))
+
+            
             otp = send_otp_to_phone(mobile_number)
             if otp:
-        
                 request.session['otp'] = otp
                 request.session['lead_data'] = {
                     'first_name': first_name,
@@ -781,7 +789,7 @@ def create_lead(request):
                     'course_name': course_name,
                     'branch_name': branch_name,
                     'training_type': training_type,
-                    'lead_type': lead_type,
+                    'lead_sourse': lead_sourse,
                     'crn': crn
                 }
                 context = {
@@ -792,7 +800,7 @@ def create_lead(request):
                     'course_name': course_name,
                     'branch_name': branch_name,
                     'training_type': training_type,
-                    'lead_type': lead_type,
+                    'lead_sourse': lead_sourse,
                     'crn': crn
                 }
                 return render(request, 'branch_qr/verify_otp.html', context)
@@ -803,8 +811,12 @@ def create_lead(request):
         except Exception as e:
             messages.error(request, f'An error occurred: {str(e)}')
 
-   
-    return redirect('inquiry_form', id=id, crn=crn)
+    # Handle GET request
+    if id is None or crn is None:
+        return redirect(reverse('inquiry_form_default'))
+    else:
+        return redirect(reverse('inquiry_form', kwargs={'id': id, 'crn': crn}))
+
 
 
 
@@ -823,10 +835,7 @@ def verify_otp(request):
 
             if otp_entered == otp_generated:
               
-                if register_user.leads.filter(mobile_number=lead_data.get('mobile_number')).exists():
-                    messages.error(request, 'Mobile number already exists')
-                    return redirect('create_lead')
-                else:
+                
                     lead = LeadModel.objects.create(
                         first_name=lead_data.get('first_name'),
                         last_name=lead_data.get('last_name'),
@@ -835,14 +844,14 @@ def verify_otp(request):
                         course_name=register_user.courses.get(pk=lead_data.get('course_name')),
                         branch_name=register_user.branches.get(pk=lead_data.get('branch_name')),
                         training_type=register_user.training_types.get(pk=lead_data.get('training_type')),
-                        lead_type=register_user.prospect_types.get(pk=lead_data.get('lead_type')),
+                        lead_sourse=register_user.prospect_types.get(pk=lead_data.get('lead_sourse')),
                         crn_number=register_user
                     )
 
                     del request.session['otp']
                     del request.session['lead_data']
 
-                    return HttpResponseRedirect(reverse('receipt') + f'?token={lead.token_id}&first_name={lead.first_name}&last_name={lead.last_name}&mobile_number={lead.mobile_number}&email={lead.email}&course_name={lead.course_name}&branch_name={lead.branch_name}&training_type={lead.training_type}&lead_type={lead.lead_type}')
+                    return HttpResponseRedirect(reverse('receipt') + f'?token={lead.token_id}&first_name={lead.first_name}&last_name={lead.last_name}&mobile_number={lead.mobile_number}&email={lead.email}&course_name={lead.course_name}&branch_name={lead.branch_name}&training_type={lead.training_type}&lead_type={lead.lead_sourse}')
             else:
                 context = {'error': 'Invalid OTP'}
                 return render(request, 'branch_qr/verify_otp.html', context)
@@ -2482,7 +2491,7 @@ def plans_import(request):
         if imported:
           messages.success(request, f'File imported successfully')      
         else:
-          messages.error(request,'Plan already exists')  
+          messages.error(request,'File failed to import')  
                
         return redirect('plans')
       except Exception as e:
@@ -5172,25 +5181,32 @@ def employee_list(request):
    pan_card=request.POST.get('pan_card')
    aadhar_card_pdf=request.FILES.get('aadhar_card_pdf')
    pan_card_pdf=request.FILES.get('pan_card_pdf')
-   if Employee_model.objects.filter(personal_number=personal_number).exists():
+
+
+
+
+
+
+
+   if register_user.employee.filter(personal_number=personal_number).exists():
      messages.error(request,'Employee personal number already exists')
      return redirect('employees')
    if alternative_number:
-     if Employee_model.objects.filter(alternative_number=alternative_number).exists():
+     if register_user.employee.filter(alternative_number=alternative_number).exists():
        messages.error(request,'Employee alternative number already exists')
        return redirect('employees')
-   if Employee_model.objects.filter(personal_email=personal_email).exists():
+   if register_user.employee.filter(personal_email=personal_email).exists():
      messages.error(request,'Employee personal email already exists')
      return redirect('employees')
    if professional_email:
-     if Employee_model.objects.filter(professional_email=professional_email).exists():
+     if register_user.employee.filter(professional_email=professional_email).exists():
        messages.error(request,'Employee professional email already exists')
        return redirect('employees')
-   if Employee_model.objects.filter(aadhar_card=aadhar_card).exists():
+   if register_user.employee.filter(aadhar_card=aadhar_card).exists():
      messages.error(request,'Employee aadhar card already exists')
      return redirect('employees')
    if pan_card:
-     if Employee_model.objects.filter(pan_card=pan_card).exists():
+     if register_user.employee.filter(pan_card=pan_card).exists():
        messages.error(request,'Employee pan card already exists')
        return redirect('employees') 
    
@@ -5249,7 +5265,7 @@ def employee_list(request):
 
 
 @admin_required
-def employee_status(request, id):
+def employee_status1(request, id):
     crn=request.session.get('admin_user').get('crn')
     register_user=Register_model.objects.get(crn=crn)
     employee = register_user.employee.get(id=id)
@@ -5327,25 +5343,25 @@ def employee_update(request,id):
     aadhar_card_pdf=request.FILES.get('aadhar_card_pdf_edit')
     pan_card_pdf=request.FILES.get('pan_card_pdf_edit')
     
-    if Employee_model.objects.filter(personal_number=personal_number).exclude(id=id).exists():
+    if register_user.employee.filter(personal_number=personal_number).exclude(id=id).exists():
       messages.error(request, 'Employee Personal number already exists')
       return redirect('employees')
     if alternative_number:
-      if Employee_model.objects.filter(alternative_number=alternative_number).exclude(id=id).exists():
+      if register_user.employee.filter(alternative_number=alternative_number).exclude(id=id).exists():
         messages.error(request, 'Employee Alternative number already exists')
         return redirect('employees')
-    if Employee_model.objects.filter(personal_email=personal_email).exclude(id=id).exists():
+    if register_user.employee.filter(personal_email=personal_email).exclude(id=id).exists():
       messages.error(request, 'Employee Personal email already exists')
       return redirect('employees')
     if professional_email:
-      if Employee_model.objects.filter(professional_email=professional_email).exclude(id=id).exists():
+      if register_user.employee.filter(professional_email=professional_email).exclude(id=id).exists():
         messages.error(request, 'Employee Professional email already exists')
         return redirect('employees')
-    if Employee_model.objects.filter(aadhar_card=aadhar_card).exclude(id=id).exists():
+    if register_user.employee.filter(aadhar_card=aadhar_card).exclude(id=id).exists():
       messages.error(request, 'Employee Aadhar card already exists')
       return redirect('employees')
     if pan_card:
-      if Employee_model.objects.filter(pan_card=pan_card).exclude(id=id).exists():
+      if register_user.employee.filter(pan_card=pan_card).exclude(id=id).exists():
         messages.error(request, 'Employee Pan card already exists')
         return redirect('employees')
     
@@ -5536,21 +5552,21 @@ def employee_upload(request):
                     if pan_card:
                        if not re.match(r"^[A-Z]{5}[0-9]{4}[A-Z]{1}$",pan_card):
                          continue
-                    if Employee_model.objects.filter(personal_number=personal_number).exists():
+                    if register_user.employee.filter(personal_number=personal_number).exists():
                         continue
                     if alternative_number:
-                        if Employee_model.objects.filter(alternative_number=alternative_number).exists():
+                        if register_user.employee.filter(alternative_number=alternative_number).exists():
                             continue
                     
-                    if Employee_model.objects.filter(personal_email=personal_email).exists():
+                    if register_user.employee.filter(personal_email=personal_email).exists():
                         continue
                     if professional_email:
-                        if Employee_model.objects.filter(professional_email=professional_email).exists():
+                        if register_user.employee.filter(professional_email=professional_email).exists():
                             continue
-                    if Employee_model.objects.filter(aadhar_card=aadhar_card).exists():
+                    if register_user.employee.filter(aadhar_card=aadhar_card).exists():
                         continue
                     if pan_card:
-                        if Employee_model.objects.filter(pan_card=pan_card).exists():
+                        if register_user.employee.filter(pan_card=pan_card).exists():
                             continue
                     else:
                         Employee_model.objects.create(
@@ -5621,7 +5637,6 @@ def get_designation(request):
   department_id = request.GET.get('department_id')
   designation = register_user.designations.filter(department_name=department_id,status='Active')
   return JsonResponse({'designation':list(designation)})
-
 
 
 
@@ -6345,60 +6360,89 @@ def jobrole_import(request):
 # Leads start here
 
 def lead_prospects(request):
-  context={}
-  admin_user_info = request.session['admin_user'] 
-  crn = admin_user_info.get('id')
-  prospects = LeadModel.objects.filter(prospect_taken=False)
-  courses = Course.objects.filter(status='Active',crn_number=crn)
-  training_types = TrainingType.objects.filter(status='Active',crn_number=crn)
-  prospect_types = ProspectType_model.objects.filter(status='Active',crn_number=crn)
-  Branches = BranchModel.objects.filter(status='Active',crn_number=crn)
  
+  crn = request.session.get('admin_user').get('crn')
+  register_user = Register_model.objects.get(crn=crn)
+  # getting prospects lead
+  prospects = register_user.leads.filter(lead_position="PROSPECT").all()
+  print(prospects)
+  
+  # getting branch
+  branches = register_user.branches.filter(status='Active')
+  # getting courses
+  courses = register_user.courses.filter(status='Active')
+  # getting training types
+  training_types = register_user.training_types.filter(status='Active')
+  # getting prospect types
+  prospect_types = register_user.prospect_types.filter(status='Active')
+  
   context={
-     "prospects":prospects,
-     'active_tab': 'lead_prospects',
-     "courses": courses,
-     "training_types": training_types,
-     "prospect_types": prospect_types,
-     "Branches":Branches,
-     
+     'prospects':prospects,
+     'Branches':branches,
+     'courses':courses,
+     'training_types':training_types,
+     'prospect_types':prospect_types,
   }
-
   return render(request,'Leads/prospects.html', context)
 
+
+     
+ 
+
 def lead_leads(request):
+
   
   return render(request,'Leads/leads.html')
 
 def leads(request):
-    context = {}
-    crn = request.session.get('admin_user', {}).get('crn')
+    crn = request.session.get('admin_user').get('crn')
     register_user = Register_model.objects.get(crn=crn)
-    admin_user_info = request.session['admin_user']  # Retrieve the stored dictionary
-    crn1 = admin_user_info.get('id')
-    leads = Lead_generation.objects.filter(lead_position='LEAD',crn_number=register_user)
-    lead_stage=Leadstage.objects.filter(status='Active',crn_number=crn1)
+    leads = register_user.leads.filter(lead_position="LEAD").all()
+    lead_stage = register_user.leadstages.filter(status='Active').all()
+    faculty = register_user.employee.all()
+    demo = register_user.demo.all()
+
+
     context = {
-        "leads": leads,
-        'active_tab': 'leads',
-        "lead_stage":lead_stage,
+        'leads': leads,
+        'lead_stage':lead_stage,
+        'faculty':faculty,
+        'demo':demo
     }
     return render(request, 'Leads/lead.html', context)
+
+
+def lead_move_to_mql(request,id):
+    crn = request.session.get('admin_user').get('crn')
+    register_user = Register_model.objects.get(crn=crn)
+    if request.method == "POST":
+       facuality_name = request.POST.get('courseFaculty')
+       leadType = request.POST.get('leadType')
+       demo_assigned = request.POST.get('demodate')
+       Leaddescription = request.POST.get('Leaddescription')
+       register_user.leads.filter(id=id).update(
+          faculty = register_user.employee.get(pk=facuality_name),
+          lead_type = leadType,
+          demo = register_user.demo.get(pk=demo_assigned),
+          lead_description = Leaddescription,
+          lead_position = 'MQL'
+       )
+
+
+       return redirect('leads')
+       
+
+    
 
 
 def mql(request):
   context={}
   crn = request.session.get('admin_user', {}).get('crn')
   register_user = Register_model.objects.get(crn=crn)
-  admin_user_info = request.session['admin_user']  # Retrieve the stored dictionary
-  crn1 = admin_user_info.get('id')
-  leads = Lead_generation.objects.filter(lead_position='ASSIGNED_DEMO',crn_number=register_user).order_by('-token_generated_date')
-  # leads = Lead_generation.objects.filter(lead_postion="ASSIGNED_DEMO").order_by('-token_generated_date')
-  for i in leads:
-    print(i)
+  leads = register_user.leads.filter(lead_position='MQL')
   context={
      "leads":leads,
-     'active_tab': 'mql'
+    
   }
   return render(request,'Leads/mql.html', context)
 
@@ -6505,39 +6549,40 @@ def generate_token_id():
 
 def submit_enquiry_form(request):
     crn = request.session.get('admin_user', {}).get('crn')
+    register_user=Register_model.objects.get(crn=crn)
     
-    # register_user=Register_model.objects.get(crn=crn)
+    
     
     try:
         if request.method == "POST":
             # Fetching instances for ForeignKey fields
-            course_id = get_object_or_404(Course, id=request.POST.get('course_name'))
-            branch_id = get_object_or_404(BranchModel, id=request.POST.get('branch_name'))
-            training_type = get_object_or_404(TrainingType, id=request.POST.get('training_type'))
-            lead_type = get_object_or_404(ProspectType_model, id=request.POST.get('lead_source'))
-            # crn_instance = Register_model.objects.get(crn=crn)
-            # course_id=register_user.courses.get(pk=request.POST.get('course_name'))
-            # branch_id=register_user.branches.get(pk=request.POST.get("branch_name"))
-            # training_type=register_user.TrainingType.get(pk=request.POST.get('training_type'))
-            # lead_type=register_user.prospects.get(pk=request.POST.get('lead_source'))
             first_name = request.POST.get('first_name')
             last_name = request.POST.get('last_name')
             mobile_number = request.POST.get('mobile_number')
             email = request.POST.get('email')
-            print(course_id)
-            print(branch_id)
-            print(training_type)
-            print(lead_type)
+            branch_name = request.POST.get('branch_name')
+            course_name = request.POST.get('course_name')
+            training_type = request.POST.get('training_type')
+            lead_source = request.POST.get('lead_source')
+            branch_id=register_user.branches.get(pk=branch_name)
+            course_id=register_user.courses.get(pk=course_name)
+            training_type_id=register_user.training_types.get(pk=training_type)
+            lead_type_id=register_user.prospect_types.get(pk=lead_source)
             print(first_name)
             print(last_name)
             print(mobile_number)
             print(email)
-            print(crn)
+            print(branch_name)
+            print(course_name)
+            print(training_type)
+            print(lead_source)
 
 
             # Note: You had trailing commas in your variable assignments which would make them tuples, removed those commas.
             
-            otp = send_otp_to_phone(mobile_number)
+            # otp = send_otp_to_phone(mobile_number)
+            otp = random.randint(100000, 999900)
+            print("generated",otp)
             
             if otp:
                 request.session['otp'] = otp
@@ -6546,10 +6591,10 @@ def submit_enquiry_form(request):
                     'last_name': last_name,
                     'mobile_number': mobile_number,
                     'email': email,
-                    'course_name': course_id.id,  # Store IDs for simplicity
-                    'branch_name': branch_id.id,
-                    'training_type': training_type.id,
-                    'lead_type': lead_type.id,
+                    'course_name': course_name,  # Store IDs for simplicity
+                    'branch_name': branch_name,
+                    'training_type': training_type,
+                    'lead_sourse': lead_source,
                     'crn':crn# Assuming you want to store the CRN value
                 }
 
@@ -6568,57 +6613,60 @@ def enquiry_verify_otp(request):
         otp_generated = request.session.get('otp')
         lead_data = request.session.get('lead_data', {})
 
+        print("submitted", otp_entered)
+        print("this is session data", lead_data.get('first_name'))
+        print("this is session data", lead_data.get('last_name'))
+        print("this is session data", lead_data.get('mobile_number'))
+        print("this is session data", lead_data.get('email'))
+        print("this is session data", lead_data.get('course_name'))
+        print("this is session data", lead_data.get('branch_name'))
+        print("this is session data", lead_data.get('training_type'))
+        print("this is session data", lead_data.get('lead_sourse'))
+        print("this is session data", lead_data.get('crn'))
 
-        if str(otp_entered) == str(otp_generated):
+        if int(otp_entered) == int(otp_generated):
+            print("verified")
             register_user = Register_model.objects.get(crn=lead_data.get('crn'))
-           
-            print(register_user)
-            if LeadModel.objects.filter(mobile_number=lead_data.get('mobile_number')).exists():
-                return JsonResponse({'success': False, 'message': 'Mobile number already exists'})
-            elif LeadModel.objects.filter(email=lead_data.get('email')).exists():
-                return JsonResponse({'success': False, 'message': 'Email already exists, try with another one'})
-            else:
-                lead = LeadModel.objects.create(
-                    first_name=lead_data.get('first_name'),
-                    last_name=lead_data.get('last_name'),
-                    mobile_number=lead_data.get('mobile_number'),
-                    email=lead_data.get('email'),
-                    course_name=register_user.courses.get(pk=lead_data.get('course_name')),
-                    branch_name=register_user.branches.get(pk=lead_data.get('branch_name')),
-                    training_type=register_user.training_types.get(pk=lead_data.get('training_type')),
-                    lead_type=register_user.prospect_types.get(pk=lead_data.get('lead_type')),
-                    crn_number=register_user
-                )
-                
-                # Send confirmation email
-                subject = 'Registration Successful'
-                message = (
-                    f"Hello {lead.first_name},\n\n"
-                    "Thank you for registering with us. We are excited to have you join our community. "
-                    "Here are your registration details:\n\n"
-                    f"Registration Number: {lead.crn_number.crn}\n"
-                    "Course Enrolled: Please insert course name here.\n"
-                    "\nWe look forward to providing you with a quality learning experience. "
-                    "Should you have any questions or need further information, please do not hesitate to contact us.\n\n"
-                    "Best Regards,\n"
-                    "Your Organization Name\n"
-                    "Contact Information"
-                )
-                email_from = settings.EMAIL_HOST_USER
-                recipient_list = [lead.email]
-                # send_mail(subject, message, email_from, recipient_list)
+            course_name = register_user.courses.get(id=lead_data.get('course_name'))  
+            lead = LeadModel.objects.create(
+                first_name=lead_data.get('first_name'),
+                last_name=lead_data.get('last_name'),
+                mobile_number=lead_data.get('mobile_number'),
+                email=lead_data.get('email'),
+                course_name=register_user.courses.get(pk=lead_data.get('course_name')),
+                branch_name=register_user.branches.get(pk=lead_data.get('branch_name')),
+                training_type=register_user.training_types.get(pk=lead_data.get('training_type')),
+                lead_sourse = register_user.prospect_types.get(pk=lead_data.get('lead_sourse')),
+                crn_number=register_user
+            )
+            print("created")
 
-                # Clear OTP and lead data from session
-                del request.session['otp']
-                del request.session['lead_data']
-                print("smflksaldfnsadl")
-                messages.success(request,"OTP verified, and lead created successfully")
-                success_url = reverse('lead_prospects')  # Get URL for 'lead_prospects'
-                return JsonResponse({'otpverification': True, 'redirectUrl': success_url, 'message': 'OTP verified, and lead created successfully.'})
+            subject = 'Registration Successful'
+            message = (
+                f"Hello {lead_data.get('first_name')},\n\n"
+                "Thank you for registering with us. We are excited to have you join our community. "
+                "Here are your registration details:\n\n"
+                f"Registration Number: {lead.token_id}\n"
+                f"Course Enrolled: {course_name.course_name}.\n"
+                "\nWe look forward to providing you with a quality learning experience. "
+                "Should you have any questions or need further information, please do not hesitate to contact us.\n\n"
+                "Best Regards,\n"
+                f"{request.session.get('admin_user').get('company_name')}\n"
+                "Contact Information"
+            )
+            email_from = settings.EMAIL_HOST_USER
+            recipient_list = [lead_data.get('email')]
+            send_mail(subject, message, email_from, recipient_list)
 
-               
+            del request.session['otp']
+            del request.session['lead_data']
+
+            success_url = reverse('lead_prospects')
+            return JsonResponse({'otpverification': True, 'redirectUrl': success_url, 'message': 'OTP verified, and lead created successfully.'})
         else:
-            return JsonResponse({'otpverification': False, 'message': 'Invalid OTP. Please try again.'})
+            return JsonResponse({'otpverification': False, 'message': 'OTP verification failed.'})
+
+
 
     # Fallback redirect if request method is not POST
     return JsonResponse({'success': False, 'message': 'Invalid request method.'})
@@ -6626,62 +6674,47 @@ def enquiry_verify_otp(request):
 
 
 def mark_as_lead(request, prospect_id):
-    
     crn = request.session.get('admin_user', {}).get('crn')
     register_user = Register_model.objects.get(crn=crn)
-    
-    try:
-        # Fetch the LeadModel instance by prospect_id
-        prospect = get_object_or_404(LeadModel, pk=prospect_id)
-        print(prospect)
-        for field in prospect._meta.fields:
-            field_name = field.name
-            field_value = getattr(prospect, field_name)
-            print(f"{field_name}: {field_value}")
-        print(prospect.crn_number)
-        Lead_generation.objects.create(
-                # Populate fields from prospect
-                crn_number=register_user,
-                email=prospect.email,
-                token_id=prospect.token_id,
-                token_generated_date=prospect.token_generated_date,
-                firstname = prospect.first_name,
-                lastname = prospect.last_name,
-                phone = prospect.mobile_number,
-                lead_source = prospect.lead_type,  # Assuming this maps directly to LeadModel's lead_type
-                course_interested_in = prospect.course_name,  # Direct assignment assuming matching types
-                Training_type = prospect.training_type,  # Direct assignment assuming matching types
-                branch_name =prospect.branch_name,  # Direct assignment assuming matching types
-                enquiry_taken_by = prospect.crn_number,  # Assuming the CRN number represents the person/entity taking the enquiry
-                lead_position= 'LEAD',
-                # Add other necessary fields...
-            )
 
-        # # Update the prospect as processed/taken
-        prospect.prospect_taken = True
-        prospect.save()
+    if register_user.leads.filter(id=prospect_id).exists():
+        prospect = register_user.leads.get(id=prospect_id)
+        prospect.lead_position = 'LEAD'
+        prospect.save(update_fields=['lead_position'])
+        return redirect('lead_prospects')
+    else:
+        messages.error(request, 'Prospect not found')
+        return redirect('lead_prospects')
 
-        messages.success(request, 'Successfully marked as lead and data transferred.')
-    except IntegrityError as e:
-        messages.error(request, f'Issue encountered with data integrity while marking as lead: {str(e)}')
-    except Exception as e:
-        messages.error(request, f'General issue encountered while marking as lead: {str(e)}')
 
-    return redirect('lead_prospects')
 
 
 def lead_stage(request, lead_id):
-    if request.method=='POST':
+    crn = request.session.get('admin_user', {}).get('crn')
+    register_user = Register_model.objects.get(crn=crn)
+
+    if request.method == 'POST':
+        lead = get_object_or_404(register_user.leads, id=lead_id)
+        lead_stage_id = request.POST.get('leadstage')
+
         try:
-            lead = get_object_or_404(Lead_generation, pk=lead_id)
-            lead.lead_stage=request.POST.get("leadstage")
-            lead.save()
-            messages.success(request, "Data added Successfully.")
-            return redirect('leads')
-        except:
-           
-           messages.error(request,"not found  or some error occured.")
-    return redirect('leads')  # Adjust redirect as needed
+            lead_stage = register_user.leadstages.get(id=lead_stage_id)
+            lead.lead_stage = lead_stage
+            lead.save(update_fields=['lead_stage'])
+            messages.success(request, 'Lead stage updated successfully.')
+        except Leadstage.DoesNotExist:
+            messages.error(request, 'Invalid lead stage selected.')
+        except Exception as e:
+            messages.error(request, f'An error occurred: {str(e)}')
+        
+        return redirect('leads')
+    else:
+        messages.error(request, 'Invalid request method.')
+        return redirect('leads')
+
+
+
+        
 
 
 def submit_to_mql(request, lead_id):
@@ -6967,10 +7000,10 @@ def student_card(request):
 
 
 def hr_details(request):
-    return render(request,'hr_portal/hrdetails.html')
+    return render(request,'hr_portal/HR details/hrdetails.html')
 
 def job_detailes(request):
-    return render(request,'hr_portal/jobdetails.html')
+    return render(request,'hr_portal/HR details/jobdetails.html')
 
 def job_description(request):
     return render(request,'hr_portal/jobdescription.html')
@@ -6979,52 +7012,172 @@ def lokesh(request):
     return render(request,'hr_portal/lokesh.html')
 
 def Student_details(request):
-    return render(request, 'hr_portal/student_Details.html')
+    return render(request, 'hr_portal/students/student_Details.html')
 
 def Student_report(request):
-    return render(request, 'hr_portal/student_Report.html')
+    return render(request, 'hr_portal/students/student_Report.html')
 
 def placement_dashboard(request):
-    return render(request,'hr_portal/placement_dashboard.html')
+    return render(request,'hr_portal/dashboard/placement_dashboard.html')
 
 def students_placed(request):
-    return render(request, 'hr_portal/studentsplaced.html')
+    return render(request, 'hr_portal/dashboard/placement details/studentsplaced.html')
 
 def students_notplaced(request):
-    return render(request,'hr_portal/studentsnotplaced.html')
-
-def qualified_students(request):
-    return render(request,'hr_portal/qualified.html')
-
+    return render(request,'hr_portal/dashboard/placement details/studentsnotplaced.html')
+  
 def total_students_applied(request):
-    return render(request,'hr_portal/totalstudents.html')
+    return render(request,'hr_portal/dashboard/placement details/totalstudents.html')
+
+def total_students_eligible(request):
+    return render(request,'hr_portal/dashboard/placement details/totaleligible.html')
+
+def total_students_noteligible(request):
+    return render(request,'hr_portal/dashboard/placement details/totalnoteligible.html')
+
+def students_underprogress(request):
+    return render(request,'hr_portal/dashboard/placement details/underprogress.html')
+
+def students_not_intrested(request):
+    return render(request,'hr_portal/dashboard/placement details/totalnotintrested.html')
 
 def profile(request):
-    return render(request,'hr_portal/profile.html')
+    return render(request,'hr_portal/Profile status/profile.html')
 
 def studentreport(request):
-    return render(request,'hr_portal/studentreport.html')
+    return render(request,'hr_portal/Profile status/studentreport.html')
 
 def applied_students(request):
-    return render(request,'hr_portal/applied.html')
+    return render(request,'hr_portal/HR details/applied.html')
 
 def placed_students(request):
-    return render(request,'hr_portal/placed.html')
+    return render(request,'hr_portal/HR details/placed.html')
+
+def students_notattended(request):
+    return render(request, 'hr_portal/dashboard/placement details/totalnotattended.html')    
 
 def hr_leads(request):
-    return render(request, 'hr_portal/hr_leads.html')
+    return render(request, 'hr_portal/dashboard/company leads/hr_leads.html')
 
 def hr_confirmed(request):
-    return render(request, 'hr_portal/hr_confirmed.html')
+    return render(request, 'hr_portal/dashboard/company leads/hr_confirmed.html')
 
-def recruiters(request):
-    return render(request, 'hr_portal/recruiters.html')
+def hr_underprogress(request):
+    return render(request,'hr_portal/dashboard/company leads/hrunderprogress.html')
+
+def hr_interviewschedule(request):
+    return render(request,'hr_portal/dashboard/company leads/interviewschedule.html')
+
+def profilesent(request):
+    return render(request,'hr_portal/dashboard/company leads/profilesent.html')
 
 def not_interested_hr(request):
-    return render(request,'hr_portal/not_interested_hr.html')
+    return render(request,'hr_portal/dashboard/company leads/not_interested_hr.html')
 
 def job_gallery(request):
-    return render(request, 'hr_portal/job_gallery.html')
+    return render(request, 'hr_portal/job gallery/job_gallery.html')
+
+def job_gallery_applied(request):
+    return render(request,'hr_portal/job gallery/jobgalleryapplied.html')
+
+def job_gallery_qualified(request):
+    return render(request,'hr_portal/job gallery/jobgalleryqualified.html')
+
+def job_gallery_placed(request):
+    return render(request,'hr_portal/job gallery/jobgalleryplaced.html')
+
+def job_gallery_elgible(request):
+    return render(request,'hr_portal/job gallery/jobgalleryeligible.html')
+
+def job_gallery_inprogress(request):
+    return render(request,'hr_portal/job gallery/jobgalleryinprogress.html')
 
 def Student_filter(request):
-    return render(request, 'hr_portal/student_filter.html')    
+    return render(request, 'hr_portal/student filters/student_filter.html')    
+
+def placement_status(request):
+    return render(request,'hr_portal/placement status/placementstatus.html')
+
+def level1(request):
+    return render(request,'hr_portal/dashboard/placement details/level1.html')
+
+def level2(request):
+    return render(request,'hr_portal/dashboard/placement details/level2.html')
+
+def level3(request):
+    return render(request,'hr_portal/dashboard/placement details/level3.html')
+
+def createvendor(request):
+    return render(request,'hr_portal/vendor/createvendor.html')   
+
+
+
+
+
+
+
+
+
+# moke interview sart here
+
+
+# faculty login
+def faculty_login(request):
+    return render(request,'mock_interview/faculty_login.html')
+
+
+# dashboard
+def mock_dashboard(request):
+    return render(request,'mock_interview/dashboard.html')
+
+# Student booking slots
+def student(request):
+    return render(request,'mock_interview/student.html')
+
+# Faculty slot availbility
+def faculty_slot(request):
+    return render(request,'mock_interview/slot_management.html')
+
+# Total Interview
+def total_interviews(request):
+    return render(request,'mock_interview/interview_list.html')
+
+# Student Past Interviews with feedback details
+def student_feedback(request):
+    return render(request,'mock_interview/student_past_interviews.html')
+
+# Admin mock slot scheduling
+def admin_mock(request):
+    return render(request,'mock_interview/adminmock_slot.html')
+
+#  mock slot rescheduling
+def reschedule(request):
+    return render(request,'mock_interview/reschedule.html')
+
+#  admin interview list
+def admin_interview_list(request):
+    return render(request,'mock_interview/admin_interview_list.html')
+
+#  faculty dashboard
+def faculty_dashboard(request):
+    return render(request,'mock_interview/faculty_dashboard.html')
+
+# admin to watch separate faculty slots by clicking faculty name
+def separate_faculty_list(request):
+    return render(request,'mock_interview/admin-facultylist.html')
+
+# admin can watch all completed mocks
+def completed_mock(request):
+    return render(request,'mock_interview/admin_completed_interviews.html')
+
+# faculty scheduled  total interviews
+def faculty_schedule_list(request):
+    return render(request, 'mock_interview/faculty_scheduled_interview.html')
+
+# faculty completed interviews
+def faculty_completed_mocklist(request):
+    return render(request, 'mock_interview/faculty_completed_mocks.html')
+
+# faculty pending interviews
+def faculty_pending_mocks(request):
+    return render(request, 'mock_interview/faculty_pending_mocks.html')

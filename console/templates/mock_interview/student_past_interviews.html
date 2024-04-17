@@ -1,0 +1,296 @@
+{% extends 'base/base.html' %}
+{% block title %}QTLineone | Student Mock Booking{% endblock %}
+{% block breadCrum %}
+
+<!-- Breadcrumb -->
+<div class="hk-pg-header d-flex justify-content-between mb-0">
+  <h4 class="hk-pg-title m-3">Past Interviews</h4>
+  <nav aria-label="breadcrumb">
+    <ol class="breadcrumb bg-transparent mb-0">
+      <li class="breadcrumb-item"><a href="{% url 'mock_dashboard' %}">Dashboard</a></li>
+      <li class="breadcrumb-item"><a href="{% url 'settings' %}">Settings</a></li>
+      <li class="breadcrumb-item active" aria-current="page">Courses</li>
+    </ol>
+  </nav>
+</div>
+<!-- /Breadcrumb -->
+
+{% endblock %}
+{% block content %}
+ <!-- message here -->
+
+ {% if messages %}
+ {% for message in messages %}
+   {% if message.tags == "error" %}
+     <div class="h-25 alert alert-danger alert-dismissible fade show mt-2 h-25 text-center" role="alert">{{ message }}</div>
+   {% elif message.tags == "success" %}
+     <div class="h-25 alert alert-success alert-dismissible fade show mt-2 h-25 text-center" role="alert">{{ message }}</div>
+     {% else %}
+    <div class="h-25 alert alert-info alert-dismissible fade show mt-2 h-25 text-center" role="alert">{{ message }}</div>
+    {% endif %}
+   {% endfor %}
+ {% endif %}
+
+<!-- message end here -->
+
+
+
+<!-- Table starts here -->
+
+<section class="hk-sec-wrapper shadow-lg p-3 mb-10 bg-white rounded">
+  <div class="row">
+    <div class="col-sm">
+      <div class="table-wrap">
+        <table id="datable_1" class="table table-hover w-100  pb-30 table-bordered">
+          <thead class="bg-dark">
+            <tr>
+              <th class="text-white">S.no</th>
+              <th class="text-white">Faculty</th>
+              <th class="text-white text-center">Date of Interview</th>
+              <th class="text-white text-center" >Attendance</th>
+              <th class="text-white text-center" >Logical Thinking</th>
+              <th class="text-white text-center" >Technical Performance</th>
+              <th class="text-white text-center" >Communication</th>
+              <th class="text-white text-center" >Body Language</th>
+              <th class="text-white text-center" >Overall Rating</th>
+                <th class="text-white text-center" >Status</th>
+              <th class="text-white text-center" >Feedback</th>
+                <th class="text-white text-center" >Attachment</th>
+
+            </tr>
+          </thead>
+          <tbody>
+
+            <tr>
+              <td>1</td>
+              <td class="text-center">vijaya</td>
+                <td class="text-center">March 22,2024</td>
+
+               <td class="text-center text-info" style="font-weight:bold;">Present</td>
+               <td class="text-center">4</td>
+              <td class="text-center">4</td>
+              <td class="text-center">3</td>
+              <td class="text-center">4</td>
+              <td class="text-center">4</td>
+              <td class="text-center text-success" style="font-weight:bold;">Qualified</td>
+              <td class=" text-center" >Improve Communication</td>
+              <td class="text-center">
+                    <a href="" title=""><img src="/static/media/pdf.png" width="35" alt="Student resume" /></a>
+                    </td>
+
+            </tr>
+          <tr>
+              <td>2</td>
+              <td class="text-center">vijaya</td>
+                <td class="text-center">March 22,2024</td>
+
+               <td class="text-center text-danger" style="font-weight:bold;">Absent</td>
+               <td class="text-center">0</td>
+               <td class="text-center">0</td>
+              <td class="text-center">0</td>
+              <td class="text-center">0</td>
+              <td class="text-center">0</td>
+              <td class="text-center text-danger" style="font-weight:bold;">Not Qualified</td>
+              <td class=" text-center" >No Feedback</td>
+            <td class="text-center">
+<!--                <a href="" title="Image from freeiconspng.com"><img src="https://www.freeiconspng.com/uploads/pdf-icon-png-pdf-zum-download-2.png" width="35" alt="Student resume" /></a>-->
+                  No Attachments
+                </td>
+
+            </tr>
+
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</section>
+<!--    Table ends here -->
+
+<!-- Edit model start here -->
+
+{% for i in cos %}
+<div class="modal fade" id="EditCourse{{forloop.counter}}" tabindex="-1" role="dialog" aria-labelledby="EditCourse"
+  aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header bg-dark">
+        <h5 class="modal-title text-white">Edit Course</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true" class="text-white">&times;</span>
+        </button>
+      </div>
+      <form action="{% url 'course_update' i.id %}" method="post" class="Editcourse">
+        {% csrf_token %}
+        <div class="modal-body">
+          <div class="container-fluid">
+          <div class="mb-3">
+            <label for="" class="form-label">Course Name <span class="text-danger">*</span></label>
+            <input name="editcourse" value="{{i.course_name}}" type="text" placeholder="Ex: Python, Java"
+              class="form-control" />
+          </div>
+        </div>
+        <div class="modal-footer d-flex justify-content-center">
+          <button type="submit" class="btn btn-primary">Submit</button>
+          <button type="button" class="btn btn-secondary" data-dismiss="modal" aria-label="Close">
+            Close
+          </button>
+        </div>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+{% endfor %}
+
+<!-- Edit model end here -->
+
+<!-- Delete model start here -->
+
+{% for i in cos %}
+<div class="modal fade" id="DeleteCourse{{forloop.counter}}" tabindex="-1" role="dialog" aria-labelledby="DeleteCourse"
+  aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header bg-danger">
+        <h5 class="modal-title text-white">Delete Course</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true" class="text-white">&times;</span>
+        </button>
+      </div>
+      <form action="{% url 'course_delete' i.id %}" method="post">
+        {% csrf_token %}
+        <div class="modal-body">
+          <div class="mb-3 text-center">
+            <div class="d-flex justify-content-center mb-3">
+              <img src="../../static/triangle-exclamation-solid.svg" width="120" height="70" alt="">
+            </div>
+            Are you sure you want to delete {{i.course_name}} Course ?
+          </div>
+        </div>
+        <div class="modal-footer d-flex justify-content-center">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal" aria-label="Close">
+            No
+          </button>
+          <button type="submit" class="btn btn-danger">Yes</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+{% endfor %}
+
+<!-- Delete model end here -->
+
+<!-- Upload model  -->
+
+
+<div class="modal fade" id="UploadCourse" tabindex="-1" role="dialog" aria-labelledby="UploadCourse" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header bg-dark">
+        <h5 class="modal-title text-white">Upload File</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true" class="text-whte">&times;</span>
+        </button>
+      </div>
+      <form action="{% url 'course_import' %}" method="post" id="uploadfile" enctype="multipart/form-data">
+        {% csrf_token %}
+        <div class="modal-body">
+          <input type="file" name="cos_file" accept=".csv" id="input-file-now" class="dropify" />
+          <div id="csvPreview"></div>
+         </div>
+        <div class="modal-footer d-flex justify-content-center">
+          <button type="submit" class="btn btn-primary">Submit</button>
+          <button type="button" class="btn btn-secondary" data-dismiss="modal" aria-label="Close">
+            Close
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+<!-- Upload model end here -->
+
+{% endblock %}
+
+{% block scripts %}
+
+<script>
+  $(document).ready(function () {
+    //no numbers
+    $.validator.addMethod("noNumbers", function (value, element) {
+      return !/\d/.test(value);
+    }, "Numbers are not allowed in the department name.");
+
+    $("#course_add").validate({
+      rules: {
+        course_name: {
+          required: true,
+          noNumbers: true,
+
+        },
+      },
+      messages: {
+        course_name: {
+          required: "Please Enter Course Name",
+        },
+      },
+      submitHandler: function (form) {
+        form.submit();
+      },
+    });
+    $(".Editcourse").each(function () {
+      $(this).validate({
+        rules: {
+          editcourse: {
+            required: true,
+            noNumbers: true,
+          },
+        },
+        messages: {
+          editcourse: {
+            required: "Please Enter Course Name",
+          },
+        },
+        submitHandler: function (form) {
+          form.submit();
+        },
+
+      });
+    });
+  });
+</script>
+
+<script>
+  function validateUploadForm(form) {
+    $(form).find('#input-file-now').on('change', function () {
+      var file = this.files[0];
+      var fileExt = file.name.split('.').pop().toLowerCase();
+
+      if (fileExt === 'csv') {
+        $(form).find('button[type="submit"]').prop('disabled', false);
+        $(form).find('#input-file-now').html('');
+      } else {
+        $(form).find('button[type="submit"]').prop('disabled', true);
+        $(form).find('#csvPreview').html('<span style="color: red;">Only CSV files are allowed.</span>');
+      }
+    });
+
+    $(form).on('submit', function (e) {
+      var file = $(form).find('#input-file-now')[0].files[0];
+
+      if (!file) {
+        e.preventDefault();
+        $(form).find('#csvPreview').html('<span style="color: red;">Please select a csv file.</span>');
+      }
+    });
+  }
+
+  $('#UploadCourse').on('shown.bs.modal', function () {
+    validateUploadForm($(this).find('form'));
+  });
+</script>
+
+{% endblock %}

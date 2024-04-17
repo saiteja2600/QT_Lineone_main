@@ -1,0 +1,374 @@
+{% extends 'base/base.html' %}
+
+{% block breadCrum %}
+
+<!-- Breadcrumb -->
+<div class="hk-pg-header d-flex justify-content-between mb-0">
+  <h4 class="hk-pg-title m-3">HR Information [1]</h4>
+  <nav aria-label="breadcrumb">
+    <ol class="breadcrumb bg-transparent mb-0">
+      <li class="breadcrumb-item"><a href="{% url 'placement_dashboard' %}">Dashboard</a></li>
+      <li class="breadcrumb-item"><a href="">Quality Thoughts</a></li>
+      <li class="breadcrumb-item active" aria-current="page">HR details</li>
+    </ol>
+  </nav>
+</div>
+<!-- /Breadcrumb -->  
+{% endblock %}
+{% block content %}
+
+ <!-- Row -->
+ 
+ <section class="hk-sec-wrapper">
+  <div class="row">
+    <div class="col">
+      
+    </div>
+  
+    <div class="button_operations col-auto ml-auto p-0 mb-3 mr-3 d-flex justify-content-end"  id="button_operations">
+        
+    </div>
+    <div class="d-flex justify-content-end">
+      <a href='#' type="button" class="btn btn-success ml-auto mr-3 mb-3"><i class="fa fa-download"></i> Print</a>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-xl-12">
+      
+  <table id="datable_1" class="table w-100 display pb-30 table-bordered ">
+      <thead class="bg-dark">
+          <tr>
+              <th class="text-white  text-center">
+                <p class="mr-5">All<input type="checkbox" class="form-check-input" style="margin-left:3px; margin-right: 20px;" id="checkAll"></p>
+              </th>
+              <th class="text-white">Employee ID</th>
+              <th class="text-white">HR Name</th>
+              <th class="text-white">Email</th>
+              <th class="text-white">Phone</th>
+              <th class="text-white">Branch</th>
+              <!-- <th class="text-white text-center">Action</th> -->
+          </tr>
+      </thead>
+      <tbody>
+          <tr>
+              <td><input type="checkbox" class="row-checkbox" data-id="{{i.id}}"></td>
+              <td>QT4545</td>
+              <td><a href="{% url 'jobdetails' %}">Anusha Reddy</a></td>
+              <td>anusha.p@qualitythought.in</td>
+              <td>9494324345</td>
+              <td>Ameerpet</td>
+              <!-- <td class="text-center">
+                  <button
+                      class="btn btn-primary m-1"data-toggle="modal"data-target="#Edithr">
+                      <i class="fa fa-pencil"></i>
+                  </button>
+                  <button
+                  class="btn btn-danger m-1"
+                  data-toggle="modal"
+                  data-target="#Delete">
+                      <i class="fa fa-trash"></i>
+                  </button>
+              </td> -->
+          </tr>
+
+          <tr>
+            <td><input type="checkbox" class="row-checkbox" data-id="{{i.id}}"></td>
+            <td>QT4545</td>
+            <td><a href="{% url 'jobdetails' %}">Anusha Reddy</a></td>
+            <td>anusha.p@qualitythought.in</td>
+            <td>9494324345</td>
+            <td>Ameerpet</td>
+            <!-- <td class="text-center">
+                <button
+                    class="btn btn-primary m-1"data-toggle="modal"data-target="#Edithr">
+                    <i class="fa fa-pencil"></i>
+                </button>
+                <button
+                class="btn btn-danger m-1"
+                data-toggle="modal"
+                data-target="#Delete">
+                    <i class="fa fa-trash"></i>
+                </button>
+            </td> -->
+        </tr>
+          </tbody>
+  </table>
+</div>
+</div>
+</div>
+</section>
+
+
+<!-- create model start here -->
+<!-- 
+<div
+class="modal fade"
+id="addhr"
+tabindex="-1"
+role="dialog"
+aria-labelledby="addhr"
+aria-hidden="true"
+>
+<div class="modal-dialog  modal-dialog-centered" role="document">
+  <div class="modal-content">
+    <div class="modal-header bg-dark">
+      <h5 class="modal-title text-white">Add HR details</h5>
+      <button
+        type="button"
+        class="close"
+        data-dismiss="modal"
+        aria-label="Close"
+      >
+        <span aria-hidden="true" class="text-white">&times;</span>
+      </button>
+    </div>
+    <div class="modal-body">
+      <form action="">
+        <div class="">
+          <label for="" class="form-label "
+            >Name <span class="text-danger">*</span></label
+          >
+          <input
+            type="text"
+            placeholder="Lokesh"
+            name="name"
+            class="form-control mb-3"
+          />
+        <label for="" class="form-label"
+            >Email <span class="text-danger">*</span></label
+          >
+          <input
+            type="text"
+            placeholder="Lokesh@gmail.com"
+            name="email"
+            class="form-control mb-3"
+          />
+        <label for="" class="form-label"
+            >Phone <span class="text-danger">*</span></label
+          >
+          <input
+            type="number"
+            placeholder="9876598765"
+            name="phone"
+            class="form-control mb-3"
+          />
+          <label for="" class="form-label"
+            >Branch <span class="text-danger">*</span></label
+          >
+          <input
+            type="text"
+            placeholder="Ameerpet"
+            class="form-control mb-3"
+            name="branch"
+          />
+        </div>
+
+      </form>
+    </div>
+    <div class="modal-footer d-flex justify-content-center">
+      <button type="button" class="btn btn-primary">Submit</button>
+      <button type="reset" class="btn btn-secondary">Reset</button>
+    </div>
+  </div>
+</div>
+</div> -->
+
+<!-- Create model end here -->
+
+<!-- Edit model start here -->
+
+<div
+  class="modal fade"
+  id="Edithr"
+  tabindex="-1"
+  role="dialog"
+  aria-labelledby="EditHR"
+  aria-hidden="true"
+>
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header bg-dark">
+        <h5 class="modal-title text-white">Edit HR details</h5>
+        <button
+          type="button"
+          class="close"
+          data-dismiss="modal"
+          aria-label="Close"
+        >
+          <span aria-hidden="true" class="text-white">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form action="">
+            <div class="mb-3">
+                <label for="" class="form-label"
+                  >Name <span class="text-danger">*</span></label
+                >
+                <input
+                  type="text"
+                  placeholder="Lokesh"
+                  class="form-control"
+                />
+              <label for="" class="form-label"
+                  >Email <span class="text-danger">*</span></label
+                >
+                <input
+                  type="email"
+                  placeholder="Lokesh@gmail.com"
+                  class="form-control"
+                />
+              <label for="" class="form-label"
+                  >Phone <span class="text-danger">*</span></label
+                >
+                <input
+                  type="number"
+                  placeholder="9876598765"
+                  class="form-control"
+                />
+                <label for="" class="form-label"
+                  >Branch <span class="text-danger">*</span></label
+                >
+                <input
+                  type="text"
+                  placeholder="Ameerpet"
+                  class="form-control"
+                />
+              </div>
+        </form>
+      </div>
+      <div class="modal-footer d-flex justify-content-center">
+        <button type="submit" class="btn btn-primary">Submit</button>
+        <button
+          type="button"
+          class="btn btn-secondary"
+          data-dismiss="modal"
+          aria-label="Close"
+        >
+          Close
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Edit model end here -->
+
+
+
+<!-- Delete model start here -->
+
+<div
+  class="modal fade"
+  id="Delete"
+  tabindex="-1"
+  role="dialog"
+  aria-labelledby="Delete"
+  aria-hidden="true"
+>
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header bg-danger">
+        <h5 class="modal-title text-white">Delete HR</h5>
+        <button
+          type="button"
+          class="close"
+          data-dismiss="modal"
+          aria-label="Close"
+        >
+          <span aria-hidden="true" class="text-white">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form action="">
+          <div class="mb-3 text-center">
+            <div class="d-flex justify-content-center mb-3">
+
+              <img src="../../static/triangle-exclamation-solid.svg" width="120" height="70" alt="">
+            </div>
+            Are Your sure You want to delete ?
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer d-flex justify-content-center">
+        <button
+          type="button"
+          class="btn btn-secondary"
+          data-dismiss="modal"
+          aria-label="Close"
+        >
+          Close
+        </button>
+        <button type="button" class="btn btn-danger">Delete</button>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- Delete model end here -->
+
+
+
+
+<!-- model jobdetails ends here -->
+
+
+
+
+{% endblock %}
+
+{% block scripts %}
+
+<script>
+  $(document).ready(function(){
+    function updateButtonOperations() {
+        var selectedCount = $('.row-checkbox:checked').length;
+        var buttonsHtml = '';
+
+        if (selectedCount >= 1) {
+            // When at least one checkbox is selected
+            var prospectId = $('.row-checkbox:checked').data('id');
+            buttonsHtml = `
+                
+                  <button
+                      class="btn btn-primary mr-1 "data-toggle="modal"data-target="#edit${prospectId},#Edithr">
+                      <i class="fa fa-pencil"></i>
+                  </button>
+
+                  <button class="btn btn-danger " data-toggle="modal" data-target="#Delete${prospectId}">
+                      <i class="fa fa-trash"></i>
+                  </button>
+                
+            `;
+            if(selectedCount > 1) {
+                // When multiple checkboxes are selected, adjust the buttons accordingly
+                buttonsHtml = `
+                <button class="btn btn-danger" data-toggle="modal" data-target="#Delete${prospectId}, #Delete">
+                      <i class="fa fa-trash"></i>
+                  </button>
+                
+                `;
+            }
+        }
+
+        $('#button_operations').html(buttonsHtml);
+    }
+
+    
+    // Attach change event listener to checkboxes for row selection
+    $(document).on('change', '.row-checkbox', function() {
+        // Check if all checkboxes are selected
+        var allChecked = $('.row-checkbox').length === $('.row-checkbox:checked').length;
+        $('#checkAll').prop('checked', allChecked);
+        updateButtonOperations();
+    });
+
+    // "Check All" functionality
+    $('#checkAll').change(function() {
+        $('.row-checkbox').prop('checked', this.checked);
+        updateButtonOperations();
+    });
+  })
+</script>
+
+
+{% endblock %}

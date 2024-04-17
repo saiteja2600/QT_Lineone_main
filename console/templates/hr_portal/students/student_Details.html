@@ -1,0 +1,311 @@
+{% extends 'base/base.html' %} 
+{% block title %}QTLineone | Student Details{% endblock %}
+{% block breadCrum %}
+  <!-- Breadcrumb -->
+  <div class="hk-pg-header d-flex justify-content-between mb-0">
+    <h4 class="hk-pg-title m-3">Qualified Details [AI selected]</h4>
+    <nav aria-label="breadcrumb">
+      <ol class="breadcrumb bg-transparent mb-0">
+        <li class="breadcrumb-item"><a href="{% url 'placement_dashboard' %}">Dashboard</a></li>
+        <li class="breadcrumb-item"><a href="">Quality Thoughts</a></li>
+        <li class="breadcrumb-item active" aria-current="page">Student Details</li>      
+      </ol>
+    </nav>
+  </div>
+  <!-- /Breadcrumb -->
+{% endblock %}
+
+{% block content %}
+<section class="hk-sec-wrapper" >
+  <div class="row">
+    <div class="col">
+      
+    </div>
+  
+    <div class="button_operations col-auto ml-auto p-0 mb-3 mr-3 d-flex justify-content-end"  id="button_operations">
+        
+    </div>
+    <div class="d-flex justify-content-end">
+      <a href='#' type="button" class="btn btn-success ml-auto mr-3 mb-3"><i class="fa fa-print"></i> Print</a>
+    </div>
+  </div>
+    
+  <div class="row">
+    <div class="col-sm">
+      <div class="table-wrap">
+        <table
+          id="datable_1"
+          class="table table-hover w-100 display pb-30 table-bordered">
+        <thead class="bg-dark">
+          <tr>
+            <th class="text-white  text-center">
+              <p class="mr-5">All<input type="checkbox" class="form-check-input" style="margin-left:3px; margin-right: 20px;" id="checkAll"></p>
+            </th>
+            <th class="text-white">Student ID</th>
+            <th class="text-white">Student Name</th>
+            <th class="text-white">Technology</th>
+            <th class="text-white">Contact</th>
+            <th class="text-white">Email</th>
+            <th class="text-white">Gender</th>
+            <th class="text-white">year of Passing</th>
+            <th class="text-white">Experience</th>
+            <!-- <th class="text-white text-center">Action</th> -->
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><input type="checkbox" class="row-checkbox" data-id="{{i.id}}"></td>
+            <td>QT4545</td>
+            <td><a href="{% url 'student_Report' %}">Gogulakonda sai charan</a></td>
+            <td>Core Python</td>
+            <td>9390951447</td>
+            <td>saicharan@gmail.com</td>
+            <td>Male</td>
+            <td>2021</td>
+            <td>0-1</td>
+            <!-- <td class="text-center">
+              <button class="btn btn-primary m-1" data-toggle="modal" data-target="#EditCourse">
+                <i class="fa fa-pencil"></i>
+              </button>
+              <button class="btn btn-danger m-1" data-toggle="modal" data-target="#DeleteCourse">
+                <i class="fa fa-trash-o"></i>
+              </button>
+            </td> -->
+          </tr>
+
+          <tr>
+            <td><input type="checkbox" class="row-checkbox" data-id="{{i.id}}"></td>
+            <td>QT4545</td>
+            <td><a href="{% url 'student_Report' %}">Gogulakonda sai charan</a></td>
+            <td>Core Python</td>
+            <td>9390951447</td>
+            <td>saicharan@gmail.com</td>
+            <td>Male</td>
+            <td>2021</td>
+            <td>0-1</td>
+            <!-- <td class="text-center">
+              <button class="btn btn-primary m-1" data-toggle="modal" data-target="#EditCourse">
+                <i class="fa fa-pencil"></i>
+              </button>
+              <button class="btn btn-danger m-1" data-toggle="modal" data-target="#DeleteCourse">
+                <i class="fa fa-trash-o"></i>
+              </button>
+            </td> -->
+          </tr>
+
+        </tbody>
+      </table>
+    </div>
+  </div>
+ </div>
+</section>
+
+<!-- Edit modal start here -->
+
+<div
+  class="modal fade"
+  id="EditCourse"
+  tabindex="-1"
+  role="dialog"
+  aria-labelledby="EditCourse"
+  aria-hidden="true"
+>
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header bg-dark">
+        <h5 class="modal-title text-white">Edit Student Details</h5>
+        <button
+          type="button"
+          class="close"
+          data-dismiss="modal"
+          aria-label="Close"
+        >
+          <span aria-hidden="true" class="text-white">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form action="">
+          <div class="mb-3">
+            <label for="" class="form-label"
+              >Name <span class="text-danger">*</span></label>
+            <input
+              type="text"
+              placeholder="Ex: dhana, lakshmi"
+              class="form-control"
+            />
+          </div>
+          <div class="mb-3">
+            <label for="" class="form-label"
+              >Technology <span class="text-danger">*</span></label>
+            <input
+              type="text"
+              placeholder="Ex:Python, Java"
+              class="form-control"
+            />
+          </div>
+          <div class="mb-3">
+            <label for="" class="form-label"
+              >Contact <span class="text-danger">*</span></label>
+            <input
+              type="number"
+              placeholder="Ex: 9390562345"
+              class="form-control"
+            />
+          </div>
+          <div class="mb-3">
+            <label for="" class="form-label"
+              >Email <span class="text-danger">*</span></label>
+            <input
+              type="email"
+              placeholder="Ex: dhana@gmal.com"
+              class="form-control"
+            />
+          </div>
+          <div class="mb-3">
+            <label for="" class="form-label"
+              >Gender <span class="text-danger">*</span></label>
+            <input
+              type="text"
+              class="form-control select2"
+              placeholder="Ex:Female,Male"
+            />
+          </div>
+          <div class="mb-3">
+            <label for="" class="form-label"
+              >Year of Passing <span class="text-danger">*</span></label>
+            <input
+              type="text"
+              placeholder="Ex: 2023"
+              class="form-control"
+            />
+          </div>
+          <div class="mb-3">
+            <label for="" class="form-label"
+              >Experience <span class="text-danger">*</span></label>
+            <input
+              type="text"
+              class="form-control"
+              placeholder="Ex:0,1,2"
+            />
+          </div>
+          
+        </form>
+      </div>
+      <div class="modal-footer d-flex justify-content-center">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary">Save changes</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Edit modal end here -->
+
+<!-- Delete modal start here -->
+
+<div
+  class="modal fade"
+  id="DeleteCourse"
+  tabindex="-1"
+  role="dialog"
+  aria-labelledby="DeleteCourse"
+  aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header bg-danger">
+        <h5 class="modal-title text-white">Delete Student Details</h5>
+        <button
+          type="button"
+          class="close"
+          data-dismiss="modal"
+          aria-label="Close"
+        >
+          <span aria-hidden="true" class="text-white">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form action="">
+          <div class="mb-3 text-center">
+            <div class="d-flex justify-content-center mb-3">
+
+              <img src="../../static/triangle-exclamation-solid.svg" width="120" height="70" alt="">
+            </div>
+            Are Your sure You want to delete student details ?
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer d-flex justify-content-center">
+        <button
+          type="button"
+          class="btn btn-secondary"
+          data-dismiss="modal"
+          aria-label="Close"
+        >
+          Close
+        </button>
+        <button type="button" class="btn btn-danger">Delete</button>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- Delete modal end here -->
+
+
+{% endblock %}
+
+{% block scripts %}
+
+<script>
+  $(document).ready(function(){
+    function updateButtonOperations() {
+        var selectedCount = $('.row-checkbox:checked').length;
+        var buttonsHtml = '';
+
+        if (selectedCount >= 1) {
+            // When at least one checkbox is selected
+            var prospectId = $('.row-checkbox:checked').data('id');
+            buttonsHtml = `
+                
+                  <button
+                      class="btn btn-primary mr-1 "data-toggle="modal"data-target="#edit${prospectId}">
+                      <i class="fa fa-pencil"></i>
+                  </button>
+
+                  <button class="btn btn-danger " data-toggle="modal" data-target="#Delete${prospectId}">
+                      <i class="fa fa-trash"></i>
+                  </button>
+                
+            `;
+            if(selectedCount > 1) {
+                // When multiple checkboxes are selected, adjust the buttons accordingly
+                buttonsHtml = `
+                <button class="btn btn-danger" data-toggle="modal" data-target="#Delete${prospectId}">
+                      <i class="fa fa-trash"></i>
+                  </button>
+                
+                `;
+            }
+        }
+
+        $('#button_operations').html(buttonsHtml);
+    }
+
+    
+    // Attach change event listener to checkboxes for row selection
+    $(document).on('change', '.row-checkbox', function() {
+        // Check if all checkboxes are selected
+        var allChecked = $('.row-checkbox').length === $('.row-checkbox:checked').length;
+        $('#checkAll').prop('checked', allChecked);
+        updateButtonOperations();
+    });
+
+    // "Check All" functionality
+    $('#checkAll').change(function() {
+        $('.row-checkbox').prop('checked', this.checked);
+        updateButtonOperations();
+    });
+  })
+</script>
+
+
+{% endblock %}

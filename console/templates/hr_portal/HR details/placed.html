@@ -1,0 +1,61 @@
+{% extends 'base/base.html' %}
+
+{% block breadCrum %}
+
+  <!-- Breadcrumb -->
+  <div class="hk-pg-header d-flex justify-content-between mb-0">
+    <h4 class="hk-pg-title m-3">Students Placed for DOT NET Full Stack Developer [1]</h4>
+    <nav aria-label="breadcrumb">
+      <ol class="breadcrumb bg-transparent mb-0">
+        <li class="breadcrumb-item"><a href="">Quality Thoughts</a></li>
+        <li class="breadcrumb-item"><a href="{% url 'placement_dashboard' %}">Dashboard</a></li>
+        <li class="breadcrumb-item"><a href="{% url 'hr' %}">HR details</a></li>
+        <li class="breadcrumb-item"><a href="{% url 'jobdetails' %}">Job Details</a></li>
+        <li class="breadcrumb-item active" aria-current="page">Student Placed</li>      
+      </ol>
+    </nav>
+  </div>
+  <!-- /Breadcrumb -->
+{% endblock %}
+
+{% block content %}
+
+<section class="hk-sec-wrapper">
+  <div class="d-flex justify-content-end">
+    <a href='#' type="button" class="btn btn-success mr-2 mb-3"><i class="fa fa-download"></i> Print</a>  
+  
+  </div>
+    <div class="row">
+    <div class="col-sm">
+      <div class="table-wrap">
+        <table
+          id="datable_1"
+          class="table table-hover w-100 display pb-30 table-bordered">
+        <thead class="bg-dark" >
+          <tr>
+            <th class="text-white">S.No</th>
+            <th class="text-white">Name</th>
+            <th class="text-white">Job title</th>
+            <th class="text-white">Company</th>
+            <th class="text-white text-center">Profile Status</th> 
+            <th class="text-white">Placed by</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>1</td>
+            <td>Lokesh</td>
+            <td>Python Developer</td>
+            <td>Test Press Technology</td>
+            <td class="text-center"><a href=""><span class="badge badge-success badge-pill ">Placed</span></a></td>
+            <td>Anusha reddy</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+  </div>
+  
+  
+
+{% endblock %}

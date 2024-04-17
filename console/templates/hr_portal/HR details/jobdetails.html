@@ -1,0 +1,424 @@
+{% extends 'base/base.html' %}
+{% block breadCrum %}
+
+<!-- Breadcrumb -->
+<div class="hk-pg-header d-flex justify-content-between mb-0">
+  <h4 class="hk-pg-title m-3">Job posted by anusha reddy[1]</h4>
+  <nav aria-label="breadcrumb">
+    <ol class="breadcrumb bg-transparent mb-0">
+      <li class="breadcrumb-item"><a href="{% url 'placement_dashboard' %}">Dashboard</a></li>
+      <li class="breadcrumb-item"><a href="{% url 'hr' %}">HR details</a></li>
+      <li class="breadcrumb-item"><a href="">Quality Thoughts</a></li>
+      <li class="breadcrumb-item active" aria-current="page">posted jobs</li>
+    </ol>
+  </nav>
+</div>
+<!-- /Breadcrumb -->
+
+{% endblock %} 
+{% block content %}
+
+
+<section class="hk-sec-wrapper">
+  <div class="d-flex justify-content-end">
+    <a href='#' type="button" class="btn btn-success mr-2 mb-3"><i class="fa fa-download"></i> Print</a>  
+  </div>
+  <div class="row">
+    <div class="col-sm">
+      <div class="table-wrap">
+          <table id="datable_1" class="table table-hover w-100 display pb-30 table-bordered">
+              <thead class="bg-dark">
+                  <tr>
+                      <th class="text-white">Job ID</th>
+                      <th class="text-white">Job Title</th>
+                      <th class="text-white">Company Name</th>
+                      <th class="text-white">Location</th>
+                      <th class="text-white">Package</th>
+                      <th class="text-white">Last Date to Apply</th>
+                      <th class="text-white text-center">Placed/Applied</th>
+                  </tr>
+              </thead>
+              <tbody>
+                  <tr>
+                      <td>101</td>
+                      <td class="text-primary " style="cursor: -webkit-grab; cursor: grab";
+                      data-toggle="modal"data-target="#jobdescription">DOT NET Full Stack Developer</td>
+                      <td>Seguro Soft Technoligies</td>
+                      <td>Hyderabad</td>
+                      <td>4LPA</td>
+                      <td>30,march</td>
+                      <td class="text-center">
+                           <span class="bg-success rounded-pill py-1 px-2"><a href="{% url 'placed' %}" class="text-white">1</a></span> / <span class="bg-primary py-1 px-2 rounded-pill"><a href="{% url 'applied' %}" class="text-white">100</a></span>
+                      </td>                         
+                  </tr>
+              </tbody>
+          </table>
+      </div>
+  </div>
+</div>
+</section>
+
+<!-- create model start here -->
+<!-- 
+<div
+class="modal fade"
+id="addjob"
+tabindex="-1"
+role="dialog"
+aria-labelledby="addjob"
+aria-hidden="true"
+>
+<div class="modal-dialog  modal-dialog-centered" role="document">
+  <div class="modal-content">
+    <div class="modal-header bg-dark">
+      <h5 class="modal-title text-white">Add Job Post</h5>
+      <button
+        type="button"
+        class="close"
+        data-dismiss="modal"
+        aria-label="Close"
+      >
+        <span aria-hidden="true" class="text-white">&times;</span>
+      </button>
+    </div>
+    <div class="modal-body">
+      <form action="">
+        <div class="">
+          <label for="" class="form-label "
+            >Job Title <span class="text-danger">*</span></label
+          >
+          <input
+            type="text"
+            placeholder="Python Developer"
+            name="job title"
+            class="form-control mb-3"
+          />
+        <label for="" class="form-label"
+            >Company Name <span class="text-danger">*</span></label
+          >
+          <input
+            type="text"
+            placeholder="lokesh software solutions"
+            name="company"
+            class="form-control mb-3"
+          />
+        <label for="" class="form-label"
+            >Location <span class="text-danger">*</span></label
+          >
+          <input
+            type="number"
+            placeholder="Hyderabad"
+            name="location"
+            class="form-control mb-3"
+          />
+          <label for="" class="form-label"
+            >Package <span class="text-danger">*</span></label
+          >
+          <input
+            type="text"
+            placeholder="4LPA"
+            class="form-control mb-3"
+            name="package"
+          />
+          <label for="" class="form-label"
+            >Applied Date <span class="text-danger">*</span></label
+          >
+          <input
+            type="text"
+            placeholder="23,March"
+            class="form-control mb-3"
+            name="package"
+          />
+          <label for="" class="form-label"
+            >Last Date to Apply <span class="text-danger">*</span></label
+          >
+          
+          <input
+            type="text"
+            placeholder="30,march"
+            class="form-control mb-3"
+            name="lastdate"
+          />
+        </div>
+
+      </form>
+    </div>
+    <div class="modal-footer d-flex justify-content-center">
+      <button type="button" class="btn btn-primary">Submit</button>
+      <button type="reset" class="btn btn-secondary">Reset</button>
+    </div>
+  </div>
+</div>
+</div>  -->
+
+<!-- Create model end here -->
+
+<!-- Create modal sstarts here -->
+
+<div class="modal fade" 
+    id="addjob" 
+    tabindex="-1"
+    role="dialog" 
+    aria-labelledby="addjob" 
+    aria-hidden="true"
+ >
+  <div class="modal-dialog modal-lg  " role="document">
+    <div class="modal-content">
+      <div class="modal-header bg-dark">
+        <h4 class="modal-title text-white" >Add student</h4>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+        <span aria-hidden="true" class="text-white">&times;</span>
+      </div>
+
+      <div class="modal-body">
+        <div class="row">
+          <div class="col-xl-12">
+                  <div class="row ">
+                      <div class="col-sm">
+                          <div class="row">
+                              <div class="col-md-4 mb-3">
+                                  <label for="" class="form-label">Job ID <span class="text-danger">*</span></label>
+                                  <input type="text"placeholder="4545" class="form-control mb-3"/>
+                              </div>
+
+                              <div class="col-md-4">
+                                <label for="" class="form-label">Job Title <span class="text-danger">*</span></label>
+                                  <input type="text"placeholder="Full Stack developer" class="form-control mb-3"/>
+                              </div>
+
+                              <div class="col-md-4">
+                                <label for="" class="form-label">Company Name <span class="text-danger">*</span></label>
+                                <input type="text"placeholder="TCS" class="form-control mb-3"/>
+                              </div>
+                          </div>
+      
+
+
+                          <div class="row">
+                              <div class="col-sm">
+                                <div class="row">
+                                  <div class="col-md-4 mb-3">
+                                      <label for="" class="form-label">Job Category <span class="text-danger">*</span></label>
+                                      <input type="text"placeholder="Technical" class="form-control mb-3"/>
+                                  </div>
+                                  <div class="col-md-4">
+                                    <label for="" class="form-label">Experience <span class="text-danger">*</span></label>
+                                      <input type="text"placeholder="1-2 years" class="form-control mb-3"/>
+                                  </div>
+                                  <div class="col-md-4">
+                                    <label for="" class="form-label">Qualification <span class="text-danger">*</span></label>
+                                      <input type="text"placeholder="Btech" class="form-control mb-3"/>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+      
+
+
+                          <div class="row">
+                            <div class="col-sm">
+                              <div class="row">
+                                <div class="col-md-4 mb-3" >
+                                  <label for="" class="form-label">Skills <span class="text-danger">*</span></label>
+                                  <input type="text"placeholder="Python, django" class="form-control mb-3"/>
+
+                                  
+                                
+                                </div>
+                                <div class="col-md-4">
+                                  <label for="" class="form-label">Role <span class="text-danger">*</span></label>
+                                  <input type="text"placeholder="Python Developer" class="form-control"/>
+                                </div>
+                                <div class="col-md-4">
+                                  <label for="" class="form-label">Salary <span class="text-danger">*</span></label>
+                                  <input type="text"placeholder="4LPA" class="form-control mb-3"/>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+      
+
+
+
+
+                          <div class="row">
+                            <div class="col-sm">
+                              <div class="row">
+                                <div class="col-md-4 mb-3">
+                                   <label for="" class="form-label">Location <span class="text-danger">*</span></label>
+                                   <input type="text"placeholder="Hyderabad" class="form-control mb-3"/>
+                                </div>
+                               <div class="col-md-4">
+                                    <label for="" class="form-label">Email <span class="text-danger">*</span></label>
+                                    <input type="email"placeholder="Lokesh@gmail.com" class="form-control mb-3"/>
+
+                              </div>
+                              <div class="col-md-4">
+                                    <label for="" class="form-label">Contact Number <span class="text-danger">*</span></label>
+                                    <input type="number"placeholder="9876598765" class="form-control mb-3"/>
+                              </div>
+                              </div>
+                            </div>
+                          </div>
+      
+                          <div class="row">
+                            <div class="col-sm">
+                              <div class="row">
+                                  <div class="col-md-4 mb-3">
+                                        <label for="" class="form-label">Last Date to Apply <span class="text-danger">*</span></label>
+                                        <input type="text"placeholder="30,march" class="form-control mb-3"/>
+
+                                        
+                                  </div>
+                                  <div class="col-md-4">
+                                        <label for="" class="form-label">Package <span class="text-danger">*</span></label>
+                                        <input type="text"placeholder="4LPA" class="form-control mb-3"/>
+                                  </div>
+                                  <div class="col-md-4">
+                                      <label for="" class="form-label">Responsibilites <span class="text-danger">*</span></label>
+                                      <input type="text"placeholder="Assigning work to team" class="form-control mb-3"/>
+                                  </div>
+                              </div>
+                            </div>
+                          </div>
+
+                        </div>
+                      </div>
+                  </div>
+                </div>
+              </div>
+              
+
+              <div class="modal-footer d-flex justify-content-center">
+                <button type="button" class="btn btn-primary">Add Job Post</button>
+                <button type="reset" class="btn btn-secondary">Reset</button>
+              </div>
+              <!-- <div class="modal-footer justify-content-md-center d-grid gap-2 col-6 mx-auto ">
+                <button type="submit" class="btn btn-info btn-md btn-block" data-bs-dismiss="modal">ADD</button>
+              </div> -->
+            </div>
+          </div>
+        </div>        
+
+<!-- Create modal ends here -->
+
+<!-- Job description model starts here -->
+
+<div
+class="modal fade"
+id="jobdescription"
+tabindex="-1"
+role="dialog"
+aria-labelledby="jobdescription"
+aria-hidden="true"
+>
+<div class="modal-dialog modal-lg" role="document">
+  <div class="modal-content">
+    <div class="modal-header bg-dark">
+      <h5 class="modal-title text-white md-3">Job description</h5>
+      <button
+        type="button"
+        class="close"
+        data-dismiss="modal"
+        aria-label="Close"
+      >
+        <span aria-hidden="true" class="text-white">&times;</span>
+      </button>
+    </div>
+      <div class="bg-white ">
+        <h5 class="text-danger px-3 pt-2 pb-30 text-center" > QT Placements</h5>
+                  <div class="px-3"> 
+                      
+                  <table class="table table-bordered border">
+                    <tr>
+                      <td style="font-weight: bold; width: 200px;">Job ID</td>
+                      <!-- <td>:</td> -->
+                      <td >101</td>
+                    </tr>
+                    <tr>
+                      <td style="font-weight: bold;">Job Title</td>
+                      <!-- <td>:</td> -->
+                      <td  >DOT NET Full Stack Developer</td>
+                    </tr>
+                    <tr>
+                      <td style="font-weight: bold;">Job Category</td>
+                      <!-- <td>:</td> -->
+                      <td  >Technical</td>
+                    </tr>
+                    <tr>
+                      <td style="font-weight: bold;">Experience</td>
+                      <!-- <td>:</td> -->
+                      <td  >1-2 years</td>
+                    </tr>
+                    <tr>
+                      <td style="font-weight: bold;">Qualification</td>
+                      <!-- <td>:</td> -->
+                      <td  >B.tech</td>
+                    </tr>
+                    <tr>
+                      <td style="font-weight: bold;">Skills</td>
+                      <!-- <td>:</td> -->
+                      <td  >Python,Html,CSS,Bootstrap,Django</td>
+                    </tr>
+                    <tr>
+                      <td style="font-weight: bold;">Role</td>
+                      <!-- <td>:</td> -->
+                      <td  >Python developer</td>
+                    </tr>
+                    <tr>
+                      <td style="font-weight: bold;">Salary</td>
+                      <!-- <td>:</td> -->
+                      <td  >4LPA</td>
+                    </tr>
+                    <tr >
+                      <td style="font-weight: bold;">location</td>
+                      <!-- <td>:</td> -->
+                      <td  >Hyderabad</td>
+                    </tr>
+                    <tr>
+                      <td style="font-weight: bold;">Email</td>
+                      <!-- <td>:</td> -->
+                      <td  >lokesh@gmail.com</td>
+                    </tr>
+                    <tr>
+                      <td style="font-weight: bold;">Contact Number</td>
+                      <!-- <td>:</td> -->
+                      <td  >9876598765</td>
+                    </tr>
+                    <tr>
+                      <td style="font-weight: bold;">Last Date to Apply</td>
+                      <!-- <td>:</td> -->
+                      <td  >23,march</td>
+                    </tr>
+                    <tr>
+                      <td style="font-weight: bold;">Posted Date</td>
+                      <!-- <td>:</td> -->
+                      <td   >30,march</td>
+                    </tr>
+                    <tr>
+                      <td style="font-weight: bold;">Job description</td>
+                      <!-- <td>:</td> -->
+                      <td>must need skills on python,html,bootstrap and django and need strong communication skills and presentation skills</td>
+                    </tr>
+                    
+                  </table>
+                  <div class="text-center py-2">
+                    <button
+                      type="button"
+                      class="btn btn-dark"
+                      data-dismiss="modal"
+                      aria-label="Close"
+                    >
+                    Close
+                  </button>
+                </div>
+        </div> 
+    </div>
+    
+  </div>
+</div>
+</div>
+
+        <!-- Job description model ends here -->
+        
+{% endblock %}

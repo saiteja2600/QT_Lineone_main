@@ -87,3 +87,15 @@ class JobroleAdmin(admin.ModelAdmin):
   class Meta:
     model= Jobrole
 admin.site.register(Jobrole,JobroleAdmin)
+
+
+
+
+# employee list
+
+class EmployeeAdmin(admin.ModelAdmin):
+    list_display = ('Employee_id', 'first_name', 'last_name', 'personal_number', 'status')
+    list_filter = ('status', 'department_name', 'designation_name')
+    search_fields = ('Employee_id', 'first_name', 'last_name', 'personal_number')
+
+admin.site.register(Employee_model, EmployeeAdmin)

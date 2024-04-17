@@ -1,0 +1,144 @@
+{% extends 'base/base.html' %}
+
+{% block content %}
+<section class="hk-sec-wrapper">
+  <h5 class="hk-sec-title">Finantial Year 2023-2024</h5>
+  <div class="row">
+      <div class="col-sm">
+          <div class="accordion" id="accordion_1">
+              <div class="card">
+                  <div class="card-header border d-flex justify-content-between activestate">
+                      <a role="button" data-toggle="collapse" href="#collapse_1" aria-expanded="true"><span class="text-dark">March </span>Total Drives [20] Total Attended [10] Total Placed [2] Under Progress [8]  </a>
+                  </div>
+                  <div id="collapse_1" class="collapse show" data-parent="#accordion_1" role="tabpanel">
+                    <div class="card-body pa-15">
+                    <div class="row">
+                      <div class="col-sm">
+                        <div class="table-wrap">
+                            <table id="datable_1" class="table table-bordered display pb-30 table-hover w-100">
+                                <thead class="bg-dark">
+                                    <tr>
+                                        <th class="text-white">Date</th>
+                                        <th class="text-white">HR Name</th>
+                                        <th class="text-white">Job Title</th>
+                                        <th class="text-white">Eligible</th>
+                                        <th class="text-white">Under Progress</th>
+                                        <th class="text-white">Selected</th>
+                                        <th class="text-white">Rejected</th>
+                                        <th class="text-white">Created On</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                  <tr>
+                                    <td>1,Mar</td>
+                                    <td>Lokesh</td>
+                                    <td>Java Developer</td>
+                                    <td>100</td>
+                                    <td>25</td>
+                                    <td>10</td>
+                                    <td>15</td>
+                                    <td>12,Feb</td>
+                                  </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                      </div>
+                  </div>
+                  </div>
+              </div>
+            </div>
+              
+
+              <div class="card">
+                <div class="card-header d-flex justify-content-between border-bottom">
+                    <a class="collapsed border" role="button" data-toggle="collapse" href="#collapse_2" aria-expanded="false">
+                        <span class="text-dark">February </span>Total Drives [20] Total Attended [10] Total Placed [2] Under Progress [8]
+                    </a>
+                </div>
+                <div id="collapse_2" class="collapse" data-parent="#accordion_1">
+                    <div class="card-body pa-15">
+                        <div class="row">
+                            <div class="col-sm">
+                                <div class="table-wrap">
+                                    <table id="datable_1" class="table table-bordered table-hover w-100">
+                                        <thead class="bg-dark">
+                                            <tr>
+                                                <th class="text-white">Date</th>
+                                                <th class="text-white">HR Name</th>
+                                                <th class="text-white">Job Title</th>
+                                                <th class="text-white">Applied</th>
+                                                <th class="text-white">Qualified</th>
+                                                <th class="text-white">Selected</th>
+                                                <th class="text-white">Rejected</th>
+                                                <th class="text-white">Created On</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <td>1,Mar</td>
+                                                <td>Lokesh</td>
+                                                <td>Java Developer</td>
+                                                <td>100</td>
+                                                <td>25</td>
+                                                <td>10</td>
+                                                <td>15</td>
+                                                <td>12,Feb</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+
+              <div class="card">
+                  <div class="card-header d-flex justify-content-between">
+                      <a class="collapsed border" role="button" data-toggle="collapse" href="#collapse_3" aria-expanded="false"><span class="text-dark">January </span>Total Drives [20] Total Attended [10] Total Placed [2] Under Progress [8]</a>
+                  </div>
+                  <div id="collapse_3" class="collapse" data-parent="#accordion_1">
+                    <div class="card-body pa-15">
+                      <div class="row">
+                        <div class="col-sm">
+                          <div class="table-wrap">
+                              <table id="datable_1" class="table table-bordered table-hover w-100">
+                                  <thead class="bg-dark">
+                                      <tr>
+                                          <th class="text-white">Date</th>
+                                          <th class="text-white">HR Name</th>
+                                          <th class="text-white">Job Title</th>
+                                          <th class="text-white">Applied</th>
+                                          <th class="text-white">Qualified</th>
+                                          <th class="text-white">Selected</th>
+                                          <th class="text-white">Rejected</th>
+                                          <th class="text-white">Created On</th>
+                                      </tr>
+                                  </thead>
+                                  <tbody>
+                                    <tr>
+                                      <td>1,Mar</td>
+                                      <td>Lokesh</td>
+                                      <td>Java Developer</td>
+                                      <td>100</td>
+                                      <td>25</td>
+                                      <td>10</td>
+                                      <td>15</td>
+                                      <td>12,Feb</td>
+                                    </tr>
+                                  </tbody>
+                              </table>
+                          </div>
+                        </div>
+                    </div>
+                    </div>
+                  </div>
+              </div>
+              
+          </div>
+      </div>
+  </div>
+</section>
+
+{% endblock %}

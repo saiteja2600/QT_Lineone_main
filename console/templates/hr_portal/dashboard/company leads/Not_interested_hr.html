@@ -1,0 +1,169 @@
+{% extends 'base/base.html' %}
+{% block title %}QTLineone | Student Details{% endblock %}
+{% block breadCrum %}
+
+
+  <!-- Breadcrumb -->
+  <div class="hk-pg-header d-flex justify-content-between mb-0">
+    <h4 class="hk-pg-title m-3">Not Confirmed Leads</h4>
+    <nav aria-label="breadcrumb">
+      <ol class="breadcrumb bg-transparent mb-0">
+        <li class="breadcrumb-item"><a href="{% url 'placement_dashboard' %}">Dashboard</a></li>
+        <li class="breadcrumb-item"><a href="">Quality Thoughts</a></li>
+        <li class="breadcrumb-item active" aria-current="page">Not Confirmed Leads</li>
+      </ol>
+    </nav>
+  </div>
+  <!-- /Breadcrumb -->
+{% endblock %}
+
+{% block content %}
+
+<section class="hk-sec-wrapper">
+  <div class="row">
+      <div class="col">
+
+      </div>
+
+      <div class="button_operations col-auto ml-auto p-0 mb-3 d-flex justify-content-end"  id="button_operations">
+      </div>
+      <div class="d-flex justify-content-end">
+        <a href='#' type="button" class="btn btn-secondary mr-3 mb-3"><i class="fa fa-file-excel"></i>  Excel</a>
+       </div>
+      </div>
+
+
+
+<div class="row">
+  <div class="col-sm">
+    <div class=" table-wrap">
+      <table
+      id="datable_1"
+      class="table table-hover w-100 display pb-30 table-bordered">
+      <thead class="bg-dark">
+        <tr>
+          <tr>
+            <th class="text-white  text-center">
+              <p class="mr-5">All<input type="checkbox" class="form-check-input" style="margin-left:3px; margin-right: 20px;" id="checkAll"></p>
+          </th>
+          <th class="text-white">S.No</th>
+          <th class="text-white">HR Name</th>
+          <th class="text-white">Company Name</th>
+          <th class="text-white">Website</th>
+          <th class="text-white text-center">Address</th>
+          <th class="text-white">Mobile Number</th>
+          <th class="text-white">Email</th>
+          <th class="text-white">Created On</th>
+          <th class="text-white">Lead By</th>
+          <th class="text-white">Status</th>
+
+
+        </tr>
+      </thead>
+      <tbody>
+
+          <tr>
+          <td><input type="checkbox" class="row-checkbox" data-id="{{i.id}}"></td>
+          <td>1</td>
+          <td>Seetha</td>
+          <td>Vsoft</td>
+          <td>www.Vsoft.com</td>
+          <td>Hyderabad</td>
+          <td>9391401399</td>
+         <td>vsoft@gmail.com</td>
+          <td>March 12,2024</td>
+          <td>Anusha</td>
+          <td style="text-align: center"><a href="" type="button" class="badge badge-primary badge-pill">Confirmed</a></td>
+
+        </tr>
+        <tr>
+          <td><input type="checkbox" class="row-checkbox" data-id="{{i.id}}"></td>
+          <td>1</td>
+          <td>Seetha</td>
+          <td>Vsoft</td>
+          <td>www.vsoft.com</td>
+          <td>Hyderabad</td>
+          <td>9391401399</td>
+         <td>vsoft@gmail.com</td>
+          <td>March 12,2024</td>
+          <td>Anusha</td>
+          <td style="text-align: center"><a href="" type="button" class="badge badge-primary badge-pill">Confirmed</a></td>
+
+        </tr>
+
+      </tbody>
+    </table>
+
+    </div>
+  </div>
+</div>
+</section>
+
+
+{% endblock %}
+
+
+
+{% block scripts %}
+
+<script>
+  $(document).ready(function(){
+    function updateButtonOperations() {
+        var selectedCount = $('.row-checkbox:checked').length;
+        var buttonsHtml = '';
+
+        if (selectedCount >= 1) {
+            // When at least one checkbox is selected
+            var prospectId = $('.row-checkbox:checked').data('id');
+            buttonsHtml = `
+
+
+                <select class="form-control select2 sm-3" aria-label="Default select example" name="category" data-trget='#update${prospectId}'  required>
+                  <option selected>Select</option>
+                <option value="1">HR Leads</option>
+                                                    <option value="2">JD Received/CL</option>
+                                                    <option value="3">Profile Sent</option>
+                                                    <option value="4">Interview Schedule</option>
+                                                    <option value="5">In Progress</option>
+                                                    <option value="5">Not Confirmed Leads</option>
+
+                </select>
+            <div class="px-3 ">
+            <button class="btn btn-primary">Update</button>
+            </div>
+
+            `;
+            // if(selectedCount > 1) {
+            //     // When multiple checkboxes are selected, adjust the buttons accordingly
+            //     buttonsHtml = `
+            //     <button class="btn btn-dark mr-2"><i class="fa fa-envelope"></i> Email</button>
+
+            //     `;
+            // }
+        }
+
+        $('#button_operations').html(buttonsHtml);
+    }
+
+
+    // Attach change event listener to checkboxes for row selection
+    $(document).on('change', '.row-checkbox', function() {
+        // Check if all checkboxes are selected
+        var allChecked = $('.row-checkbox').length === $('.row-checkbox:checked').length;
+        $('#checkAll').prop('checked', allChecked);
+        updateButtonOperations();
+    });
+
+    // "Check All" functionality
+    $('#checkAll').change(function() {
+        $('.row-checkbox').prop('checked', this.checked);
+        updateButtonOperations();
+    });
+  })
+
+
+
+</script>
+
+
+{% endblock %}

@@ -1,145 +1,186 @@
 {% extends 'base/base.html' %}
 
 {% block content %}
-<div>
-  <style type="text/css">
-    html, body, #container {
-    width: 100%;
-    height: 100%;
-    margin: 0;
-    padding: 0;
-}
-  </style>
-      <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+
+<section class="hk-sec-wrapper">
+  <div class="row">
+      <div class="col">
+        
+      </div>
+    
+      <div class="button_operations   col-auto ml-auto p-0 mb-3"  id="button_operations">
+          
+      </div>
+    </div>
 
 
-  <div id="anychart-embed-samples-bct-pyramid-chart-09" class="anychart-embed anychart-embed-samples-bct-pyramid-chart-09">
-<script src="https://cdn.anychart.com/releases/8.12.0/js/anychart-base.min.js?hcode=a0c21fc77e1449cc86299c5faa067dc4"></script>
-<script src="https://cdn.anychart.com/releases/8.12.0/js/anychart-pyramid-funnel.min.js?hcode=a0c21fc77e1449cc86299c5faa067dc4"></script>
-<script src="https://cdn.anychart.com/releases/8.12.0/js/anychart-exports.min.js?hcode=a0c21fc77e1449cc86299c5faa067dc4"></script>
-<script src="https://cdn.anychart.com/releases/8.12.0/js/anychart-ui.min.js?hcode=a0c21fc77e1449cc86299c5faa067dc4"></script>
-<div id="ac_style_samples-bct-pyramid-chart-09" style="display:none;">
-
+<div class="row">
+  <div class="col-sm">
+    <div class=" table-wrap">
+      <table
+      id="datable_1"
+      class="table table-hover w-100 display pb-30 table-bordered">
+      <thead class="bg-dark">
+        <tr>
+          <th class="text-white  text-center">
+            <p class="mr-5">All<input type="checkbox" class="form-check-input" style="margin-left:3px; margin-right: 20px;" id="checkAll"></p>
+            
+        </th>
+          <th class="text-white">Token ID</th>
+          <th class="text-white">Student Name</th>
+          <th class="text-white">Mobile No</th>
+          <th class="text-white">Email</th>
+          <th class="text-white">Course</th>
+          <th class="text-white">Training Type</th>
+          <th class="text-white">Lead Source</th>
+          <th class="text-white">Lead Stage</th>
+          <!-- <th class="text-white">Branch Name</th> -->
+          
+         
+          
+                        
+          
+        </tr>
+      </thead>
+      <tbody>
+       
+        <tr>
+        
+          <td><input type="checkbox" class="row-checkbox" data-id="{{i.id}}"></td>
+          
+          <td>kljslkgldfg</td>
+          <td>897986546546878</td>
+          <td>5sdgsdfgsdf</td>
+          <td>sdgsdfgdsgsdf</td>
+         
+          <td>gfjsfjasdkjf</td>
+          <td>fksjhfkjalsfkjasd</td>
+          <td>kashdfljkashfkjasd</td>
+          <td>kashdfljkashfkjasd</td>
+          
+          
+          </tr>
+          <tr>
+        
+            <td><input type="checkbox" class="row-checkbox" data-id="{{i.id}}"></td>
+            
+            <td>kljslkgldfg</td>
+            <td>897986546546878</td>
+            <td>5sdgsdfgsdf</td>
+            <td>sdgsdfgdsgsdf</td>
+           
+            <td>gfjsfjasdkjf</td>
+            <td>fksjhfkjalsfkjasd</td>
+            <td>kashdfljkashfkjasd</td>
+            <td>kashdfljkashfkjasd</td>
+            
+            
+            </tr>
+            <tr>
+        
+              <td><input type="checkbox" class="row-checkbox" data-id="{{i.id}}"></td>
+              
+              <td>kljslkgldfg</td>
+              <td>897986546546878</td>
+              <td>5sdgsdfgsdf</td>
+              <td>sdgsdfgdsgsdf</td>
+             
+              <td>gfjsfjasdkjf</td>
+              <td>fksjhfkjalsfkjasd</td>
+              <td>kashdfljkashfkjasd</td>
+              <td>kashdfljkashfkjasd</td>
+              
+              
+              </tr>
+              <tr>
+        
+                <td><input type="checkbox" class="row-checkbox" data-id="{{i.id}}"></td>
+                
+                <td>kljslkgldfg</td>  
+                <td>897986546546878</td>
+                <td>5sdgsdfgsdf</td>
+                <td>sdgsdfgdsgsdf</td>
+               
+                <td>gfjsfjasdkjf</td>
+                <td>fksjhfkjalsfkjasd</td>
+                <td>kashdfljkashfkjasd</td>
+                <td>kashdfljkashfkjasd</td>
+                
+                
+                </tr>
+                <tr>
+        
+                  <td><input type="checkbox" class="row-checkbox" data-id="{{i.id}}"></td>
+                  
+                  <td>kljslkgldfg</td>
+                  <td>897986546546878</td>
+                  <td>5sdgsdfgsdf</td>
+                  <td>sdgsdfgdsgsdf</td>
+                  <td>gfjsfjasdkjf</td>
+                  <td>fksjhfkjalsfkjasd</td>
+                  <td>kashdfljkashfkjasd</td>
+                  <td>kashdfljkashfkjasd</td>
+                  </tr>
+                  
+      </tbody>
+    </table>
+     
+    </div>
+  </div>
 </div>
-<script>(function(){
-function ac_add_to_head(el){
-  var head = document.getElementsByTagName('head')[0];
-  head.insertBefore(el,head.firstChild);
-}
-function ac_add_link(url){
-  var el = document.createElement('link');
-  el.rel='stylesheet';el.type='text/css';el.media='all';el.href=url;
-  ac_add_to_head(el);
-}
-function ac_add_style(css){
-  var ac_style = document.createElement('style');
-  if (ac_style.styleSheet) ac_style.styleSheet.cssText = css;
-  else ac_style.appendChild(document.createTextNode(css));
-  ac_add_to_head(ac_style);
-}
-ac_add_link('https://cdn.anychart.com/releases/8.12.0/css/anychart-ui.min.css?hcode=a0c21fc77e1449cc86299c5faa067dc4');
-ac_add_style(document.getElementById("ac_style_samples-bct-pyramid-chart-09").innerHTML);
-ac_add_style(".anychart-embed-samples-bct-pyramid-chart-09{width:600px;height:450px;}");
-})();</script>
-<div id="container">
-  <h3>Students placed progression</h3>
-</div>
+</section>
+{% endblock %}
+{% block scripts %}
+
 <script>
-anychart.onDocumentReady(function () {
-  
-  // create a chart and set the data
-  var chart = anychart.pyramid([
-    {name: "Applied", value: 5, custom_field: "info 1"},
-    {name: "Qualified", value: 75, custom_field: "info 1"},
-    {name: "Placed", value: 10, custom_field: "info 1"},
-    {name: "Not Placed", value: 15, custom_field: "info 1"}
-  ]);
+  $(document).ready(function(){
+    function updateButtonOperations() {
+        var selectedCount = $('.row-checkbox:checked').length;
+        var buttonsHtml = '';
 
-  // configure labels
-  chart.labels().format("{%name}: {%yPercentOfTotal}%");
+        if (selectedCount >= 1) {
+            // When at least one checkbox is selected
+            var prospectId = $('.row-checkbox:checked').data('id');
+            buttonsHtml = `
+                <button class="btn btn-info mr-2 demo-details" data-target="#Democourse${prospectId}"><i class="fa fa-plus-circle"></i> Add Lead stage</button>
+                <button class="btn btn-dark mr-2 view-details" data-target="#submitmodal${prospectId}"><i class="fa fa-send-o"></i> Send To MQL</button>
+                <button class="btn btn-primary mr-2 view-admission" data-target="#sumbit_admissoinmodal${prospectId}"><i class="fa fa-user"></i> Admission</button>
+                <button class="btn btn-danger mr-2 view-spam" data-target="#spam${prospectId}"><i class="fa fa-info-circle"></i> Spam</button>
+                <button class="btn btn-primary m-1"data-toggle="modal data-target="#edit${prospectId}" "data-target="#Edithr">
+                  <i class="fa fa-pencil"></i>
+                </button>
+                
+            `;
+            if(selectedCount > 1) {
+                // When multiple checkboxes are selected, adjust the buttons accordingly
+                buttonsHtml = `
+                <button class="btn btn-dark mr-2"><i class="fa fa-envelope"></i> Email</button>
+                        <button class="btn btn-success mr-2"><i class="fa fa-phone"></i> WhatsApp</button>
+                        <button class="btn btn-info mr-2"><i class="fa fa-comments"></i> SMS</button>
+                        <button class="btn btn-danger mr-2"><i class="fa fa-trash-o"></i> Delete</button>
+                `;
+            }
+        }
 
-  // configure tooltips
-  chart.tooltip().format("{%yPercentOfTotal}% ({%value})\n{%custom_field}");
+        $('#button_operations').html(buttonsHtml);
+    }
 
-  // draw chart
-  chart.container("container");
-  chart.draw();
-});
+    
+    // Attach change event listener to checkboxes for row selection
+    $(document).on('change', '.row-checkbox', function() {
+        // Check if all checkboxes are selected
+        var allChecked = $('.row-checkbox').length === $('.row-checkbox:checked').length;
+        $('#checkAll').prop('checked', allChecked);
+        updateButtonOperations();
+    });
+
+    // "Check All" functionality
+    $('#checkAll').change(function() {
+        $('.row-checkbox').prop('checked', this.checked);
+        updateButtonOperations();
+    });
+  })
 </script>
 
-
-
-<style type="text/css">
-  html, body, #container {
-  width: 100%;
-  height: 100%;
-  margin: 0;
-  padding: 0;
-}
-</style>
-    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
-
-
-<div id="anychart-embed-samples-bct-pyramid-chart-09" class="anychart-embed anychart-embed-samples-bct-pyramid-chart-09">
-<script src="https://cdn.anychart.com/releases/8.12.0/js/anychart-base.min.js?hcode=a0c21fc77e1449cc86299c5faa067dc4"></script>
-<script src="https://cdn.anychart.com/releases/8.12.0/js/anychart-pyramid-funnel.min.js?hcode=a0c21fc77e1449cc86299c5faa067dc4"></script>
-<script src="https://cdn.anychart.com/releases/8.12.0/js/anychart-exports.min.js?hcode=a0c21fc77e1449cc86299c5faa067dc4"></script>
-<script src="https://cdn.anychart.com/releases/8.12.0/js/anychart-ui.min.js?hcode=a0c21fc77e1449cc86299c5faa067dc4"></script>
-<div id="ac_style_samples-bct-pyramid-chart-09" style="display:none;">
-
-</div>
-<script>(function(){
-function ac_add_to_head(el){
-var head = document.getElementsByTagName('head')[0];
-head.insertBefore(el,head.firstChild);
-}
-function ac_add_link(url){
-var el = document.createElement('link');
-el.rel='stylesheet';el.type='text/css';el.media='all';el.href=url;
-ac_add_to_head(el);
-}
-function ac_add_style(css){
-var ac_style = document.createElement('style');
-if (ac_style.styleSheet) ac_style.styleSheet.cssText = css;
-else ac_style.appendChild(document.createTextNode(css));
-ac_add_to_head(ac_style);
-}
-ac_add_link('https://cdn.anychart.com/releases/8.12.0/css/anychart-ui.min.css?hcode=a0c21fc77e1449cc86299c5faa067dc4');
-ac_add_style(document.getElementById("ac_style_samples-bct-pyramid-chart-09").innerHTML);
-ac_add_style(".anychart-embed-samples-bct-pyramid-chart-09{width:600px;height:450px;}");
-})();</script>
-<div id="container">
-<h3>Students placed progression</h3>
-</div>
-<script>
-anychart.onDocumentReady(function () {
-
-// create a chart and set the data
-var chart = anychart.pyramid([
-  {name: "Applied", value: 5, custom_field: "info 1"},
-  {name: "Qualified", value: 75, custom_field: "info 1"},
-  {name: "Placed", value: 10, custom_field: "info 1"},
-  {name: "Not Placed", value: 15, custom_field: "info 1"}
-]);
-
-var chart = anychart.pyramid([
-  {name: "Applied", value: 5, custom_field: "info 1"},
-  {name: "Qualified", value: 75, custom_field: "info 1"},
-  {name: "Placed", value: 10, custom_field: "info 1"},
-  {name: "Not Placed", value: 15, custom_field: "info 1"}
-]);
-
-// configure labels
-chart.labels().format("{%name}: {%yPercentOfTotal}%");
-
-// configure tooltips
-chart.tooltip().format("{%yPercentOfTotal}% ({%value})\n{%custom_field}");
-
-// draw chart
-chart.container("container");
-chart.draw();
-});
-</script>
-</div>
 
 {% endblock %}

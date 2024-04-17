@@ -1,0 +1,409 @@
+{% extends 'base/base.html' %}
+{% block title %}QTLineone | Book a Interview{% endblock %}
+{% block breadCrum %}
+
+<!-- Breadcrumb -->
+<div class="hk-pg-header d-flex justify-content-between mb-0">
+  <h4 class="hk-pg-title m-3">Pending Mocks</h4>
+  <nav aria-label="breadcrumb">
+    <ol class="breadcrumb bg-transparent mb-0">
+      <li class="breadcrumb-item"><a href="{% url 'faculty_dashboard' %}">Dashboard</a></li>
+      <li class="breadcrumb-item">Pending Mocks</li>
+    </ol>
+  </nav>
+</div>
+<!-- /Breadcrumb -->
+
+{% endblock %}
+{% block content %}
+ <!-- message here -->
+
+ {% if messages %}
+ {% for message in messages %}
+   {% if message.tags == "error" %}
+     <div class="h-25 alert alert-danger alert-dismissible fade show mt-2 h-25 text-center" role="alert">{{ message }}</div>
+   {% elif message.tags == "success" %}
+     <div class="h-25 alert alert-success alert-dismissible fade show mt-2 h-25 text-center" role="alert">{{ message }}</div>
+     {% else %}
+    <div class="h-25 alert alert-info alert-dismissible fade show mt-2 h-25 text-center" role="alert">{{ message }}</div>
+    {% endif %}
+   {% endfor %}
+ {% endif %}
+
+<!-- message end here -->
+<section class="hk-sec-wrapper">
+  <div class="">
+    <a href='#' type="button" class="btn btn-success mr-2 mb-3"><i class="glyphicon glyphicon-export"></i> Export</a>
+    <button
+      type="button"
+      class="btn btn-secondary mr-2 mb-3"
+      data-toggle="modal"
+      data-target="#UploadBookInterview"
+    >
+    <i class="glyphicon glyphicon-import"></i> Import
+    </button>
+  </div>
+
+
+    <br>
+    <!-- Tabl Start  here -->
+      <div class="row">
+        <div class="col-sm">
+          <div class="table-wrap">
+            <table id="datable_1" class="table table-hover w-100  pb-30 table-bordered">
+              <thead class="bg-dark">
+                <tr>
+                  <th class="text-white">S.no</th>
+                  <th class="text-white text-center">Student</th>
+                  <th class="text-white text-center">Course</th>
+                  <th class="text-white text-center" >Booked Slot</th>
+                  <th class="text-white text-center" >Resume</th>
+
+                </tr>
+              </thead>
+              <tbody>
+
+                <tr>
+                  <td>1</td>
+                  <td class="text-center">vijaya</td>
+                    <td class="text-center">Java</td>
+                  <td class="text-center">March 03,2024 11:00 am</td>
+                  <td class="text-center">
+                    <a href="" title=""><img src="/static/media/pdf.png" width="35" alt="Student resume" /></a>
+                    </td>
+
+
+                </tr>
+                  <tr>
+                  <td>2</td>
+                  <td class="text-center">vijaya</td>
+                    <td class="text-center">Python</td>
+                  <td class="text-center">March 03,2024 11:00 am</td>
+                 <td class="text-center">
+                    <a href="" title=""><img src="/static/media/pdf.png" width="35" alt="Student resume" /></a>
+                    </td>
+
+                </tr>
+                  <tr>
+                  <td>3</td>
+                  <td class="text-center">vijaya</td>
+                    <td class="text-center">.Net</td>
+                  <td class="text-center">March 03,2024 11:00 am</td>
+                 <td class="text-center">
+                    <a href="" title=""><img src="/static/media/pdf.png" width="35" alt="Student resume" /></a>
+                    </td>
+
+
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+      <!-- Table End here -->
+
+</section>
+
+<!--  Create Book Interview model start here -->
+
+<div
+  class="modal fade"
+  id="BookInterview"
+  tabindex="-1"
+  role="dialog"
+  aria-labelledby="BookInterview"
+  aria-hidden="true"
+>
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header bg-dark">
+        <h5 class="modal-title text-white">Book an Interview</h5>
+        <button
+          type="button"
+          class="close"
+          data-dismiss="modal"
+          aria-label="Close"
+        >
+          <span aria-hidden="true" class="text-white">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form action="" method="post" enctype="multipart/form-data" id="BookInterview_add">
+          {% csrf_token %}
+          <section class="">
+
+            <div class="heading" style="padding-bottom:10px;">
+            </div>
+               <form action="" method="post" id="">
+
+                <div class="container-fluid">
+
+                        <div class="mb-3">
+                        <div class="form-group">
+                              <label for="" class="form-label">Course <span class="text-danger">*</span></label>
+                              <select class="form-control custom-select select2" name="course_name" >
+                                <option value="" disabled selected >Please Select</option>
+                                <option value="1">Python</option>
+                                <option value="2">Java</option>
+                                <option value="2">.Net</option>
+                                <option value="2">AWS</option>
+                              </select>
+                            </div>
+                        </div>
+                         <div class="mb-3">
+                            <div class="form-group">
+                              <label for="" class="form-label">Specialization <span class="text-danger">*</span></label>
+                              <select class="form-control custom-select select2" name="specialization_name" >
+                                <option value="" disabled selected >Please Select</option>
+                                <option value="1">Full Stack</option>
+                                <option value="2">Java Full Stack</option>
+                              </select>
+                            </div>
+                            </div>
+                          <div class="mb-3">
+                          <div class="form-group">
+                              <label for="" class="form-label">Faculty <span class="text-danger">*</span></label>
+                                <select class="form-control custom-select select2" name="faculty_name" >
+                                <option value="" disabled selected >Please Select</option>
+                                <option value="1">vijaya</option>
+                                <option value="2">Rashmika</option>
+                                <option value="3">Rajesh</option>
+                                <option value="">shylesh</option>
+                                <option value="">Adil</option>
+                                <option value="">Chinmai</option>
+                              </select>
+                            </div>
+                          </div>
+                            <div class="mb-3">
+                              <div class="form-group">
+                              <label for="" class="form-label">Interview Slot <span class="text-danger">*</span></label>
+                               <select class="form-control custom-select select2" name="interview_slot" >
+                                <option value="" disabled selected >Please Select</option>
+                                <option value="1">Date Time of faculty</option>
+                                <option value="2">Date Time of faculty</option>
+                              </select>
+
+                            </div>
+                            </div>
+                            <div class="mb-3 form-group">
+                              <label for="" class="form-label">Attach Resume <span class="text-danger">*</span></label>
+                              <div class="row">
+                                  <div class="col-sm">
+                                      <form id="uploadForm"> <!-- Add an ID to the form for validation -->
+                                          <div class="form-group mb-0">
+                                              <div class="fileinput fileinput-new input-group" data-provides="fileinput">
+                                                  <div class="input-group-prepend">
+                                                      <span class="input-group-text">Upload</span>
+                                                  </div>
+                                                  <div class="form-control text-truncate" data-trigger="fileinput">
+                                                      <i class="glyphicon glyphicon-file fileinput-exists"></i>
+                                                      <span class="fileinput-filename"></span>
+                                                  </div>
+                                                  <span class="input-group-append">
+                                                      <span class="btn btn-primary btn-file">
+                                                          <span class="fileinput-new">Select file</span>
+                                                          <span class="fileinput-exists">Change</span>
+                                                          <!-- Add the name attribute to the file input field -->
+                                                          <input type="file" name="resume" id="resume">
+                                                      </span>
+                                                      <a href="#" class="btn btn-secondary fileinput-exists" data-dismiss="fileinput">Remove</a>
+                                                  </span>
+                                              </div>
+                                              <div id="resume_upload"></div>
+                                          </div>
+                                      </form>
+                                  </div>
+                              </div>
+                          </div>
+
+
+                          </div>
+                          <div class="modal-footer d-flex justify-content-center mt-20">
+                            <button type="submit" class="btn btn-primary">Submit</button>
+                            <button type="reset" class="btn btn-secondary">Reset</button>
+                          </div>
+                   </form>
+          </section>
+
+        </form>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<!-- Create Book Interview model end here -->
+
+
+
+
+<!-- Upload Book Interview  model start here  -->
+
+<div
+  class="modal fade"
+  id="UploadBookInterview"
+  tabindex="-1"
+  role="dialog"
+  aria-labelledby="UploadBookInterview"
+  aria-hidden="true"
+>
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header bg-dark">
+        <h5 class="modal-title text-white">Upload File</h5>
+        <button
+          type="button"
+          class="close"
+          data-dismiss="modal"
+          aria-label="Close"
+        >
+          <span aria-hidden="true" class="text-white">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form action="{% url 'branch_import' %}" method="post" id="Uploadfile"  enctype="multipart/form-data">
+          {% csrf_token %}
+          <input type="file" id="input-file-now" class="dropify" name="branch_file" accept=".csv" >
+          <div id="error-file"></div>
+          <div class="modal-footer d-flex justify-content-center">
+            <button type="submit" class="btn btn-primary">Submit</button>
+            <button
+              type="button"
+              class="btn btn-secondary"
+              data-dismiss="modal"
+              aria-label="Close"
+            >
+              Close
+            </button>
+          </div>
+        </form>
+
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<!-- Upload Book Interview  model end here -->
+
+{% endblock %}
+
+
+{% block scripts %}
+<script>
+  $(document).ready(function () {
+    //validationf for special charector
+    $.validator.addMethod("noSpecialChars", function (value, element) {
+      return /^[a-zA-Z0-9\s]*$/.test(value);
+    }, "Special characters are not allowed.");
+    //no numbers
+    $.validator.addMethod("noNumbers", function (value, element) {
+      return !/\d/.test(value);
+    }, "Numbers are not allowed in the course name.");
+
+    $.validator.addMethod("selectRequired", function (value, element) {
+      return value !== "" && value !== null && value !== "0";
+    },
+      "Please select an option."
+    );
+    $.validator.setDefaults({
+      errorPlacement: function(error,element){
+        if (element.attr('name') === 'resume'){
+          error.appendTo("#resume_upload");
+        }
+        else{ error.insertAfter(element);}
+      }
+    })
+
+
+    $("#BookInterview_add").validate({
+      rules: {
+        course_name: {
+
+          selectRequired: true,
+        },
+        specialization_name: {
+          selectRequired: true,
+
+        },
+        faculty_name: {
+          selectRequired: true,
+
+        },
+        interview_slot: {
+          selectRequired: true,
+
+        },
+        resume:{
+          required:true,
+          accept:'pdf',
+        }
+
+
+      },
+      messages: {
+        course_name: {
+          selectRequired: "Please Select course Name",
+        },
+        specialization_name: {
+          selectRequired: "Please Select Specialization Name",
+
+        },
+        faculty_name: {
+          selectRequired:" Please Select Faculty Name"
+        },
+        interview_slot:{
+          selectRequired:'Please Select Interview Slot'
+        },
+        resume:{
+          required:" please upload your Resume",
+          accept:"only PDF are allowed"
+        }
+
+      },
+
+      submitHandler: function (form) {
+        form.submit();
+      },
+
+    });
+  });
+
+  $.validator.addMethod("pdfOnly", function (value, element) {
+      // Check if the file extension is pdf
+      return this.optional(element) || /\.(pdf)$/i.test(value);
+    }, "Please select a PDF file.");
+</script>
+
+<script>
+  function validateUploadForm(form) {
+    $(form).find('#input-file-now').on('change', function () {
+      var file = this.files[0];
+      var fileExt = file.name.split('.').pop().toLowerCase();
+
+      if (fileExt === 'csv') {
+        $(form).find('button[type="submit"]').prop('disabled', false);
+        $(form).find('#error-file').html('');
+      } else {
+        $(form).find('button[type="submit"]').prop('disabled', true);
+        $(form).find('#error-file').html('<span style="color: red;">Only CSV files are allowed.</span>');
+      }
+    });
+
+    $(form).on('submit', function (e) {
+      var file = $(form).find('#input-file-now')[0].files[0];
+
+      if (!file) {
+        e.preventDefault();
+        $(form).find('#error-file').html('<span style="color: red;">Please select a csv file.</span>');
+      }
+    });
+  }
+
+  $('#UploadBookInterview').on('shown.bs.modal', function () {
+    validateUploadForm($(this).find('form'));
+  });
+</script>
+
+
+{% endblock %}

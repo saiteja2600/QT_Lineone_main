@@ -1,0 +1,163 @@
+{% extends 'base/base.html' %}
+{% block title %}QTLineone | Courses{% endblock %}
+{% block breadCrum %}
+
+<!-- Breadcrumb -->
+<div class="hk-pg-header d-flex justify-content-between mb-0">
+  <h4 class="hk-pg-title m-3">Dashboard</h4>
+    </div>
+{% endblock %}
+{% block content %}
+
+ {% if messages %}
+ {% for message in messages %}
+   {% if message.tags == "error" %}
+     <div class="h-25 alert alert-danger alert-dismissible fade show mt-2 h-25 text-center" role="alert">{{ message }}</div>
+   {% elif message.tags == "success" %}
+     <div class="h-25 alert alert-success alert-dismissible fade show mt-2 h-25 text-center" role="alert">{{ message }}</div>
+     {% else %}
+    <div class="h-25 alert alert-info alert-dismissible fade show mt-2 h-25 text-center" role="alert">{{ message }}</div>
+    {% endif %}
+   {% endfor %}
+ {% endif %}
+
+<!-- message end here -->
+
+
+<div class="container-fluid mt-3">
+    <div class="row ">
+
+            <div class="col-12   col-sm-9 col-md-6 col-lg-3 col-xl-3 ">
+                <div class="card mt-2 text-black" >
+                    <div class="px-1 py-0.4 d-flex justify-content-around ">
+
+                        <div class="card-body">
+                          <span class="d-block font-13 font-weight-500 text-dark text-uppercase">Total No. of Mock Interviews Scheduled</span>
+                          <div class="d-flex align-items-center justify-content-between position-relative">
+                            <div class="px-25 ">
+                              <span class="d-block display-5 font-weight-400 text-dark"> <span class="counter-anim">12</span></span>
+                            </div>
+                            <div class="px-20 ">
+                                <span style="font-size: 40px;  color: #54B4D3; "><i class="fa fa-calendar-check"></i></span>
+                            </div>
+                            </div>
+                          </div>
+                    </div>
+                    <div class="col-12 d-flex align-items-center justify-content-between mt-0 ">
+                         <span class="text-black font-13 font-weight-600">Today's Mocks:<span class="text-pumpkin font-13 font-weight-600">2</span></span>
+                        <span class="text-black font-13 font-weight-600 ">Upcoming Mocks:<span class="text-success font-13 font-weight-600">10</span></span>
+                    </div>
+                    <div class="card-footer border-0 py-1 text-center bg-info ">
+                        <a href="{% url 'faculty_schedule_list' %}" class="text-white text-decoration-none" style="text-align: center; padding-left: 3pc;">More info &nbsp;<span> <i class="fa fa-angle-double-right" style="size: 55%;"></i></span></a>
+                    </div>
+                </div>
+            </div>
+
+
+            <div class="col-12   col-sm-9 col-md-6 col-lg-3 col-xl-3 ">
+                <div class="card mt-2 text-black" >
+                    <div class="px-1 py-0.4 d-flex justify-content-around ">
+
+                        <div class="card-body">
+                          <span class="d-block font-13 font-weight-500 text-dark text-uppercase">Total No. of Mock Interview Completed</span>
+                          <div class="d-flex align-items-center justify-content-between position-relative">
+                            <div class="px-25 ">
+                              <span class="d-block display-5 font-weight-400 text-dark"> <span class="counter-anim">9</span></span>
+                            </div>
+                            <div class="px-20 ">
+                                <span style="font-size: 40px;  color: #14A44D; "><i class="glyphicon glyphicon-ok"></i></span>
+                            </div>
+                            </div>
+                          </div>
+                    </div>
+                    <div class="col-12 d-flex align-items-center justify-content-between mt-0 ">
+                        <span class="text-black font-13 font-weight-600">Today's Mocks:<span class="text-pumpkin font-13 font-weight-600">2</span></span>
+                        <span class="text-black font-13 font-weight-600 ">Upcoming Mocks:<span class="text-success font-13 font-weight-600">10</span></span>
+                    </div>
+                    <div class="card-footer border-0 py-1 text-center bg-success ">
+                        <a href="{% url 'faculty_completed_mocklist' %}" class="text-white text-decoration-none" style="text-align: center; padding-left: 3pc;">More info &nbsp;<span> <i class="fa fa-angle-double-right" style="size: 55%;"></i></span></a>
+                    </div>
+                </div>
+            </div>
+
+
+
+          <div class="col-12   col-sm-9 col-md-6 col-lg-3 col-xl-3 ">
+                <div class="card mt-2 text-black" >
+                    <div class="px-1 py-0.4 d-flex justify-content-around ">
+
+                        <div class="card-body">
+                          <span class="d-block font-13 font-weight-500 text-dark text-uppercase">Total No. of Pending Interview </span>
+                          <div class="d-flex align-items-center justify-content-between position-relative">
+                            <div class="px-25 ">
+                              <span class="d-block display-5 font-weight-400 text-dark"> <span class="counter-anim">9</span></span>
+                            </div>
+                            <div class="px-20 ">
+                                <span style="font-size: 40px;  color: #EB5406 "><i class="fa fa-spinner"></i></span>
+                            </div>
+                            </div>
+                          </div>
+                    </div>
+                    <div class="col-12 d-flex align-items-center justify-content-between mt-0 ">
+                            <span class="text-black font-13 font-weight-600">Today's Mocks:<span class="text-pumpkin font-13 font-weight-600">2</span></span>
+                        <span class="text-black font-13 font-weight-600 ">Upcoming Mocks:<span class="text-success font-13 font-weight-600">10</span></span>
+                    </div>
+                    <div class="card-footer border-0 py-1 text-center bg-pumpkin ">
+                        <a href="{% url 'faculty_pending_mocks' %}" class="text-white text-decoration-none" style="text-align: center; padding-left: 3pc;">More info &nbsp;<span> <i class="fa fa-angle-double-right" style="size: 55%;"></i></span></a>
+                    </div>
+                </div>
+            </div>
+
+
+
+     </div>
+</div>
+
+<!--Table starts here-->
+
+<section class="hk-sec-wrapper">
+  <div class="">
+
+  </div>
+    <h5>Upcoming Mocks Details</h5><br>
+
+  <div class="row">
+    <div class="col-sm">
+      <div class="table-wrap">
+        <table id="datable_1" class="table table-hover w-100 pb-30 table-bordered">
+          <thead class="bg-dark">
+            <tr>
+              <th class="text-white text-center">S.no</th>
+              <th class="text-white text-center">Name</th>
+              <th class="text-white text-center" >Email ID</th>
+              <th class="text-white text-center">Date Of Interview</th>
+              <th class="text-white text-center" >Resume</th>
+              <th class="text-white text-center">Action</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+                <td class="text-center">1</td>
+                <td class="text-center">Rahul</td>
+                <td class="text-center">Rahul5@gmail.com</td>
+                <td class="text-center">April 02,04,2024,10.30 a.m.</td>
+                <td class="text-center"> <a href="" title="Image from freeiconspng.com"><img src="https://www.freeiconspng.com/uploads/pdf-icon-png-pdf-zum-download-2.png" width="35" alt="Student resume" /></a></td>
+                <td class="text-center"><a href="#" class="btn btn-success badge text-bg-light square-pill">Active</a></td>
+            </tr>
+            <tr>
+                <td class="text-center">2</td>
+                <td class="text-center">chidrup</td>
+                <td class="text-center">chidrup2@gmail.com</td>
+                 <td class="text-center">April 05,04,2024,10.30 a.m.</td>
+                <td class="text-center"> <a href="" title="Image from freeiconspng.com"><img src="https://www.freeiconspng.com/uploads/pdf-icon-png-pdf-zum-download-2.png" width="35" alt="Student resume" /></a></td>
+                <td class="text-center"><a href="#" class="btn btn-success badge text-bg-light square-pill">Active</a></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+{% endblock %}

@@ -682,36 +682,7 @@
                         <!-- user interface end herer -->
                         <!-- follow ups start here -->
 
-                        <!-- <li class="nav-item">
-                            <a class="nav-link link-with-indicator" href="javascript:void(0);" data-toggle="collapse" data-target="#app_drp">
-                                <i class="ion ion-ios-call"></i>
-                                <span class="nav-link-text">Follow ups</span>
-                            </a>
-                            <ul id="app_drp" class="nav flex-column collapse collapse-level-1">
-                                <li class="nav-item">
-                                    <ul class="nav flex-column">
-                                        <li class="nav-item">
-                                            <a class="nav-link" href=""></a>
-                                        </li>
-                                        <li class="nav-item">
-                                            <a class="nav-link" href="{% url 'hr' %}">Placement Officer</a>
-                                        </li>
-                                        <li class="nav-item">
-                                            <a class="nav-link" href="{% url 'student_Details.html' %}">Students</a>
-                                        </li>
-                                        <li class="nav-item">
-                                            <a class="nav-link" href="{% url 'job_gallery.html' %}">Jobs Gallary</a>
-                                        </li>
-                                        <li class="nav-item">
-                                            <a class="nav-link" href="{% url 'student_filter.html' %}">Student Filter</a>
-                                        </li>
-                                        <li class="nav-item">
-                                            <a class="nav-link" href="{% url 'profile' %}">Profile Status</a>
-                                        </li>
-                                    </ul>
-                                </li>
-                            </ul>
-                        </li> -->
+
                         <li class="nav-item {% if request.resolver_match.url_name in "['lead_prospects', 'leads','mql','sql','request_discounts','opportunity','admission','spam']" %} active {% endif %}">
                             <a class="nav-link" href="{% url 'lead_prospects' %}">
                                 <i class="ion ion-ios-call"></i>
@@ -721,10 +692,37 @@
                         
 
 
-
-
-
                         <!-- follow ups end here -->
+                       <!-- Mocks  starts here -->
+                        <li class="nav-item">
+                          <a class="nav-link link-with-indicator" href="javascript:void(0);" data-toggle="collapse" data-target="#app_drp">
+                              <i class="fa fa-users fa-1x font-20"></i>
+                              <span class="nav-link-text">&nbsp;Mocks</span>
+                          </a>
+                          <ul id="app_drp" class="nav flex-column collapse collapse-level-1">
+                              <li class="nav-item">
+                                  <ul class="nav flex-column">
+                                      <li class="nav-item">
+                                          <a class="nav-link" href="{% url 'faculty_dashboard' %}">Dashboard</a>
+                                      </li>
+                                      <li class="nav-item">
+                                          <a class="nav-link" href="{% url 'faculty_slot' %}">Mocks Scheduling</a>
+                                      </li>
+                                      <li class="nav-item">
+                                          <a class="nav-link" href="{% url 'total_interviews' %}">Interviews</a>
+                                      </li>
+                                      <li class="nav-item">
+                                          <a class="nav-link" href="{% url 'reschedule' %}">Reschedule</a>
+                                      </li>
+
+                                  </ul>
+                              </li>
+                          </ul>
+                      </li>
+<!--                        Mocks ends here -->
+
+
+
 
 
 
@@ -741,13 +739,16 @@
                                             <a class="nav-link" href="{% url 'placement_dashboard' %}">Dashboard</a>
                                         </li>
                                         <li class="nav-item">
-                                            <a class="nav-link" href="{% url 'hr' %}">Placement Officer</a>
+                                            <a class="nav-link" href="{% url 'hr' %}">HR Details</a>
                                         </li>
                                         <li class="nav-item">
-                                            <a class="nav-link" href="{% url 'student_Details.html' %}">Students</a>
+                                            <a class="nav-link" href="{% url 'student_Details' %}">Students</a>
                                         </li>
                                         <li class="nav-item">
                                             <a class="nav-link" href="{% url 'job_gallery.html' %}">Jobs Gallary</a>
+                                        </li>
+                                        <li class="nav-item">
+                                            <a class="nav-link" href="{% url 'createvendor' %}">Create Vendor</a>
                                         </li>
                                         <li class="nav-item">
                                             <a class="nav-link" href="{% url 'student_filter.html' %}">Student Filter</a>
@@ -755,6 +756,11 @@
                                         <li class="nav-item">
                                             <a class="nav-link" href="{% url 'profile' %}">Profile Status</a>
                                         </li>
+                                        <li class="nav-item">
+                                            <a class="nav-link" href="{% url 'placementstatus' %}">Placement Status</a>
+                                        </li>
+
+
                                     </ul>
                                 </li>
                             </ul>

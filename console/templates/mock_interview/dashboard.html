@@ -1,0 +1,310 @@
+{% extends 'base/base.html' %}
+{% block title %}QTLineone | Faculty {% endblock %}
+{% block breadCrum %}
+
+<!-- Today interviews starts here -->
+
+<div class="hk-pg-header d-flex justify-content-between mb-0">
+  <h4 class="hk-pg-title m-3">Dashboard</h4>
+  <nav aria-label="breadcrumb">
+  </nav>
+</div>
+{% endblock %}
+
+
+
+
+
+{% block content %}
+
+{% if messages %}
+{% for message in messages %}
+{% if message.tags == "error" %}
+<div class="h-25 alert alert-danger alert-dismissible fade show mt-2 h-25 text-center" role="alert">{{ message }}</div>
+{% elif message.tags == "success" %}
+<div class="h-25 alert alert-success alert-dismissible fade show mt-2 h-25 text-center" role="alert">{{ message }}</div>
+{% else %}
+<div class="h-25 alert alert-info alert-dismissible fade show mt-2 h-25 text-center" role="alert">{{ message }}</div>
+{% endif %}
+{% endfor %}
+{% endif %}
+
+
+<div class="row d-flex justify-content-center mt-3">
+  <div class="col-sm-12 col-md-3 col-lg-3 col-xl-3">
+    <div class="card h-80">
+      <div class="card-body">
+        <div class="d-flex justify-content-between">
+          <div class="icon"><i class="fa fa-calendar-check font-45" style="color: #0dcaf0"></i></div>
+          <div class="content ">
+            <div class="d-flex flex-column justify-content-between ">
+              <span class="display-5 font-weight-400 text-dark"><span class="counter-anim">1404</span></span>
+              <span class="d-block font-14 font-weight-500 text-dark text-uppercase mb-8">STUDENTS BOOKED SLOTS</span>
+              <!-- <small class="d-block">This Week Slots-21</small>
+                <small class="d-block ">Ramaining slots-29</small> -->
+              <div class="d-flex justify-content-between mt-2">
+                <div>
+                  <span class="d-block font-12 text-dark font-weight-250">This Week Slots</span>
+                  <span class="d-block font-12 text-dark font-weight-250">Remaining slots</span>
+
+                </div>
+                <div>
+                  <span class=" d-block  text-success  font-12 font-weight-250">2120</span>
+                  <span class="d-block text-danger font-12 font-weight-250">29</span>
+
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="card-footer border-0 py-1 text-center text-white bg-info ">
+        <a href="#" class="text-white" style="padding-left: 3pc;">More info<span> <i
+              class="fa fa-angle-double-right"></i></span></a>
+
+      </div>
+    </div>
+  </div>
+
+
+
+  <div class="col-sm-12 col-md-3 col-lg-3 col-xl-3">
+    <div class="card h-80">
+      <div class="card-body ">
+        <div class="d-flex justify-content-between">
+          <div class="icon"><i class="fa fa-black-tie font-45" style="color:#ffc107"></i></div>
+          <div class="content">
+            <div class="d-flex flex-column justify-content-between pr-3">
+
+              <span class="display-5 font-weight-400 text-dark"><span class="counter-anim">14</span></span>
+              <span class="d-block font-14 font-weight-500 text-dark text-uppercase mb-8">AVAILABLE FACULTY</span>
+              <!-- <small class="d-block">This Week Slots-21</small>
+                      <small class="d-block">Ramaining slots-29</small> -->
+              <div class="d-flex justify-content-between mt-2">
+                <div>
+                  <span class="d-block font-12 text-dark font-weight-250">This Week faculty</span>
+                  <span class="d-block font-12 text-dark font-weight-250">Ramaining faciulty</span>
+
+                </div>
+                <div>
+                  <span class=" d-block  text-success  font-12 font-weight-250">21</span>
+                  <span class="d-block text-danger font-12 font-weight-250">29</span>
+
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="card-footer border-0 py-1 text-center bg-warning text-white ">
+        <a href="#" class="text-white " style="padding-left: 3pc;">More info<span> <i
+              class="fa fa-angle-double-right"></i></span></a>
+
+      </div>
+    </div>
+  </div>
+
+
+
+  <div class="col-sm-12 col-md-3 col-lg-3 col-xl-3">
+    <div class="card h-80">
+      <div class="card-body ">
+        <div class="d-flex justify-content-between ">
+          <div class="icon"><i class="glyphicon glyphicon-check font-45" style="color: #198754;"></i></div>
+          <div class="content">
+            <div class="d-flex flex-column justify-content-between ">
+
+              <span class="display-5 font-weight-400 text-dark"><span class="counter-anim">260</span></span>
+              <span class="d-block font-14 font-weight-500 text-dark text-uppercase mb-8">QUALIFIED STUDENTS</span>
+              <!-- <small class="d-block">Attended Students-21</small>
+                          <small class="d-block">Not Attended Students-29</small> -->
+              <div class="d-flex justify-content-between mt-2">
+                <div>
+                  <span class="d-block font-12 text-dark font-weight-250">No of Attended Students</span>
+                  <span class="d-block font-12 text-dark font-weight-250">Not Attended Students</span>
+
+                </div>
+                <div>
+                  <span class=" d-block  text-success  font-12 font-weight-250">2199</span>
+                  <span class="d-block text-danger font-12 font-weight-250">29</span>
+
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="card-footer border-0 py-1 text-center bg-success text-white ">
+        <a href="#" class="text-white " style="padding-left: 3pc;">More info<span> <i
+              class="fa fa-angle-double-right"></i></span></a>
+
+      </div>
+
+    </div>
+  </div>
+
+
+  <div class="col-sm-12 col-md-3 col-lg-3 col-xl-3">
+    <div class="card h-80">
+      <div class="card-body ">
+        <div class="d-flex justify-content-between">
+          <div class="icon"><i class="glyphicon glyphicon-remove font-45" style="color: red;"></i></div>
+          <div class="content">
+            <div class="d-flex flex-column justify-content-between">
+              <span class="display-5 font-weight-400 text-dark"><span class="counter-anim">60</span></span>
+              <span class="d-block font-14 font-weight-500 text-dark text-uppercase mb-8">NOT QUALIFIED STIUDENTS</span>
+              <!-- <small class="d-block">This Week Slots-21</small>
+                  <small class="d-block">Ramaining slots-29</small> -->
+              <div class="d-flex justify-content-between mt-2">
+                <div>
+                  <span class="d-block font-12 text-dark font-weight-250">This Week slots</span>
+                  <span class="d-block font-12 text-dark font-weight-250">This Week slots</span>
+
+                </div>
+                <div>
+                  <span class=" d-block  text-success  font-12 font-weight-250">12</span>
+                  <span class="d-block text-danger font-12 font-weight-250">21</span>
+                </div>
+              </div>
+            </div>
+
+          </div>
+
+        </div>
+      </div>
+      <div class="card-footer border-0 py-1 text-center bg-danger">
+        <a href="#" class="text-white" style="padding-left: 3pc;">More info<span> <i class="fa fa-angle-double-right"></i></span></a>
+
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<section class="hk-sec-wrapper">
+  <h4 class="hk-sec-title">Yearly Statics</h4>
+  <div class="row">
+      <div class="col-sm">
+          <div id="e_chart_5" class="echart" style="height:294px;"></div>
+      </div>
+  </div>
+
+
+
+
+{% endblock %}
+
+{% block scripts %}
+
+<!-- bar chart -->
+<!-- <script src="../../static/dist/js/barcharts-data.js"></script> -->
+<!-- matplot lib bargraph js  start here -->
+<script>
+  if ($('#e_chart_5').length > 0) {
+      var eChart_5 = echarts.init(document.getElementById('e_chart_5'));
+      var option4 = {
+          color: ['#00acf0', '#ffbf36', '#43BB62'],
+          tooltip: {
+              show: true,
+              trigger: 'axis',
+              backgroundColor: '#fff',
+              borderRadius: 6,
+              padding: 10,
+              textStyle: {
+                  color: '#324148',
+                  fontFamily: '"Roboto", sans-serif',
+                  fontSize: 12
+              }
+          },
+
+          grid: {
+              top: '10%',
+              left: '3%',
+              right: '4%',
+              bottom: '3%',
+              containLabel: true
+          },
+          xAxis: [
+              {
+                  type: 'category',
+                  data: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
+                  axisLine: {
+                      show: false
+                  },
+                  axisTick: {
+                      show: false
+                  },
+                  axisLabel: {
+                      textStyle: {
+                          color: '#5e7d8a'
+                      }
+                  }
+              }
+          ],
+          yAxis: [
+              {
+                  type: 'value',
+                  axisLine: {
+                      show: false
+                  },
+                  axisTick: {
+                      show: false
+                  },
+                  axisLabel: {
+                      textStyle: {
+                          color: '#5e7d8a'
+                      }
+                  },
+                  splitLine: {
+                      lineStyle: {
+                          color: '#eaecec',
+                      }
+                  }
+              }
+          ],
+          series: [
+              {
+                  name: '1',
+                  type: 'bar',
+                  barMaxWidth: 30,
+                  data: [320, 332, 301, 334, 390, 330, 320, 332, 301, 334, 390, 330],
+                  itemStyle: {
+                      normal: {
+                          barBorderRadius: [6, 6, 0, 0],
+                      }
+                  },
+              },
+              {
+                  name: '2',
+                  type: 'bar',
+                  barMaxWidth: 30,
+                  data: [120, 132, 101, 134, 90, 230, 210, 132, 101, 134, 90, 230],
+                  itemStyle: {
+                      normal: {
+                          barBorderRadius: [6, 6, 0, 0],
+                      }
+                  },
+              },
+              {
+                  name: '3',
+                  type: 'bar',
+                  barMaxWidth: 30,
+                  data: [220, 182, 191, 234, 290, 330, 310, 182, 191, 234, 290, 330],
+                  itemStyle: {
+                      normal: {
+                          barBorderRadius: [6, 6, 0, 0],
+                      }
+                  },
+              },
+
+          ]
+      };
+
+      eChart_5.setOption(option4);
+      eChart_5.resize();
+  }
+</script>
+<!-- matplot lib bargraph js end here -->
+
+{% endblock %}

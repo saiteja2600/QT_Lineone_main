@@ -99,10 +99,10 @@
                             <td> {{i.employee_type}} </td>
                             <td class="text-center">
                                 {% if i.status == 'Active' %}
-                                <a href="{% url 'employee_status' i.id %}"
+                                <a href="{% url 'employee_status1' i.id %}"
                                     class="btn btn-success badge text-bg-light rounded-pill">Active</a>
                                 {% else %}
-                                <a href="{% url 'employee_status' i.id %}"
+                                <a href="{% url 'employee_status1' i.id %}"
                                     class="btn btn-danger badge text-bg-light rounded-pill">Deactive</a>
                                 {% endif %}
 
@@ -623,6 +623,7 @@
                                 <label for="" class="form-label"><b>Nationality </b></label>
                                 <select class="form-control custom-select" name="nationality_edit">
                                     <option selected value="">Select Your Nationality</option>
+                                    
                                     <option value="India">India</option>
 
                                 </select>
@@ -714,6 +715,9 @@
                                     <option selected value="">Select Employee Type</option>
                                     {% for type in employee_type %}
                                     {% if type.status == 'Active' %}
+                                    {% if type.id == employees.employee_type_id %}
+                                    <option selected value="{{type.id}}">{{type.employee_type}} </option>
+                                    {% endif %}
                                     <option value="{{type.id}}">{{type.employee_type}} </option>
                                     {% endif %}
                                     {% endfor %}
@@ -728,7 +732,10 @@
                                     <option selected value="">Select Your Department</option>
                                     {% for departments in department %}
                                     {% if departments.status == 'Active' %}
-                                    <option value="{{departments.id}}">{{departments.department_name}}</option>
+                                    {% if departments.id == employees.department_id %}
+                                    <option selected value="{{departments.id}}" >{{departments.department_name}}</option>
+                                    {% endif %}
+                                    <option  value="{{departments.id}}" >{{departments.department_name}}</option>
                                     {% endif %}
                                     {% endfor %}
                                 </select>
@@ -756,6 +763,9 @@
                                     <option selected value="">Select Branch</option>
                                     {% for branches in branch %}
                                     {% if branches.status == 'Active' %}
+                                    {% if branches.id == employees.branch_id %}
+                                    <option selected value="{{branches.id}}">{{branches.branch_name}}</option>
+                                    {% endif %}
                                     <option value="{{branches.id}}">{{branches.branch_name}}</option>
                                     {% endif %}
                                     {% endfor %}

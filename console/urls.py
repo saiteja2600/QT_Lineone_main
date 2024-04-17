@@ -41,6 +41,8 @@ urlpatterns = [
 
    #  student card
    path('student_card/',views.student_card,name="student_card"),
+
+
   
   
   
@@ -51,6 +53,7 @@ urlpatterns = [
     path('lead_prospects/',views.lead_prospects,name='lead_prospects'),
     path('lead_leads/',views.lead_leads,name='lead_leads'),
     path('leads/',views.leads,name='leads'),
+    path('lead_move_to_mql/<int:id>',views.lead_move_to_mql,name="lead_move_to_mql"),
     path('mql/',views.mql,name='mql'),
     path('sql/',views.sql,name='sql'),
     path('request_discounts/',views.request_discounts,name='request_discounts'),
@@ -93,21 +96,59 @@ urlpatterns = [
     path('applied/',views.applied_students, name='applied'),
     path('placed/',views.placed_students,name='placed'),
     path('jobdescription/',views.job_description, name='jobdescription'),
-    path('Studentdetails',views.Student_details,name='student_Details.html'),
-    path('Studentreport',views.Student_report,name="student_Report.html"),
+    path('Studentdetails',views.Student_details,name='student_Details'),
+    path('Studentreport',views.Student_report,name="student_Report"),
     path('lokesh/',views.lokesh,name='lokesh'),
     path('studentsplaced/',views.students_placed, name='studentsplaced'),
     path('studentnotplaced/',views.students_notplaced, name='studentsnotplaced'),
-    path('qualified/',views.qualified_students, name='qualified'),
     path('totalstudents/',views.total_students_applied, name='totalstudents'),
     path('profile/', views.profile,name='profile'),
     path('studentsreport/', views.studentreport,name='studentsreport'),
     path('hr_leads', views.hr_leads, name='hr_leads'),
     path('hr_confirmed', views.hr_confirmed, name='hr_confirmed'),
-    path('recruiters', views.recruiters, name='recruiters'),
     path('not_interested_hr', views.not_interested_hr, name='not_interested_hr'),
+    path('hrunderprogress/',views.hr_underprogress, name='hrunderprogress'),
+    path('interviewschedule/',views.hr_interviewschedule, name='interviewschedule'),
+    path('profilesent/',views.profilesent, name='profilesent'),
     path('job_gallery',views.job_gallery,name='job_gallery.html'),
     path('Studentfilter',views.Student_filter,name="student_filter.html"),
+    path('jobgalleryapplied/',views.job_gallery_applied, name='jobgalleryapplied'),
+    path('jobgalleryqualified/',views.job_gallery_qualified, name='jobgalleryqualified'),
+    path('jobgalleryplaced/',views.job_gallery_placed, name='jobgalleryplaced'),
+    path('placementstatus/',views.placement_status, name='placementstatus'),
+    path('jobgalleryeligible/',views.job_gallery_elgible, name='jobgalleryeligible'),
+    path('jobgalleryinprogress/',views.job_gallery_inprogress, name='jobgalleryinprogress'),
+    path('underprogress/',views.students_underprogress, name='underprogress'),
+    path('totaleligible/',views.total_students_eligible, name='totaleligible'),
+    path('totalnoteligible/',views.total_students_noteligible, name='totalnoteligible'),
+    path('totalnotintrested/',views.students_not_intrested, name='totalnotintrested'),
+    path('totalnotattended/', views.students_notattended, name='totalnotattended'),
+    path('level3/',views.level3, name='level3'),
+    path('level2/',views.level2, name='level2'),
+    path('level1/',views.level1, name='level1'),
+    path('createvendor/',views.createvendor, name='createvendor'),
+
+   #  mock start here
+    path('faculty_login/',views.faculty_login,name="faculty_login"),
+    path('mock_dashboard/',views.mock_dashboard,name="mock_dashboard"),
+    path('student/',views.student,name="student"),
+    path('faculty/',views.faculty_slot,name="faculty_slot"),
+    path('facultymocks/', views.total_interviews, name="total_interviews"),
+    path('past/', views.student_feedback, name="student_feedback"),
+    path('admin/', views.admin_mock, name="admin_mock"),
+    path('reschedule/', views.reschedule, name="reschedule"),
+    path('adinterview/', views.admin_interview_list, name="admin_interview_list"),
+    path('facultydashboard/', views.faculty_dashboard, name="faculty_dashboard"),
+    path('facultydetails/', views.separate_faculty_list, name="separate_faculty_list"),
+    path('adcomplete/', views.completed_mock, name="completed_mock"),
+    path('facultyschedule/', views.faculty_schedule_list, name="faculty_schedule_list"),
+    path('faculty_completed/', views.faculty_completed_mocklist, name="faculty_completed_mocklist"),
+    path('facultypending/', views.faculty_pending_mocks, name="faculty_pending_mocks"),
+
+
+
+
+   # mock end here
    
 
     # training type update
@@ -152,6 +193,7 @@ urlpatterns = [
     path('branch_import/',views.branch_import,name="branch_import"),
    #  qrcode form
    path('inquiry_form/<int:id>/<str:crn>',views.inquery_form,name="inquiry_form"),
+   path('inquiry_form_default/', views.inquery_form, name='inquiry_form_default'),
    path('verify_otp/',views.verify_otp,name="verify_otp"),
    path('create_lead/',views.create_lead,name="create_lead"),
    path('receipt/',views.receipt,name="receipt"),
@@ -434,7 +476,7 @@ urlpatterns = [
    # employee
        #employee status
         #employee status
-    path('employee_status/<int:id>',views.employee_status,name="employee_status"),
+    path('employee_status1/<int:id>',views.employee_status1,name="employee_status1"),
     #employee delete
     path('employee_delete/<int:id>',views.employee_delete,name="employee_delete"),
     #employee update
