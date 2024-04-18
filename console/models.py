@@ -151,6 +151,7 @@ class Specialization(models.Model):
 class Specialization_import(models.Model):
     specialization_name=models.CharField(max_length=100)
     course_name=models.CharField(max_length=100)
+    status=models.CharField(max_length=100)
 
 
 
