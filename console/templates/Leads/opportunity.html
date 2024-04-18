@@ -107,7 +107,7 @@
                       <a class="d-flex h-60p align-items-center nav-link {% if active_tab == 'request_discounts' %}active{% endif %}" href="{% url 'request_discounts' %}">Request Discounts</a>
                   </li>
                   <li class="nav-item">
-                      <a class="d-flex h-60p align-items-center nav-link {% if active_tab == 'opportunity' %}active{% endif %}" href="{% url 'opportunity' %}">Opportunity</a>
+                      <a class="d-flex h-60p align-items-center nav-link active" href="{% url 'opportunity' %}">Opportunity</a>
                   </li>
                   <li class="nav-item">
                       <a class="d-flex h-60p align-items-center nav-link {% if active_tab == 'admission' %}active{% endif %}" href="{% url 'admission' %}">Admissions</a>
@@ -181,10 +181,10 @@
           
           <td><input type="checkbox" class="row-checkbox" data-id="{{ i.id }}"></td>
           <td>{{i.token_id}}</td>
-          <td>{{i.firstname}} {{i.lastname}}</td>
-          <td>{{i.phone}}</td>
+          <td>{{i.first_name}} {{i.last_name}}</td>
+          <td>{{i.mobile_number}}</td>
           <td>{{i.email}}</td>
-          <td>{{i.course_interested_in}}</td>
+          <td>{{i.course_name.course_name}}</td>
           <td>{{i.plan}}</td>
           <td>{{i.lead_type}}</td>
           
@@ -424,11 +424,11 @@
                 </div>
                 <div class="col-md-6 mb-3">
                   <label for="studentname" class="form-label">Student Name <span class="text-danger">*</span></label>
-                  <input type="text" class="form-control  bg-light text-secondary" id="studentname" value="{{i.firstname}} {{i.lastname}}" disabled>
+                  <input type="text" class="form-control  bg-light text-secondary" id="studentname" value="{{i.first_name}} {{i.last_name}}" disabled>
                 </div>
                 <div class="col-md-6 mb-3">
                   <label for="mblno" class="form-label">Mobile No <span class="text-danger">*</span></label>
-                  <input type="tel" class="form-control  bg-light text-secondary" id="mblno" value="{{i.phone}}" disabled>
+                  <input type="tel" class="form-control  bg-light text-secondary" id="mblno" value="{{i.mobile_number}}" disabled>
                 </div>
                 <div class="col-md-6 mb-3">
                   <label for="email" class="form-label">Email <span class="text-danger">*</span></label>
@@ -436,11 +436,11 @@
                 </div>
                 <div class="col-md-6 mb-3">
                   <label for="courseinput" class="form-label">Course <span class="text-danger">*</span></label>
-                  <input type="text" class="form-control  bg-light text-secondary" id="courseinput" value="{{i.course_interested_in}}" disabled>
+                  <input type="text" class="form-control  bg-light text-secondary" id="courseinput" value="{{i.course_name.course_name}}" disabled>
                 </div>
                 <div class="col-md-6 mb-3">
                   <label for="courseFaculty" class="form-label">Course Faculty <span class="text-danger">*</span></label>
-                  <input type="text" class="form-control  bg-light text-secondary" id="courseFaculty" value="{{i.course_faculty}}" disabled>
+                  <input type="text" class="form-control  bg-light text-secondary" id="courseFaculty" value="{{i.faculty.first_name}} {{i.faculty.last_name}}" disabled>
                 </div>
                 <div class="col-md-4 mb-3">
                   <label for="plan" class="form-label">Plan <span class="text-danger" >*</span></label>
@@ -450,7 +450,7 @@
                 <div class="col-md-4 mb-3">
                   <label for="demodate" class="form-label">Attended Demo On <span class="text-danger">*</span></label>
                  
-                  <input type="text" class="form-control  bg-light text-secondary" id="demodate" value="{{i.demo_date |default:'Not Attend'}}" disabled>
+                  <input type="text" class="form-control  bg-light text-secondary" id="demodate" value="{{i.demo.datestartat |default:'Not Attend'}}" disabled>
                  
                 </div>
                 <div class="col-md-4 mb-3">
@@ -481,7 +481,7 @@
 
                 <div class="col-md-4 mb-3">
                   <label for="trainingType" class="form-label">Training Type <span class="text-danger">*</span></label>
-                  <input type="text" class="form-control  bg-light text-secondary" id="trainingType" value="{{i.Training_type}}" disabled>
+                  <input type="text" class="form-control  bg-light text-secondary" id="trainingType" value="{{i.training_type.TrainingTypeName}}" disabled>
                 </div>
                 <div class="col-md-4 mb-3">
                   <label for="branch" class="form-label">Branch <span class="text-danger">*</span></label>
@@ -489,7 +489,7 @@
                 </div>
                 <div class="col-md-4 mb-3">
                   <label for="Leadsource" class="form-label">Lead Source <span class="text-danger">*</span></label>
-                  <input type="text" class="form-control  bg-light text-secondary" id="Leadsource" value="{{i.lead_source}}" disabled>
+                  <input type="text" class="form-control  bg-light text-secondary" id="Leadsource" value="{{i.lead_sourse.prospect_type}}" disabled>
                 </div>
                 <div class="col-md-6 mb-3">
                   <label for="admissionFee" class="form-label">Admission Fee <span class="text-danger" >*</span></label>

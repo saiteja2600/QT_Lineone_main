@@ -1,0 +1,62 @@
+{% extends 'base.html'%}
+
+{% block content %}
+{% load static %}
+
+
+
+<section class="hk-sec-wrapper  bg-sky-light-5   bg-body-tertiary">
+    <div class="row">
+
+                <!-- <nav class="navbar bg-sky-dark-5 rounded" id="nav">
+                    <div class="container-fluid">
+                    <a href="" class="navbar-brand text-white">My Assesments</a>
+                    <div class="d-flex offset-md-5">
+                        <a href="#" class="text-white" style="text-decoration: none;">Dashboard/</a>
+                        <a href="{% url 'courses' %}" class="text-white" style="text-decoration: none;">Back</a>
+                    </div>
+
+                    </div>
+                </nav> -->
+
+
+                <div class="col-lg-4 col-md-6 col-sm-12">
+                    <div class="card shadow-lg"  style="width:19rem">
+                        <img class="card-img-top" src="{% static 'img/15.png' %}" alt=" image cap">
+                        <div class="card-body">
+                            <h5 class="card-title"> Core Python</h5>
+                            <p>No of questions: 10</p>
+                            <p>Duration: 15min</p>
+                            <a href="{% url 'my_course_As1'%} " style="text-decoration: none;">Start Test</a>  
+                        </div>
+                    </div>
+                </div> 
+                <div class="col-lg-4 col-md-6 col-sm-12">
+                    <div class="card shadow-lg"  style="width:19rem">
+                        <img class="card-img-top" src="{% static 'img/14.jpg' %}" alt=" image cap">
+                        <div class="card-body">
+                            <h5 class="card-title"> Advance Python</h5>     
+                            <p>No of questions: 10</p>
+                            <p class="card-text">Duration: 15min</p>
+                            <a href="{% url 'my_course_As2'%} " style="text-decoration: none;">Start Test</a>
+                        </div>
+                    </div>
+                </div>
+        <div class="col-lg-4 col-md-6 col-sm-12">
+                    <div class="card shadow-lg"  style="width:19rem">
+                        <img class="card-img-top" src="{% static 'img/14.jpg' %}" alt=" image cap">
+                        <div class="card-body">
+                            <h5 class="card-title"> Advance Python</h5>
+                            <p>No of questions: 10</p>
+                            <p class="card-text">Duration: 15min</p>
+                            <a href="{% url 'my_course_As2'%} " style="text-decoration: none;">Start Test</a>
+                        </div>
+                    </div>
+                </div>
+                <!-- Additional card elements -->
+            </div>
+
+
+</section>
+
+{% endblock %}

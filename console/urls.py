@@ -55,6 +55,13 @@ urlpatterns = [
     path('leads/',views.leads,name='leads'),
     path('lead_move_to_mql/<int:id>',views.lead_move_to_mql,name="lead_move_to_mql"),
     path('mql/',views.mql,name='mql'),
+    path('reschedule_demo/<int:id>',views.reschedule_demo,name="reschedule_demo"),
+    path('move_to_sql/<int:id>',views.move_to_sql,name="move_to_sql"),
+    path('move_to_opportunity/<int:id>',views.move_to_opportunity,name="move_to_opportunity"),
+
+
+
+
     path('sql/',views.sql,name='sql'),
     path('request_discounts/',views.request_discounts,name='request_discounts'),
     path('opportunity/',views.opportunity,name='opportunity'),

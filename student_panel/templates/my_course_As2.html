@@ -1,0 +1,199 @@
+{% extends 'base.html' %}
+{% block content %}
+
+{% load static %} 
+ <style>
+    #navbar1 {
+        padding: 2px;
+        margin-left: 20px;
+        margin-right: 20px;
+        /* padding-bottom: 10px; */
+    }
+</style>
+<div class="row">
+    <div class="container col-12 col-lg-12 col-sm-12 ">    
+        <!-- <nav class="navbar bg-sky-dark-5 rounded" id="navbar1">
+            <div class="container-fluid">
+              <a class="navbar-brand text-white">Assessment: Advance python</a>
+              <a class="navbar-brand text-white">No of Questions: 10</a>
+              <div class="d-flex offset-md-5">
+                <a href="#" class="text-white" style="text-decoration: none;">Dashboard/</a>
+                <a href="{% url 'Test_card' %}" class="text-white" style="text-decoration: none;">Back</a>
+              </div>
+              
+            </div>
+          </nav> -->
+    </div>
+</div>
+
+    <div class="card-body">
+        <div class="row">
+            <div class="col" id="question">
+                <div class="scrollable">
+                    <!-- Questions will be dynamically added here -->
+                </div>
+            </div>
+        </div>
+        <div class="row mt-4" id="resultsSection" style="display: none;">
+            <div class="col">
+                <h2 class="text-center">Assement Results</h2>
+                <p id="resultContent"></p>
+            </div>
+        </div>
+        <div class="row mt-4">
+            <div class="col text-center">
+                <button class="btn btn-primary" id="submitBtn">Submit</button>
+                <button class="btn btn-secondary ml-3" id="restartBtn">Restart</button>
+            </div>
+        </div>
+    </div>    
+
+
+<script>
+    var questionsContainer = document.querySelector('.scrollable');
+
+    function addQuestion(questionNumber, questionText, options, correctAnswer) {
+        var questionCard = document.createElement('div');
+        questionCard.classList.add('card', 'mb-3');
+
+        var cardBody = document.createElement('div');
+        cardBody.classList.add('card-body','shadow-lg');
+
+        var title = document.createElement('h5');
+        title.classList.add('card-title');
+        title.textContent = 'Question ' + questionNumber;
+
+        var questionTextElem = document.createElement('p');
+        questionTextElem.classList.add('card-text');
+        questionTextElem.textContent = questionText;
+
+        cardBody.appendChild(title);
+        cardBody.appendChild(questionTextElem);
+
+        for (var i = 0; i < options.length; i++) {
+            var optionDiv = document.createElement('div');
+            optionDiv.classList.add('form-check');
+
+            var input = document.createElement('input');
+            input.classList.add('form-check-input');
+            input.type = 'radio';
+            input.name = 'q' + questionNumber;
+            input.id = 'q' + questionNumber + 'a' + (i + 1);
+            input.value = 'option' + (i + 1);
+
+            var label = document.createElement('label');
+            label.classList.add('form-check-label');
+            label.htmlFor = 'q' + questionNumber + 'a' + (i + 1);
+            label.textContent = options[i];
+
+            optionDiv.appendChild(input);
+            optionDiv.appendChild(label);
+
+            cardBody.appendChild(optionDiv);
+        }
+
+        var userAnswer = document.createElement('p');
+        userAnswer.id = 'userAnswer' + questionNumber;
+        cardBody.appendChild(userAnswer);
+
+        var correctAnswerElem = document.createElement('p');
+        correctAnswerElem.id = 'correctAnswer' + questionNumber;
+        cardBody.appendChild(correctAnswerElem);
+
+        questionCard.appendChild(cardBody);
+        questionsContainer.appendChild(questionCard);
+    }
+
+    var pythonQuestions = [
+    {
+            question: 'Which of the following is not a key concept in OOP?',
+            options: ['Inheritance', 'Polymorphism', 'Multiprocessing','Encapsulation'],
+            correctAnswer: 'Multiprocessing'
+        },
+        {
+            question: 'In Python, an object is:',
+            options: ['A real-world entity', 'A collection of data and methods', 'Always physical', ' Only data'],
+            correctAnswer: 'A collection of data and methods'
+        },
+        {
+            question: 'Which of the following is correct about class attributes?',
+            options: ['They are always public', 'They cannot be changed outside the class', 'They are shared across all instances of a class'],
+            correctAnswer: 'They are shared across all instances of a class'
+        },
+        {
+            question: 'What is the purpose of a constructor in a class?',
+            options: ['To construct the methods of the class', 'To initialize an object’s attributes when it’s created', 'To destroy an instance'],
+            correctAnswer: 'To initialize an object’s attributes when it’s created'
+        },
+        {
+            question: ' In Python, how is the constructor defined for a class?',
+            options: ['init()', 'construct()', '__init__()'],
+            correctAnswer: '__init__()'
+        },
+        {
+            question: 'What is the concept of inheriting properties of one class into another class?',
+            options: ['Polymorphism', 'Multiprocessing', 'Encapsulation', 'Inheritance'],
+            correctAnswer: 'Inheritance'
+        },
+        {
+            question: ' Which of the following keywords is used to create a subclass in Python?',
+            options: [' extend', ' class', 'subclass'],
+            correctAnswer: ' class'
+        },
+        {
+            question: 'What does method overriding mean in Python?',
+            options: ['Altering a method by changing its parameters in the same class.', 'Modifying the behavior of an inherited method in the subclass.', 'Using the same method name in multiple classes.', 'Making a method static.'],
+            correctAnswer: 'Modifying the behavior of an inherited method in the subclass.'
+        },
+        {
+            question: 'How does Python support method overloading?',
+            options: ['By creating multiple methods with the same name but different parameters.', 'By creating static methods', 'Through default arguments and variable-length argument lists.', 'Python doesn’t support method overloading.'],
+            correctAnswer: 'Through default arguments and variable-length argument lists.'
+        },
+        {
+            question: 'In method overriding, if the subclass has the same method as declared in the parent class, which version of the method will be executed?',
+            options: ['Parent class', 'Subclass', 'Both', ' Neither'],
+            correctAnswer: 'Subclass'
+        },
+        
+        // Add more questions here
+        
+    ];
+
+    pythonQuestions.forEach(function (item, index) {
+        addQuestion(index + 1, item.question, item.options, item.correctAnswer);
+    });
+
+    document.getElementById('submitBtn').addEventListener('click', function () {
+        displayResults();
+    });
+
+    document.getElementById('restartBtn').addEventListener('click', function () {
+        location.reload();
+    });
+
+    function displayResults() {
+        var correctCount = 0;
+        var wrongCount = 0;
+
+        pythonQuestions.forEach(function (question, index) {
+            var selectedOption = document.querySelector('input[name="q' + (index + 1) + '"]:checked');
+            if (selectedOption) {
+                var selectedAnswer = selectedOption.nextElementSibling.textContent;
+                document.getElementById('userAnswer' + (index + 1)).textContent = 'Your Answer: ' + selectedAnswer;
+                if (selectedAnswer === question.correctAnswer) {
+                    correctCount++;
+                } else {
+                    wrongCount++;
+                    document.getElementById('correctAnswer' + (index + 1)).textContent = 'Correct Answer: ' + question.correctAnswer;
+                }
+            }
+        });
+
+        // Display results section
+        document.getElementById('resultContent').innerHTML = 'Correct Answers: ' + correctCount + '<br>Wrong Answers: ' + wrongCount;
+        document.getElementById('resultsSection').style.display = 'block';
+    }
+</script>
+
+{% endblock %}

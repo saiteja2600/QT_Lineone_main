@@ -1,0 +1,140 @@
+{% extends 'base.html' %}
+{% block content %}
+{% load static %}
+<style>
+    #nav1 {
+         padding: 2px ; 
+          margin-left: 3px;
+          margin-right: 3px; 
+     }
+      
+ </style>
+ <!-- nav bar start here -->
+ <!-- <div class="card bg-sky-dark-5 " id="nav1"> 
+     <div class="col-12 col-sm-12 col-lg-12 " >
+        <nav class="navbar bg-sky-dark-5 rounded" id="nav1">
+            <div class="container-fluid">
+              <a href="" class="navbar-brand text-white">Course Details</a>
+              <div class="d-flex offset-md-5">
+                <a href="#" class="text-white" style="text-decoration: none;">Dashboard/</a>
+                <a href="{% url 'courses' %}" class="text-white" style="text-decoration: none;">Back</a>
+              </div>
+              
+            </div>
+          </nav>
+     </div>
+ </div>   -->
+ <!-- nav bar ends here    -->
+<div class="bg-sky-light-5">
+    <div class="row">
+        <div class="col-12 col-sm-12 col-lg-12" >  
+            <div class="">
+                <div class="page-content">
+                    <div class="container-fluid">
+                        <!-- start page title -->
+                        <div class="row">
+                            <div class="col-12">
+                            <!-- <h4 class="pt-2   ps-5 "> python For Beginners</h4> -->
+                            </div>        
+                        </div>
+                        <!-- end page title -->
+                        <br>
+                        <br>
+                        <div class="row">
+
+                            <div class="col-xl-4" id="card-none3">              
+                                <div class=" shadow-lg">
+                                    <img alt=" image cap" class="card-img-top img-fluid object-fit-contain border rounded" src="../../static/dist/img/3.jpg">
+                                
+                                    <ul class="list-group list-group-flush">                       
+                                        <li class="list-group-item d-flex justify-content-between align-items-center">
+                                            <span><i class="ri-stack-fill"></i> Total Chapters</span>
+                                            <span>1</span>
+                                        </li>
+
+                                        <li class="list-group-item d-flex justify-content-between align-items-center">
+                                            <span><i class="ri-file-paper-2-line"></i> Total Lessons</span>
+                                            <span>1</span>
+                                        </li>
+
+                                        <li class="list-group-item d-flex justify-content-between align-items-center">
+                                            <span><i class="ri-play-circle-line"></i> Total Topics</span>
+                                            <span>37</span>
+                                        </li>    
+                                            <div class="row">
+                                                <div class="col-sm mt-3 ">
+                                                    <a class="  mb-15 offset-md-4" href="{% url 'my_course_video1'%}" style="text-decoration: none;">Start Course</a>
+                                                </div>
+                                            </div>
+                                            <br>    
+                                    </ul>
+                                </div>
+                            </div>  
+
+                            <div class="col-xl-8">
+                                <div class="card  ">
+                                    <div class="card-header glassy-shine bg-dark">
+                                    <span>
+                                        <h5 class="mt-0 text-white" style="font-size: 20px;">
+                                            Python For Beginners
+                                        </h5>
+                                    </span>
+                                    </div>
+
+                                    <div class="card-body">
+                                        <div class="d-flex position-relative">
+                                            <div class="scrolling-text-container">
+                                                <p style="font-size: 14px;">
+                                                    Python is a high-level, dynamic programming language with a simple and readable syntax. 
+                                                    Its standard library includes modules and functions for various tasks, making it a versatile and powerful language for a wide range of applications.
+                                                </p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="accordion nesting-accordion custom-accordionwithicon accordion-border-box" id="accordionnesting">
+
+                                    <div class="card shadow-lg  pa-15 bg-light rounded">
+                                        <div class="card-body">
+                                        <h5> Curriculum for this course</h5>
+                                            <div class="table-wrap mb-20">
+                                                <div class="table-responsive">
+                                                    <table class="table table-light table-bordered mb-0">
+                                                        <thead class="thead-light">
+                                                            <tr>
+                                                                <th class="bg-dark text-white"><i class="ti-arrow-circle-right"></i>&nbsp;  Section-1: Python For Beginners</th>
+                                                                <th class="bg-dark text-white"><i class="ion ion-md-arrow-dropright-circle offset-md-5 ps-5 "></i> Lessions</th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                            <tr>
+                                                                <th scope="row"><h6><i class="ion ion-md-arrow-dropright-circle"></i> 1.Core Python </th>
+                                                                <td><h6 class="offset-md-5 ps-5">3:21:26</td></tr>  
+                                                            </tr>
+                                                            <tr>
+                                                                <th scope="row"><h6><i class="ion ion-md-arrow-dropright-circle"></i> 2.Advanced Python </th>
+                                                                <td><h6 class="offset-md-5 ps-5">3:28:13</td>  
+                                                            </tr>  
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                            </div>  
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>    
+</div>
+
+
+
+
+
+
+
+{% endblock %}

@@ -1,0 +1,244 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %} <title> Job Details </title> {% endblock %}
+
+{% block content %}
+<div>
+    <nav class="navbar">
+            <ul class=" nav justify-content-end">
+                <li class="breadcrumb-item">
+                  <a class="" aria-current="page" href="">Home</a>
+                </li>
+                <li class="breadcrumb-item">
+                  <a class="" href="{% url 'jobs' %}">Placements</a>
+                </li>
+                <li class="breadcrumb-item">
+                    <a class="" href="{% url 'applied_jobs' %}">Jobs</a>
+                  </li>
+               
+                <li class="breadcrumb-item active">
+                  Job Details
+                </li>
+              </ul>
+      </nav>
+</div>
+  <!-- Container -->
+  <div class="container bg-dark-80 ">
+      <!-- Row -->
+      <div class="row ml-1 ">
+          <div class="col-xl-12">
+            <div class="media-body ">
+              <br>
+              <div class="row">
+                <img class="align-self-start ml -2 mr-2 circle d-66 border border-light border-2" src="../../static/images/logo/qt_instance.png" alt="Generic placeholder image">
+                <h1 class=" display-5 text-white mb-15 mt-2">Python Developer</h1>
+                &nbsp;&nbsp;&nbsp;
+              </div>   
+              <div class="faq-search-wrap ">  
+                <div class="col-lg-6 ">
+                    <div class="button-list">
+                        <!-- Button trigger modal -->
+                        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModalLarge01">
+                            Apply
+                        </button>
+                    </div>
+              </div>
+            </div>
+          </div>
+      </div>
+  </div>
+ </div>
+
+
+
+        <div class="container bg-white ">
+        <!-- Row -->
+            <div class="row">
+                <div class="col-xl-12">
+                    <div class="container mt-sm-60 mt-20">
+                        <div class="hk-row">
+            <!-- Job Description and Responsibilities -->
+                        <div class="col-xl-8">
+                        <div class="card card-lg">
+                            <h3 class="card-header border-bottom-0">
+                                Job Description
+                            </h3>
+                            <div class="">
+                                <div class="card-header d-flex justify-content-between activestate">
+                                <p>
+                                Troubleshoot, test and maintain the core product software and databases to ensure strong optimization and functionality
+                                Contribute in all phases of the development lifecycle
+                                Follow industry best practices
+                                Develop and deploy new features to facilitate related procedures and tools if necessary.
+                            
+                                </p>
+                            </div>
+                            
+                            </div>
+                           
+                            <h3 class="card-header border-bottom-0">
+                                Requirements
+                            </h3>
+                         
+                            <div class="">
+                            <div class="card-header d-flex justify-content-between activestate">
+                                
+                            <p>
+                                
+                            Must have experience in building web applications in Python/Django 
+                            Knows best practices for front- end development
+                            Strong knowledge of Javascript APIs.
+                            Able to handle multiple databases in Django.
+                            Knows how to do multiple environments (production/ staging) setup in Django.
+                            Knows how to set up/deploy Django apps in AWS.
+                            Web frameworks and RESTful APIs
+                            Object-relational mapping, OOPS
+                            Knowledge of MongoDB, PostgreSQL ,MySQL
+                            
+                            </p>
+                            </div>
+                            </div>
+                            
+                        </div>
+                        </div>
+
+                    <!-- Category-->
+                    <div class="col-xl-4">
+                    <div class="card">
+                        <h6 class="card-header">
+                            Job Info
+                        </h6>
+                        <ul class="list-group list-group-flush">
+                            <li class="list-group-item d-flex align-items-center ">
+                                <!-- <i class="ion ion-md-sunny mr-15"></i>Terms & conditions -->
+                                Comapany : <p class="text-smoke mt-3 ml-2" >QT Lines</p>
+                            </li>
+                            <li class="list-group-item d-flex align-items-center ">
+                                <!-- <i class="ion ion-md-sunny mr-15"></i>Terms & conditions -->
+                                Experience : <p class="text-smoke mt-3 ml-2" >0-1 year</p>
+                            </li>
+                            <li class="list-group-item d-flex align-items-center">
+                                <!-- <i class="ion ion-md-unlock mr-15"></i>Privacy policy -->
+                                Location :&nbsp;&nbsp;&nbsp;&nbsp; <p class="text-smoke mt-3 ml-2" >
+                                    <i class="fa fa-map-marker"></i>&nbsp;Hyderabad,Telangana
+                                </p>
+                            </li>
+                            <!-- <li class="list-group-item d-flex align-items-center">
+                                <i class="ion ion-md-bookmark mr-15"></i>Terms of use
+
+                            </li>
+                            <li class="list-group-item d-flex align-items-center">
+                                <i class="ion ion-md-filing mr-15"></i>Documentation -->
+                            </li>
+                        </ul>
+                    </div>
+                    </div>
+                    <div class="col-sm">
+                        <div class="button-list">
+                            <!-- Button trigger modal -->
+                            <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModalLarge01">
+                                Apply
+                            </button>
+                        </div>
+                        <br>
+
+
+                        
+                    </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+                        <div class="modal fade" id="exampleModalLarge01" tabindex="-1" role="dialog" aria-labelledby="exampleModalLarge01" aria-hidden="true">
+                            <div class="modal-dialog modal-lg" role="document">
+
+                                <div class="modal-content pr-6 pl-6 pd-12  pt-12" style="font-size: 16px;">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title text-center">Python Developer</h5>
+                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                            <span aria-hidden="true">&times;</span>
+                                        </button>
+                                    </div>
+                                    <div class="modal-body">
+                                        <div class="row">
+                                            <div class="col-xl-12">
+                                                <section class="hk-sec-wrapper">
+                                                    <!-- <h5 class="hk-sec-title">Python Developer</h5> -->
+                                                    <!-- <p class="mb-25">More complex forms can be built using the grid classes. Use these for form layouts that require multiple columns, varied widths, and additional alignment options.</p> -->
+                                                    <div class="row">
+                                                        <div class="col-sm">
+                                                            <form>
+                                                                <div class="row">
+                                                                    <div class="col-md-6 form-group">
+                                                                        <label for="firstName">Job ID</label>
+                                                                        <label class="form-control filled-input" id=""  value="{}" type="text">984</label>
+                                                                    </div>
+                                                                    <div class="col-md-6 form-group">
+                                                                        <label for="lastName">Company name</label>
+                                                                        <label class="form-control filled-input" id=""  value="{}" type="text">QT Lines</label>                                                                    </div>
+                                                                </div>
+
+                                                                <div class="row">
+                                                                    <div class="col-md-6 form-group">
+                                                                        <label for="firstName">Experience</label>
+                                                                        <label class="form-control filled-input" id="" placeholder="" value="{}" type="text">0-1 Year</label>
+                                                                    </div>
+                                                                    <div class="col-md-6 form-group">
+                                                                        <label for="lastName">Location</label>
+                                                                        <label class="form-control filled-input" id=""  value="{}" type="text">Hyderabad</label>                                                                    </div>
+                                                                </div>
+
+                                                                <div class="row">
+                                                                    <div class="col-md-6 form-group">
+                                                                        <label for="firstName">First name</label>
+                                                                        <label class="form-control filled-input" id="firstName" placeholder="" value="{}" type="text">Madelyn</label>
+                                                                    </div>
+                                                                    <div class="col-md-6 form-group">
+                                                                        <label for="lastName">Last name</label>
+                                                                        <label class="form-control filled-input" id=""  value="{}" type="text">Shane</label>                                                                    </div>
+                                                                </div>
+                        
+                                                                <div class="form-group">
+                                                                    <label for="email">Email</label>
+                                                                    <label class="form-control filled-input" id=""  value="{}" type="text">madelyns991@gmail.com</label>                                                                 </div>
+                                                                    
+                                                                <div class="form-group">
+                                                                        <label for="phone_number">Phone Number</label>
+                                                                        <label class="form-control filled-input" id=""  value="{}" type="text">9090909090</label>
+                                                            
+                                                                <div class="form-group">
+                                                                    <label for="address">Address</label>
+                                                                    <label class="form-control filled-input" id=""  value="{}" type="text">256 2nd st. </label>                                                                 </div>
+                        
+                                                                
+                                                                    <div class="modal-footer">
+                                                                        <button type="button" class="btn btn-primary">Submit</button>
+                                                                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                                                        
+                                                                    </div>
+                                                              
+                        
+                                                                
+                                                               
+                                                                    
+                                                                </div>
+                                                      
+                                                               
+                                                            </form>
+                                                        </div>
+                                                    </div>
+                                                </section>
+                                                
+                                               
+                                                
+                                            </div>
+                                        </div>
+                                    </div>
+                            </div>
+                        </div>
+                        </div>
+                        
+
+{% endblock %}

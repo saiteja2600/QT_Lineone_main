@@ -749,6 +749,7 @@ class LeadModel(models.Model):
         ('PROSPECT','PROSPECT'),
         ('LEAD', 'LEAD'),
         ('MQL','MQL'),
+        ('SQL','SQL'),
         ('ASSIGNED_DEMO', 'ASSIGNED_DEMO'),
         ('ATTENDED_DEMO', 'ATTENDED_DEMO'),
         ('REQUEST_DISCOUNT', 'REQUEST_DISCOUNT'),
@@ -756,15 +757,22 @@ class LeadModel(models.Model):
         ('ADMITTED', 'ADMITTED'),
         ('SPAM', 'SPAM'),
     )
+    LEAD_TYPE = (
+        ('WARM','WARM'),
+        ('COLD','COLD')
+    )
     lead_position = models.CharField(max_length=100, choices=LEAD_POSITION,default='PROSPECT')
     lead_stage = models.ForeignKey(Leadstage, on_delete=models.SET_NULL,null=True)
-    lead_type = models.CharField(max_length=100,null=True)
+    lead_type = models.CharField(max_length=100,null=True,choices=LEAD_TYPE)
     demo = models.ForeignKey(Demo, on_delete=models.SET_NULL, null=True)
     faculty = models.ForeignKey(Employee_model, on_delete=models.SET_NULL, null=True)     
     token_id = models.CharField(max_length=100, unique=True, editable=False)
     token_generated_date = models.DateTimeField(null=True, blank=True)
+    plan = models.ForeignKey(Plan, on_delete=models.SET_NULL, null=True)
     prospect_taken = models.BooleanField(default=False)
     lead_description = models.TextField(null=True)
+    mql_description = models.TextField(null=True)
+    sql_description = models.TextField(null=True)
     
     
 

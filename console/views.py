@@ -6364,7 +6364,7 @@ def lead_prospects(request):
   crn = request.session.get('admin_user').get('crn')
   register_user = Register_model.objects.get(crn=crn)
   # getting prospects lead
-  prospects = register_user.leads.filter(lead_position="PROSPECT").all()
+  prospects = register_user.leads.filter(lead_position="PROSPECT").all().order_by("-id")
   print(prospects)
   
   # getting branch
@@ -6394,6 +6394,8 @@ def lead_leads(request):
   
   return render(request,'Leads/leads.html')
 
+
+# leads 
 def leads(request):
     crn = request.session.get('admin_user').get('crn')
     register_user = Register_model.objects.get(crn=crn)
@@ -6412,6 +6414,7 @@ def leads(request):
     return render(request, 'Leads/lead.html', context)
 
 
+# moviing lead data to mql
 def lead_move_to_mql(request,id):
     crn = request.session.get('admin_user').get('crn')
     register_user = Register_model.objects.get(crn=crn)
@@ -6432,55 +6435,135 @@ def lead_move_to_mql(request,id):
        return redirect('leads')
        
 
-    
-
-
+# mql here
 def mql(request):
-  context={}
+  
+  
   crn = request.session.get('admin_user', {}).get('crn')
   register_user = Register_model.objects.get(crn=crn)
-  leads = register_user.leads.filter(lead_position='MQL')
+  leads = register_user.leads.filter(lead_position='MQL').all().order_by('-id')
+  demos = register_user.demo.filter(status='Active').all().order_by('-id')
+
   context={
      "leads":leads,
+     "demos":demos
     
   }
   return render(request,'Leads/mql.html', context)
 
+
+
+# reschedule the demo here
+def reschedule_demo(request,id):
+  crn = request.session.get('admin_user').get('crn')
+  register_user = Register_model.objects.get(crn=crn)
+  if request.method == "POST":
+     demo_assigned = request.POST.get('demodate')
+     if demo_assigned:
+        register_user.leads.filter(id=id).update(
+           demo = register_user.demo.get(pk=demo_assigned)
+        )
+        return redirect('mql')
+     else:
+       messages.error(request,'Demo not found')
+       return redirect('mql')
+  else:
+    messages.error(request,'Invalid request')
+    return redirect('mql')   
+
+
+
+
+
+# moveing from mql to sql
+def move_to_sql(request,id):
+  crn = request.session.get('admin_user').get('crn')
+  register_user = Register_model.objects.get(crn=crn)
+  if request.method == "POST":
+     mql_lead = register_user.leads.get(id=id)
+     mql_description = request.POST.get('mqldescription')
+     if mql_lead:
+        mql_lead.lead_position = 'SQL'
+        mql_lead.lead_type = request.POST.get("leadType")
+        mql_lead.mql_description = mql_description
+        mql_lead.save()
+        messages.success(request,'MQL Lead moved to SQL')
+        return redirect('mql')
+     else:
+      messages.error(request,'MQL Lead not found')
+      return redirect('mql')
+
+
+
+# sql here
 def sql(request):
-  context={}
+  
   crn = request.session.get('admin_user', {}).get('crn')
   register_user = Register_model.objects.get(crn=crn)
-  admin_user_info = request.session['admin_user']  # Retrieve the stored dictionary
-  crn1 = admin_user_info.get('id')
-  leads = Lead_generation.objects.filter(lead_position='ATTENDED_DEMO',crn_number=register_user).order_by('-token_generated_date')
-  # leads = Lead_generation.objects.filter(lead_postion="ATTENDED_DEMO").order_by('-token_generated_date')
+  leads = register_user.leads.filter(lead_position="SQL").order_by("-id")
+  plans = register_user.plans.filter(status="Active").order_by("-id")
+  
   context={
      "leads":leads,
-     'active_tab': 'sql'
+     'plans':plans
+     
   }
   return render(request,'Leads/sql.html', context) 
+
+
+# move to opportunity
+def move_to_opportunity(request,id):
+  crn = request.session.get('admin_user').get('crn')
+  register_user = Register_model.objects.get(crn=crn)
+  if request.method == "POST":
+     sql_lead = register_user.leads.get(id=id)
+     if sql_lead:
+        sql_lead.lead_position = 'OPPORTUNITY'
+        sql_lead.lead_type = request.POST.get("leadType")
+        sql_lead.sql_description = request.POST.get("sqldescription")
+        sql_lead.plan = register_user.plans.get(pk=request.POST.get("plan"))
+        sql_lead.save()
+        messages.success(request,'SQL Lead moved to OPPORTUNITY')
+        return redirect('sql')
+     else:
+      messages.error(request,'SQL Lead not found')
+      return redirect('sql')
+  else:
+    messages.error(request,"Invalid request")
+    return redirect('sql')
+    
+
+
+
+
+
+def opportunity(request):
+  crn = request.session.get('admin_user', {}).get('crn')
+  register_user = Register_model.objects.get(crn=crn)
+  leads = register_user.leads.filter(lead_position='OPPORTUNITY').order_by("-id")
+
+  context={
+     "leads":leads,
+  }
+
+  return render(request,'Leads/opportunity.html', context) 
+
+
+
+
+
+
 def request_discounts(request):
   context={}
-  # leads = Lead_generation.objects.filter(lead_postion="REQUEST_DISCOUNT").order_by('-token_generated_date')
+  
   context={
      "leads":leads,
      'active_tab': 'request_discounts'
   }
   return render(request,'Leads/request_discounts.html', context) 
 
-def opportunity(request):
-  context={}
-  crn = request.session.get('admin_user', {}).get('crn')
-  register_user = Register_model.objects.get(crn=crn)
-  admin_user_info = request.session['admin_user']  # Retrieve the stored dictionary
-  crn1 = admin_user_info.get('id')
-  leads = Lead_generation.objects.filter(lead_position='OPPORTUNITY',crn_number=register_user).order_by('-token_generated_date')
-  # leads = Lead_generation.objects.filter(lead_postion="OPPORTUNITY").order_by('-token_generated_date')
-  context={
-     "leads":leads,
-     'active_tab': 'opportunity'
-  }
-  return render(request,'Leads/opportunity.html', context) 
+
+
 
 
 def admission(request):

@@ -1,0 +1,149 @@
+{% extends 'base.html' %} {% load static %} {% block content %}
+<div class="col-lg-3 col-md-6">
+  <div class="card card-sm">
+    <div class="card-body">
+      <div class="d-flex justify-content-between mb-3">
+        <div>
+          <span class="d-block font-15 text-dark font-weight-500"
+            >MY ASSESMENTS</span
+          >
+        </div>
+        <div>
+          <span class="text-success font-14 font-weight-500">
+            <i class="fa fa-book"></i>
+          </span>
+        </div>
+      </div>
+      <div class="d-flex justify-content-between">
+        <div>
+          <span class="d-block font-15 text-dark font-weight-500 mb-0">9</span>
+        </div>
+        <div>
+          <span class="text-success font-14 font-weight-500">Result</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="col-lg-3 col-md-6">
+  <div class="card card-sm">
+    <div class="card-body">
+      <div class="d-flex justify-content-between mb-3">
+        <div>
+          <span class="d-block font-15 text-dark font-weight-500"
+            >MY WORKSHEETS</span
+          >
+        </div>
+        <div>
+          <span class="text-success font-14 font-weight-500">
+            <i class="glyphicon glyphicon-file"></i>
+          </span>
+        </div>
+      </div>
+      <div class="d-flex justify-content-between">
+        <div>
+          <span class="d-block font-15 text-dark font-weight-500 mb-0">39</span>
+        </div>
+        <div>
+          <span class="text-success font-14 font-weight-500">Result</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="col-lg-3 col-md-6">
+  <div class="card card-sm">
+    <div class="card-body">
+      <div class="d-flex justify-content-between mb-3">
+        <div>
+          <span class="d-block font-15 text-dark font-weight-500"
+            >MY QUIZES</span
+          >
+        </div>
+        <div>
+          <span class="text-success font-14 font-weight-500"
+            ><i class="fa fa-question-circle"></i
+          ></span>
+        </div>
+      </div>
+      <div class="d-flex justify-content-between">
+        <div>
+          <span class="d-block font-15 text-dark font-weight-500 mb-0">13</span>
+        </div>
+        <div>
+          <span class="text-success font-14 font-weight-500">Result</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="col-lg-3 col-md-6">
+  <div class="card card-sm">
+    <div class="card-body">
+      <div class="d-flex justify-content-between mb-3">
+        <div>
+          <span class="d-block font-15 text-dark font-weight-500">MY JOBS</span>
+        </div>
+        <div>
+          <span class="text-success font-14 font-weight-500"
+            ><i class="fa fa-briefcase"></i>
+          </span>
+        </div>
+      </div>
+      <div class="d-flex justify-content-between">
+        <div>
+          <span class="d-block font-15 text-dark font-weight-500 mb-0">1</span>
+        </div>
+        <div>
+          <span class="text-success font-14 font-weight-500">Result</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<h6 class="fw-bold text-lg-start col-12 mb-3">MY COURSES</h6>
+<div class="col-lg-4 col-md-6">
+  <div class="card shadow bg-body rounded" style="width: 19rem">
+    <img
+      class="img-top"
+      src="{% static 'img/3.jpg' %}"
+      alt="Card image cap"
+    />
+    <div class="card-body position-relative">
+      <h5 class="card-title">Python For Beginners</h5>
+      <div class="horizontal-line"></div>
+      <!-- Horizontal line -->
+      <p class="card-text offset-8 text-info">2 days left</p>
+      <a
+        href=""
+        class="ml-0 text-primary float-start"
+        style="text-decoration: none"
+        >Continue Watching &nbsp;
+      </a>
+    </div>
+  </div>
+</div>
+<div class="col-lg-4 col-md-6 mb-4">
+  <div class="card shadow bg-body rounded" style="width: 19rem">
+    <img
+      class="img-top"
+      src="{% static 'img/3.jpg' %}"
+      alt="Card image cap"
+    />
+    <div class="card-body position-relative">
+      <h5 class="card-title line">Web Development For Beginners</h5>
+      <div class="horizontal-line"></div>
+      <!-- Horizontal line -->
+      <p class="card-text offset-9 text-danger">Expired</p>
+      <a
+        href=""
+        class="ml-0 text-primary float-start"
+        style="text-decoration: none"
+        >Purchase Again &nbsp;
+      </a>
+    </div>
+  </div>
+</div>
+
+{% endblock %}

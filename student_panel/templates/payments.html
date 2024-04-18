@@ -1,0 +1,95 @@
+{% extends 'base.html' %}
+{% block content %}
+
+ <!-- Container -->
+            <div class="container">
+
+                <!-- Title -->
+                <div class="hk-pg-header">
+                    <h4 class="hk-pg-title">Payments</h4>
+                </div>
+                <!-- /Title -->
+
+                <!-- Row -->
+                <div class="row">
+                    <div class="col-xl-12">
+                        <section class="hk-sec-wrapper">
+<!--                            <h5 class="hk-sec-title">Data Table</h5>-->
+<!--                            <p class="mb-40">Add advanced interaction controls to HTML tables like <code>search, pagination & selectors</code>. For responsive table just add the <code>responsive: true</code> to your DataTables function. <a href="https://datatables.net/reference/option/" >View all options</a>.</p>-->
+                            <div class="row">
+                                <div class="col-sm">
+                                    <div class="table-wrap">
+<!--                                        <div class="table-responsive">-->
+                                        <table id="datable_1" class="table table-hover w-100 display pb-30 table-bordered">
+                                            <thead>
+                                               <tr class="bg-dark">
+                                                    <th class="text-white">S.No</th>
+                                                    <th class="text-white">FullName</th>
+                                                    <th class="text-white">Email</th>
+                                                    <th class="text-white">course</th>
+                                                    <th class="text-white">Amount</th>
+                                                    <th class="text-white">mode</th>
+                                                    <th class="text-white">receipt</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr>
+                                                    <td>1</td>
+                                                    <td>chevuri Anitha</td>
+                                                    <td>anithach@gmail.com</td>
+                                                    <td>Python Full Stack</td>
+                                                    <td>25000</td>
+                                                    <td>Cash</td>
+                                                    <td><ul><a href="{% url 'invoice' %}"><i class="icon" data-icon="y"></i></a></ul></td>
+                                                </tr>
+                                                 <tr>
+                                                    <td>2</td>
+                                                    <td>sunchi Sharanya</td>
+                                                    <td>sunchi@gmail.com</td>
+                                                    <td>Java Full Stack</td>
+                                                    <td>25000</td>
+                                                    <td>Cash</td>
+                                                    <td><a href="{% url 'invoice' %}"><i class="icon" data-icon="y"></i></a></td>
+                                                </tr>
+                                            </tbody>
+
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </section>
+                    </div>
+                </div>
+                <!-- /Row -->
+
+            </div>
+            <!-- /Container -->
+<!-- Button trigger modal -->
+
+
+<!-- Modal -->
+                                    <!-- Modal -->
+                                    <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                        <div class="modal-dialog" role="document">
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <h5 class="modal-title" id="exampleModalLabel">Fee Receipt</h5>
+                                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                        <span aria-hidden="true">&times;</span>
+                                                    </button>
+                                                </div>
+                                                <div class="modal-body">
+                                                    <li class="nav-item">
+                                                        <a class="nav-link" href="">Course Payment</a>
+                                                    </li>
+                                                    <br>
+                                                    <br>
+                                                    <button type="button" class="btn btn-primary offset-5" >Download</button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+
+
+{%endblock%}

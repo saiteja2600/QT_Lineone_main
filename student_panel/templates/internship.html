@@ -1,0 +1,129 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<style>
+    .container {
+    width: 100%;
+    max-width: 1500px;
+<!--    margin: 0 auto;-->
+}
+    .table-hover tbody tr:hover td {
+        color: black;
+    }
+
+</style>
+
+<!-- <div class="hk-pg-wrapper">-->
+            <!-- Breadcrumb -->
+<!--            <nav class="hk-breadcrumb" aria-label="breadcrumb">-->
+<!--                <ol class="breadcrumb breadcrumb-light bg-transparent">-->
+<!--                    <li class="breadcrumb-item"><a href="#">Tables</a></li>-->
+<!--                    <li class="breadcrumb-item active" aria-current="page">Data Table</li>-->
+<!--                </ol>-->
+<!--            </nav>-->
+            <!-- /Breadcrumb -->
+
+            <!-- Container -->
+            <div class="container">
+
+                <!-- Title -->
+                <div class="hk-pg-header">
+                    <h4 class="hk-pg-title">Internship</h4>
+                </div>
+                <!-- /Title -->
+
+                <!-- Row -->
+                <div class="row">
+                    <div class="col-xl-12">
+                        <section class="hk-sec-wrapper">
+<!--                            <h5 class="hk-sec-title">Data Table</h5>-->
+<!--                            <p class="mb-40">Add advanced interaction controls to HTML tables like <code>search, pagination & selectors</code>. For responsive table just add the <code>responsive: true</code> to your DataTables function. <a href="https://datatables.net/reference/option/" >View all options</a>.</p>-->
+                            <div class="row">
+                                <div class="col-sm">
+                                    <div class="table-wrap">
+<!--                                        <div class="table-responsive">-->
+                                        <table id="datable_1" class="table table-hover w-100 display pb-30 table-bordered">
+                                            <thead>
+                                                <tr class="bg-dark">
+                                                    <th class="text-white">S.No</th>
+                                                    <th class="text-white">Company Name</th>
+                                                    <th class="text-white">Task Name</th>
+                                                    <th class="text-white">Description</th>
+                                                    <th class="text-white">Start date</th>
+                                                    <th class="text-white">End date</th>
+                                                    <th class="text-white">Status</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr>
+                                                    <td>1</td>
+                                                    <td>Ramana soft</td>
+                                                    <td>APP 1</td>
+                                                    <td>Designs and Performing crud operations</td>
+                                                    <td>1/1/2024</td>
+                                                    <td>11/1/2024</td>
+                                                    <td><span class="badge badge-success">Completed</span></td>
+                                                </tr>
+                                                <tr>
+                                                    <td>2</td>
+                                                    <td>Ramana soft</td>
+                                                    <td>APP 2</td>
+                                                    <td>Performing crud operations</td>
+                                                    <td>12/1/2024</td>
+                                                    <td>21/1/2024</td>
+                                                    <td><span class="badge badge-success">Completed</span></td>
+                                                </tr>
+                                                <tr>
+                                                    <td>3</td>
+                                                    <td>Ramana soft</td>
+                                                    <td>APP 3 </td>
+                                                    <td>Performing crud operations</td>
+                                                    <td>22/1/2024</td>
+                                                    <td>5/2/2024</td>
+                                                    <td><span class="badge badge-warning">In progress</span></td>
+                                                </tr>
+                                            </tbody>
+<!--                                            <tfoot>-->
+<!--                                                <tr>-->
+<!--                                                    <th>Name</th>-->
+<!--                                                    <th>Position</th>-->
+<!--                                                    <th>Office</th>-->
+<!--                                                    <th>Age</th>-->
+<!--                                                    <th>Start date</th>-->
+<!--                                                    <th>Salary</th>-->
+<!--                                                </tr>-->
+<!--                                            </tfoot>-->
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </section>
+                    </div>
+                </div>
+                <!-- /Row -->
+
+            </div>
+            <!-- /Container -->
+
+            <!-- Footer -->
+<!--            <div class="hk-footer-wrap container">-->
+<!--                <footer class="footer">-->
+<!--                    <div class="row">-->
+<!--                        <div class="col-md-6 col-sm-12">-->
+<!--                            <p>Pampered by<a href="#" class="text-dark" >Hencework</a> © 2019</p>-->
+<!--                        </div>-->
+<!--                        <div class="col-md-6 col-sm-12">-->
+<!--                            <p class="d-inline-block">Follow us</p>-->
+<!--                            <a href="#" class="d-inline-block btn btn-icon btn-icon-only btn-indigo btn-icon-style-4"><span class="btn-icon-wrap"><i class="fa fa-facebook"></i></span></a>-->
+<!--                            <a href="#" class="d-inline-block btn btn-icon btn-icon-only btn-indigo btn-icon-style-4"><span class="btn-icon-wrap"><i class="fa fa-twitter"></i></span></a>-->
+<!--                            <a href="#" class="d-inline-block btn btn-icon btn-icon-only btn-indigo btn-icon-style-4"><span class="btn-icon-wrap"><i class="fa fa-google-plus"></i></span></a>-->
+<!--                        </div>-->
+<!--                    </div>-->
+<!--                </footer>-->
+<!--            </div>-->
+            <!-- /Footer -->
+
+
+
+
+{% endblock %}
